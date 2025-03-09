@@ -179,3 +179,9 @@ README.html
 *.iml
 .idea
 .exercism
+# Игнорировать Maven Wrapper файлы
+mvnw
+mvnw.cmd
+
+# Игнорировать файл справки
+HELP.md
