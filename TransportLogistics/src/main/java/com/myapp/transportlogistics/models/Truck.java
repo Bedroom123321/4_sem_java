@@ -1,6 +1,9 @@
 package com.myapp.transportlogistics.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType; 
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -9,16 +12,22 @@ import jakarta.persistence.Table;
 public class Truck {
 
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "numberplate")
     private String numberPlate;
+    @Column(name = "liftingcapacity")
     private int liftingCapacity;
+    @Column(name = "cargovolume")
     private int cargoVolume;
+    @Column(name = "cargotype")
     private String cargoType;
 
     public Truck() {
     }
 
-    public Truck(String numberPlate, int id, int liftingCapacity, int cargoVolume, String cargoType) {
+    public Truck(String numberPlate, Long id, int liftingCapacity,
+                 int cargoVolume, String cargoType) {
         this.numberPlate = numberPlate;
         this.id = id;
         this.liftingCapacity = liftingCapacity;
@@ -26,11 +35,11 @@ public class Truck {
         this.cargoType = cargoType;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -68,12 +77,12 @@ public class Truck {
 
     @Override
     public String toString() {
-        return "Truck{" +
-                "id=" + id +
-                ", numberPlate='" + numberPlate + '\'' +
-                ", liftingCapacity=" + liftingCapacity +
-                ", cargoVolume=" + cargoVolume +
-                ", cargoType='" + cargoType + '\'' +
-                '}';
+        return "Truck{"
+                + "id=" + id
+                + ", numberPlate='" + numberPlate + '\''
+                + ", liftingCapacity=" + liftingCapacity
+                + ", cargoVolume=" + cargoVolume
+                + ", cargoType='" + cargoType + '\''
+                + '}';
     }
 }
