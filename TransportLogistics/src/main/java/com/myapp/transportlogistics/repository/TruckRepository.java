@@ -10,4 +10,5 @@ public interface TruckRepository extends JpaRepository<Truck, Long> {
 
     @Query(value = "select * from trucks where numberplate = :numberPlate", nativeQuery = true)
     Optional<Truck> findByNumberPlate (String numberPlate);
+
 }
