@@ -3,10 +3,9 @@ package com.myapp.transportlogistics.service;
 import com.myapp.transportlogistics.models.Truck;
 import com.myapp.transportlogistics.repository.DriversRepository;
 import com.myapp.transportlogistics.repository.TruckRepository;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,8 +31,7 @@ public class TruckService {
 
     public void delete(Long id) {
         Optional<Truck> optionalTruck = truckRepository.findById(id);
-        if(optionalTruck.isEmpty())
-        {
+        if (optionalTruck.isEmpty()) {
             throw new IllegalStateException("Транспорта с id " + id + " нет в базе");
         }
         truckRepository.deleteById(id);
@@ -42,17 +40,16 @@ public class TruckService {
     @Transactional
     public void update(Long id, String cargoType, int cargoVolume) {
         Optional<Truck> optionalTruck = truckRepository.findById(id);
-        if(optionalTruck.isEmpty())
-        {
+        if (optionalTruck.isEmpty()) {
             throw new IllegalStateException("Транспорта с id " + id + " нет в базе");
         }
         Truck truck = optionalTruck.get();
 
-        if(cargoType != null && !cargoType.equals(truck.getCargoType())) {
+        if (cargoType != null && !cargoType.equals(truck.getCargoType())) {
             truck.setCargoType(cargoType);
         }
 
-        if(cargoVolume != 0 && cargoVolume != truck.getCargoVolume()) {
+        if (cargoVolume != 0 && cargoVolume != truck.getCargoVolume()) {
             truck.setCargoVolume(cargoVolume);
         }
 

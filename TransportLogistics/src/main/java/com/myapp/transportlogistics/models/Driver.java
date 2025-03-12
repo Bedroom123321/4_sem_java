@@ -1,6 +1,11 @@
 package com.myapp.transportlogistics.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "drivers")
@@ -11,7 +16,7 @@ public class Driver {
     private Long id;
     private String name;
     @Column(name = "secondname")
-    private String secondBName;
+    private String secondName;
     @Column(name = "phonenumber")
     private String phoneNumber;
     @Column(name = "workexperience")
@@ -20,10 +25,11 @@ public class Driver {
     public Driver() {
     }
 
-    public Driver(Long id, String name, String secondBName, String phoneNumber, String workExperience) {
+    public Driver(Long id, String name, String secondName,
+                  String phoneNumber, String workExperience) {
         this.id = id;
         this.name = name;
-        this.secondBName = secondBName;
+        this.secondName = secondName;
         this.phoneNumber = phoneNumber;
         this.workExperience = workExperience;
     }
@@ -44,12 +50,12 @@ public class Driver {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getSecondBName() {
-        return secondBName;
+    public String getSecondName() {
+        return secondName;
     }
 
-    public void setSecondBName(String secondBName) {
-        this.secondBName = secondBName;
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
     }
 
     public String getName() {
@@ -73,7 +79,7 @@ public class Driver {
         return "Driver{"
                 + "id=" + id
                 + ", name='" + name + '\''
-                + ", secondBName=" + secondBName
+                + ", secondBName=" + secondName
                 + ", phoneNumber=" + phoneNumber
                 + ", workExperience='" + workExperience + '\''
                 + '}';

@@ -2,14 +2,12 @@ package com.myapp.transportlogistics.controller;
 
 import com.myapp.transportlogistics.models.Driver;
 import com.myapp.transportlogistics.service.DriverService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
+import org.springframework.web.bind.annotation.*;
+
 @RestController
-@RequestMapping
+@RequestMapping("drivers")
 public class DriverController {
 
     private final DriverService driverService;
@@ -18,8 +16,25 @@ public class DriverController {
         this.driverService = driverService;
     }
 
-    @GetMapping("drivers")
+    @GetMapping("get")
     public List<Driver> findAlldrivers() {
         return driverService.findAlldrivers();
+    }
+
+    @PostMapping
+    public Driver creatDriver(@RequestBody Driver driver) {
+        return driverService.creat(driver);
+    }
+
+    @DeleteMapping("delete/{id}")
+    public void deleteTruck(@PathVariable Long id) {
+        driverService.delete(id);
+    }
+
+    @PutMapping("update/{id}")
+    public void updateTruck(@PathVariable Long id, @RequestParam(required = false) String name,
+                            @RequestParam(required = false) String secondName,
+                            @RequestParam(required = false) String phoneNumber) {
+        driverService.update(id, name, secondName, phoneNumber);
     }
 }
