@@ -1,11 +1,16 @@
-package com.myapp.transportlogistics.models;
+package com.myapp.transportlogistics.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+import java.util.Set;
+
 
 @Entity
 @Table(name = "drivers")
@@ -22,16 +27,20 @@ public class Driver {
     @Column(name = "workexperience")
     private String workExperience;
 
-    public Driver() {
-    }
+    @ManyToMany(mappedBy = "drivers")
+    private Set<Truck> trucks ;
 
     public Driver(Long id, String name, String secondName,
-                  String phoneNumber, String workExperience) {
+                  String phoneNumber, String workExperience, Set<Truck> trucks) {
         this.id = id;
         this.name = name;
         this.secondName = secondName;
         this.phoneNumber = phoneNumber;
         this.workExperience = workExperience;
+        this.trucks = trucks;
+    }
+
+    public Driver() {
     }
 
     public String getWorkExperience() {

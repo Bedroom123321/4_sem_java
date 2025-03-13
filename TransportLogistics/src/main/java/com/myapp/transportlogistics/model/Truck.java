@@ -1,11 +1,9 @@
-package com.myapp.transportlogistics.models;
+package com.myapp.transportlogistics.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.Set;
+
 
 @Entity
 @Table(name = "trucks")
@@ -23,16 +21,25 @@ public class Truck {
     @Column(name = "cargotype")
     private String cargoType;
 
+    @ManyToMany
+    @JoinTable(
+            name = "driver_truck",
+            joinColumns = @JoinColumn(name = "truck_id", referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name = "driver_id", referencedColumnName="id")
+    )
+    private Set<Driver> drivers;
+
+
     public Truck() {
     }
 
-    public Truck(String numberPlate, Long id, int liftingCapacity,
-                 int cargoVolume, String cargoType) {
-        this.numberPlate = numberPlate;
+    public Truck(Long id, Set<Driver> drivers, String cargoType, int cargoVolume, int liftingCapacity, String numberPlate) {
         this.id = id;
-        this.liftingCapacity = liftingCapacity;
-        this.cargoVolume = cargoVolume;
+        this.drivers = drivers;
         this.cargoType = cargoType;
+        this.cargoVolume = cargoVolume;
+        this.liftingCapacity = liftingCapacity;
+        this.numberPlate = numberPlate;
     }
 
     public Long getId() {
