@@ -1,14 +1,7 @@
 package com.myapp.transportlogistics.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.*;
+
 import java.util.Set;
 
 
@@ -17,17 +10,14 @@ import java.util.Set;
 public class Driver {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String name;
-    @Column(name = "secondname")
     private String secondName;
-    @Column(name = "phonenumber")
     private String phoneNumber;
-    @Column(name = "workexperience")
     private String workExperience;
 
-    @ManyToMany(mappedBy = "drivers")
+    @ManyToMany(mappedBy = "drivers", fetch = FetchType.LAZY)
     private Set<Truck> trucks ;
 
     public Driver(Long id, String name, String secondName,

@@ -10,18 +10,14 @@ import java.util.Set;
 public class Truck {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    @Column(name = "numberplate")
     private String numberPlate;
-    @Column(name = "liftingcapacity")
     private int liftingCapacity;
-    @Column(name = "cargovolume")
     private int cargoVolume;
-    @Column(name = "cargotype")
     private String cargoType;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "driver_truck",
             joinColumns = @JoinColumn(name = "truck_id", referencedColumnName="id"),
