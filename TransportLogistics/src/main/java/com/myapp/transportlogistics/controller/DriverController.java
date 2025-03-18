@@ -1,6 +1,7 @@
 package com.myapp.transportlogistics.controller;
 
-import com.myapp.transportlogistics.model.Driver;
+import com.myapp.transportlogistics.dto.DriverRequestDto;
+import com.myapp.transportlogistics.dto.DriverResponseDto;
 import com.myapp.transportlogistics.service.impl.DriverServiceImpl;
 import java.util.List;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,25 +24,31 @@ public class DriverController {
         this.driverService = driverService;
     }
 
+    @GetMapping("get/{id}")
+    public DriverResponseDto getDriverById(@PathVariable Long id) {
+        return driverService.findById(id);
+    }
+
     @GetMapping("get")
-    public List<Driver> findAlldrivers() {
+    public List<DriverResponseDto> getAllDrivers() {
         return driverService.findAllDrivers();
     }
 
-    @PostMapping
-    public Driver creatDriver(@RequestBody Driver driver) {
-        return driverService.creat(driver);
+    @PostMapping("post")
+    public DriverResponseDto createDriver(@RequestBody DriverRequestDto driverRequestDto) {
+        return driverService.create(driverRequestDto);
     }
 
     @DeleteMapping("delete/{id}")
-    public void deleteTruck(@PathVariable Long id) {
+    public void deleteDriver(@PathVariable Long id) {
         driverService.delete(id);
     }
 
     @PutMapping("update/{id}")
-    public void updateTruck(@PathVariable Long id, @RequestParam(required = false) String name,
-                            @RequestParam(required = false) String secondName,
-                            @RequestParam(required = false) String phoneNumber) {
+    public void updateDriver(@PathVariable Long id,
+                             @RequestParam(required = false) String name,
+                             @RequestParam(required = false) String secondName,
+                             @RequestParam(required = false) String phoneNumber) {
         driverService.update(id, name, secondName, phoneNumber);
     }
 }

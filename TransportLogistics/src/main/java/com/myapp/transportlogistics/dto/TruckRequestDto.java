@@ -4,9 +4,10 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public class CreatTruckDTO {
+public class TruckRequestDto {
 
-    @Pattern(regexp = "^[A-Z]{2}\\d{5}$", message = "В начале серия, затем регистрационный номер, затем код регистрации")
+    @Pattern(regexp = "^[A-Z]{2}\\d{5}$",
+            message = "В начале серия, затем регистрационный номер, затем код регистрации")
     private String numberPlate;
 
     @Min(value = 1, message = "Грузоподъемность должна быть больше нуля(кг)")

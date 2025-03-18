@@ -1,5 +1,8 @@
 package com.myapp.transportlogistics.service.impl;
 
+import com.myapp.transportlogistics.dto.TruckRequestDto;
+import com.myapp.transportlogistics.dto.TruckResponseDto;
+import com.myapp.transportlogistics.mapper.TruckMapper;
 import com.myapp.transportlogistics.model.Truck;
 import com.myapp.transportlogistics.repository.TruckRepository;
 import com.myapp.transportlogistics.service.TruckService;
@@ -11,23 +14,40 @@ import org.springframework.stereotype.Service;
 @Service
 public class TruckServiceImpl implements TruckService {
     private final TruckRepository truckRepository;
+    private final TruckMapper truckMapper;
 
-    public TruckServiceImpl(TruckRepository truckRepository) {
+    public TruckServiceImpl(TruckRepository truckRepository, TruckMapper truckMapper) {
         this.truckRepository = truckRepository;
+        this.truckMapper = truckMapper;
     }
 
     @Override
-    public List<Truck> findAllTrucks() {
-        return truckRepository.findAll();
+    public TruckResponseDto findById(Long id) {
+        Optional<Truck> optionalTruck = truckRepository.findById(id);
+        if (optionalTruck.isEmpty()) {
+            throw new IllegalStateException("Транспорта с id " + id + " нет в базе");
+        }
+
+        Truck truck = optionalTruck.get();
+        return truckMapper.toDto(truck);
     }
 
     @Override
-    public Truck create(Truck truck) {
-        Optional<Truck> optionalTruck = truckRepository.findByNumberPlate(truck.getNumberPlate());
+    public List<TruckResponseDto> findAllTrucks() {
+        List<Truck> trucks = truckRepository.findAll();
+        return truckMapper.toDtoList(trucks);
+    }
+
+    @Override
+    public TruckResponseDto create(TruckRequestDto truckRequestDto) {
+        Optional<Truck> optionalTruck =
+                truckRepository.findByNumberPlate(truckRequestDto.getNumberPlate());
         if (optionalTruck.isPresent()) {
             throw new IllegalStateException("Транспорт с таким номером уже существует");
         }
-        return truckRepository.save(truck);
+
+        Truck truck = truckMapper.toEntity(truckRequestDto);
+        return truckMapper.toDto(truckRepository.save(truck));
     }
 
     @Override
@@ -59,4 +79,5 @@ public class TruckServiceImpl implements TruckService {
 
         truckRepository.save(truck);
     }
+
 }

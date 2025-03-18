@@ -1,12 +1,15 @@
 package com.myapp.transportlogistics.service;
 
-import com.myapp.transportlogistics.model.Truck;
+import com.myapp.transportlogistics.dto.TruckRequestDto;
+import com.myapp.transportlogistics.dto.TruckResponseDto;
 import java.util.List;
 
 public interface TruckService {
-    List<Truck> findAllTrucks();
+    TruckResponseDto findById(Long id);
 
-    Truck create(Truck truck);
+    List<TruckResponseDto> findAllTrucks();
+
+    TruckResponseDto create(TruckRequestDto truck);
 
     void delete(Long id);
 

@@ -1,6 +1,7 @@
 package com.myapp.transportlogistics.controller;
 
-import com.myapp.transportlogistics.model.Truck;
+import com.myapp.transportlogistics.dto.TruckRequestDto;
+import com.myapp.transportlogistics.dto.TruckResponseDto;
 import com.myapp.transportlogistics.service.impl.TruckServiceImpl;
 import java.util.List;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,14 +24,19 @@ public class TruckController {
         this.truckServiceImpl = truckServiceImpl;
     }
 
+    @GetMapping("get/{id}")
+    public TruckResponseDto getTruckById(@PathVariable Long id) {
+        return truckServiceImpl.findById(id);
+    }
+
     @GetMapping("get")
-    public List<Truck> getTrucks() {
+    public List<TruckResponseDto> getTrucks() {
         return truckServiceImpl.findAllTrucks();
     }
 
     @PostMapping("post")
-    public Truck creatTruck(@RequestBody Truck truck) {
-        return truckServiceImpl.create(truck);
+    public TruckResponseDto creatTruck(@RequestBody TruckRequestDto truckRequestDto) {
+        return truckServiceImpl.create(truckRequestDto);
     }
 
     @DeleteMapping("delete/{id}")

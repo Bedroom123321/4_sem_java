@@ -1,9 +1,13 @@
 package com.myapp.transportlogistics.model;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import java.util.Set;
-
 
 @Entity
 @Table(name = "drivers")
@@ -18,7 +22,7 @@ public class Driver {
     private String workExperience;
 
     @ManyToMany(mappedBy = "drivers", fetch = FetchType.LAZY)
-    private Set<Truck> trucks ;
+    private Set<Truck> trucks;
 
     public Driver(Long id, String name, String secondName,
                   String phoneNumber, String workExperience, Set<Truck> trucks) {
