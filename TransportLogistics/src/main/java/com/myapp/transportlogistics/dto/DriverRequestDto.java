@@ -11,7 +11,7 @@ public class DriverRequestDto {
     @NotBlank(message = "Фамилия должна быть заполнена")
     private String secondName;
 
-    /*@Pattern(regexp = "^\\+375\\d{9}$", message = "Неверный номер телефона")*/
+    @Pattern(regexp = "^\\+375\\d{9}$", message = "Неверный номер телефона")
     private String phoneNumber;
 
     @Pattern(regexp = "^\\d", message = "Стаж должен быть числом")
