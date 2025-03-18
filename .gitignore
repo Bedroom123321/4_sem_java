@@ -185,3 +185,4 @@ mvnw.cmd
 
 # Игнорировать файл справки
 HELP.md
+.properties
