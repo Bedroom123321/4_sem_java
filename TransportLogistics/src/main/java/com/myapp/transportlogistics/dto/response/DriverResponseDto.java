@@ -1,4 +1,4 @@
-package com.myapp.transportlogistics.dto;
+package com.myapp.transportlogistics.dto.response;
 
 public class DriverResponseDto {
     private Long id;

@@ -1,12 +1,11 @@
 package com.myapp.transportlogistics.mapper;
 
-import com.myapp.transportlogistics.dto.DriverRequestDto;
-import com.myapp.transportlogistics.dto.DriverResponseDto;
+import com.myapp.transportlogistics.dto.request.DriverRequestDto;
+import com.myapp.transportlogistics.dto.response.DriverResponseDto;
 import com.myapp.transportlogistics.model.Driver;
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
 @Component
 public class DriverMapper {

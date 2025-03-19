@@ -1,7 +1,7 @@
 package com.myapp.transportlogistics.service;
 
-import com.myapp.transportlogistics.dto.TruckRequestDto;
-import com.myapp.transportlogistics.dto.TruckResponseDto;
+import com.myapp.transportlogistics.dto.request.TruckRequestDto;
+import com.myapp.transportlogistics.dto.response.TruckResponseDto;
 import java.util.List;
 
 public interface TruckService {

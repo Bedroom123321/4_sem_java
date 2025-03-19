@@ -1,7 +1,7 @@
 package com.myapp.transportlogistics.service;
 
-import com.myapp.transportlogistics.dto.DriverRequestDto;
-import com.myapp.transportlogistics.dto.DriverResponseDto;
+import com.myapp.transportlogistics.dto.request.DriverRequestDto;
+import com.myapp.transportlogistics.dto.response.DriverResponseDto;
 import java.util.List;
 
 public interface DriverService {
@@ -13,5 +13,5 @@ public interface DriverService {
 
     void delete(Long id);
 
-    void update(Long id, String name, String secondName, String phoneNumber);
+    void update(Long id, String secondName, String phoneNumber);
 }

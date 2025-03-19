@@ -1,7 +1,7 @@
 package com.myapp.transportlogistics.service.impl;
 
-import com.myapp.transportlogistics.dto.TruckRequestDto;
-import com.myapp.transportlogistics.dto.TruckResponseDto;
+import com.myapp.transportlogistics.dto.request.TruckRequestDto;
+import com.myapp.transportlogistics.dto.response.TruckResponseDto;
 import com.myapp.transportlogistics.mapper.TruckMapper;
 import com.myapp.transportlogistics.model.Truck;
 import com.myapp.transportlogistics.repository.TruckRepository;

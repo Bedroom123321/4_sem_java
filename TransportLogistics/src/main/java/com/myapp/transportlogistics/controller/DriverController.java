@@ -1,7 +1,7 @@
 package com.myapp.transportlogistics.controller;
 
-import com.myapp.transportlogistics.dto.DriverRequestDto;
-import com.myapp.transportlogistics.dto.DriverResponseDto;
+import com.myapp.transportlogistics.dto.request.DriverRequestDto;
+import com.myapp.transportlogistics.dto.response.DriverResponseDto;
 import com.myapp.transportlogistics.service.impl.DriverServiceImpl;
 import java.util.List;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,9 +46,8 @@ public class DriverController {
 
     @PutMapping("update/{id}")
     public void updateDriver(@PathVariable Long id,
-                             @RequestParam(required = false) String name,
                              @RequestParam(required = false) String secondName,
                              @RequestParam(required = false) String phoneNumber) {
-        driverService.update(id, name, secondName, phoneNumber);
+        driverService.update(id, secondName, phoneNumber);
     }
 }
