@@ -1,14 +1,7 @@
 package com.myapp.transportlogistics.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.util.Set;
 
 
@@ -24,26 +17,18 @@ public class Truck {
     private int cargoVolume;
     private String cargoType;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "driver_truck",
-            joinColumns = @JoinColumn(name = "truck_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "driver_id", referencedColumnName = "id")
-    )
-    private Set<Driver> drivers;
-
+    @OneToOne(mappedBy = "truck")
+    private Driver driver;
 
     public Truck() {
     }
 
-    public Truck(Long id, Set<Driver> drivers, String cargoType,
-                 int cargoVolume, int liftingCapacity, String numberPlate) {
-        this.id = id;
-        this.drivers = drivers;
-        this.cargoType = cargoType;
-        this.cargoVolume = cargoVolume;
-        this.liftingCapacity = liftingCapacity;
+    public Truck(String numberPlate, int liftingCapacity,
+                 int cargoVolume, String cargoType) {
         this.numberPlate = numberPlate;
+        this.liftingCapacity = liftingCapacity;
+        this.cargoVolume = cargoVolume;
+        this.cargoType = cargoType;
     }
 
     public Long getId() {
@@ -84,6 +69,14 @@ public class Truck {
 
     public void setNumberPlate(String numberPlate) {
         this.numberPlate = numberPlate;
+    }
+
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
     }
 
     @Override

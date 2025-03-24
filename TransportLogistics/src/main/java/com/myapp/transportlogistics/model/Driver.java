@@ -1,12 +1,7 @@
 package com.myapp.transportlogistics.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.util.Set;
 
 @Entity
@@ -21,20 +16,38 @@ public class Driver {
     private String phoneNumber;
     private String workExperience;
 
-    @ManyToMany(mappedBy = "drivers", fetch = FetchType.LAZY)
-    private Set<Truck> trucks;
+    @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Order> orders;
 
-    public Driver(Long id, String name, String secondName,
-                  String phoneNumber, String workExperience, Set<Truck> trucks) {
-        this.id = id;
+    @OneToOne
+    @JoinColumn(name = "truck_id", unique = true)
+    private Truck truck;
+    
+    public Driver() {
+    }
+
+    public Driver(String name, String secondName,
+                  String phoneNumber, String workExperience) {
         this.name = name;
         this.secondName = secondName;
         this.phoneNumber = phoneNumber;
         this.workExperience = workExperience;
-        this.trucks = trucks;
     }
 
-    public Driver() {
+    // Методы управления связями
+    public void assignTruck(Truck truck) {
+        if (this.truck != null) {
+            this.truck.setDriver(null);
+        }
+        this.truck = truck;
+        if (truck != null) {
+            truck.setDriver(this);
+        }
+    }
+
+    public void addOrder(Order order) {
+        orders.add(order);
+        order.setDriver(this);
     }
 
     public String getWorkExperience() {

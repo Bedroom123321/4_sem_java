@@ -1,10 +1,8 @@
 package com.myapp.transportlogistics.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "clients")
@@ -17,30 +15,20 @@ public class Client {
     private String secondName;
     private String phoneNumber;
 
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Order> orders;
+
     public Client() {
     }
 
-    public Client(Long id, String secondName, String name, String phoneNumber) {
-        this.id = id;
-        this.secondName = secondName;
+    public Client(String name, String secondName, String phoneNumber) {
         this.name = name;
+        this.secondName = secondName;
         this.phoneNumber = phoneNumber;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
     }
 
     public String getName() {
@@ -51,6 +39,14 @@ public class Client {
         this.name = name;
     }
 
+    public String getSecondName() {
+        return secondName;
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -58,4 +54,19 @@ public class Client {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
+    }
 }
+
