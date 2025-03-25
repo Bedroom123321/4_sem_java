@@ -1,9 +1,13 @@
 package com.myapp.transportlogistics.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "clients")
 public class Client {
@@ -15,7 +19,7 @@ public class Client {
     private String secondName;
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "client", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Order> orders;
 
     public Client() {
@@ -25,38 +29,6 @@ public class Client {
         this.name = name;
         this.secondName = secondName;
         this.phoneNumber = phoneNumber;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public Set<Order> getOrders() {
-        return orders;
     }
 
     @Override

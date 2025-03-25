@@ -4,7 +4,9 @@ import com.myapp.transportlogistics.dto.request.DriverRequestDto;
 import com.myapp.transportlogistics.dto.response.DriverResponseDto;
 import com.myapp.transportlogistics.mapper.DriverMapper;
 import com.myapp.transportlogistics.model.Driver;
+import com.myapp.transportlogistics.model.Truck;
 import com.myapp.transportlogistics.repository.DriverRepository;
+import com.myapp.transportlogistics.repository.TruckRepository;
 import com.myapp.transportlogistics.service.DriverService;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -16,10 +18,12 @@ public class DriverServiceImpl implements DriverService {
 
     private final DriverRepository driverRepository;
     private final DriverMapper driverMapper;
+    private final TruckRepository truckRepository;
 
-    public DriverServiceImpl(DriverRepository driverRepository, DriverMapper driverMapper) {
+    public DriverServiceImpl(DriverRepository driverRepository, DriverMapper driverMapper, TruckRepository truckRepository) {
         this.driverRepository = driverRepository;
         this.driverMapper = driverMapper;
+        this.truckRepository = truckRepository;
     }
 
     @Override
@@ -77,6 +81,26 @@ public class DriverServiceImpl implements DriverService {
         if (phoneNumber != null && !phoneNumber.equals(driver.getPhoneNumber())) {
             driver.setPhoneNumber(phoneNumber);
         }
+
+        driverRepository.save(driver);
+    }
+
+    @Transactional
+    public void assignTruckToDriver(Long driverId, Long truckId) {
+        Optional<Driver> optionalDriver = driverRepository.findById(driverId);
+        if (optionalDriver.isEmpty()) {
+            throw new IllegalStateException("Водителя с id " + driverId + " нет в базе");
+        }
+        Optional<Truck> optionalTruck = truckRepository.findById(truckId);
+        if (optionalTruck.isEmpty()) {
+            throw new IllegalStateException("Транспорта с id " + truckId + " нет в базе");
+        }
+
+        Driver driver = optionalDriver.get();
+        Truck truck = optionalTruck.get();
+
+        driver.setTruck(truck);
+        truck.setDriver(driver);
 
         driverRepository.save(driver);
     }

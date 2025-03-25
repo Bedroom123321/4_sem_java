@@ -2,9 +2,6 @@ package com.myapp.transportlogistics.model;
 
 import jakarta.persistence.*;
 
-import java.util.Set;
-
-
 @Entity
 @Table(name = "trucks")
 public class Truck {
@@ -17,7 +14,7 @@ public class Truck {
     private int cargoVolume;
     private String cargoType;
 
-    @OneToOne(mappedBy = "truck")
+    @OneToOne(mappedBy = "truck",cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Driver driver;
 
     public Truck() {

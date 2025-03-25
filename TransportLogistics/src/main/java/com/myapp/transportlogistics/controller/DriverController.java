@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class DriverController {
 
     private final DriverServiceImpl driverService;
+    private final DriverServiceImpl driverServiceImpl;
 
-    public DriverController(DriverServiceImpl driverService) {
+    public DriverController(DriverServiceImpl driverService, DriverServiceImpl driverServiceImpl) {
         this.driverService = driverService;
+        this.driverServiceImpl = driverServiceImpl;
     }
 
     @GetMapping("get/{id}")
@@ -50,4 +52,14 @@ public class DriverController {
                              @RequestParam(required = false) String phoneNumber) {
         driverService.update(id, secondName, phoneNumber);
     }
+
+    @PutMapping ("/{driverId}/truck/{truckId}")
+    public void assignTruckToDriver(
+            @PathVariable Long driverId,
+            @PathVariable Long truckId) {
+        driverServiceImpl.assignTruckToDriver(driverId,truckId);
+    }
+
+
+
 }

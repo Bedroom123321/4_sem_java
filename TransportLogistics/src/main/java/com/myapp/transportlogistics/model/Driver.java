@@ -1,9 +1,14 @@
 package com.myapp.transportlogistics.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Set;
 
+
+@Getter
+@Setter
 @Entity
 @Table(name = "drivers")
 public class Driver {
@@ -16,10 +21,10 @@ public class Driver {
     private String phoneNumber;
     private String workExperience;
 
-    @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "driver", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Order> orders;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "truck_id", unique = true)
     private Truck truck;
     
@@ -32,62 +37,6 @@ public class Driver {
         this.secondName = secondName;
         this.phoneNumber = phoneNumber;
         this.workExperience = workExperience;
-    }
-
-    // Методы управления связями
-    public void assignTruck(Truck truck) {
-        if (this.truck != null) {
-            this.truck.setDriver(null);
-        }
-        this.truck = truck;
-        if (truck != null) {
-            truck.setDriver(this);
-        }
-    }
-
-    public void addOrder(Order order) {
-        orders.add(order);
-        order.setDriver(this);
-    }
-
-    public String getWorkExperience() {
-        return workExperience;
-    }
-
-    public void setWorkExperience(String workExperience) {
-        this.workExperience = workExperience;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     @Override
