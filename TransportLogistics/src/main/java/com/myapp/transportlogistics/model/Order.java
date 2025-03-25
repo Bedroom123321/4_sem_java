@@ -1,10 +1,18 @@
 package com.myapp.transportlogistics.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Date;
 
 @Getter
 @Setter
@@ -21,7 +29,11 @@ public class Order {
     private String loadingPoint;
     private String deliveryPoint;
 
-    @ManyToOne/*(fetch = FetchType.LAZY)*/
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "truck_id")
+    private Truck truck;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     private Client client;
 
@@ -33,22 +45,21 @@ public class Order {
     }
 
     public Order(Date orderDate, String loadingPoint,
-                 String deliveryPoint, Client client) {
+                 String deliveryPoint) {
         this.orderDate = orderDate;
         this.loadingPoint = loadingPoint;
         this.deliveryPoint = deliveryPoint;
-        this.client = client;
     }
 
     @Override
     public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", orderDate=" + (orderDate != null ? orderDate : "null") +
-                ", loadingPoint='" + loadingPoint + '\'' +
-                ", deliveryPoint='" + deliveryPoint + '\'' +
-                ", clientId=" + (client != null ? client.getId() : "null") +
-                ", driverId=" + (driver != null ? driver.getId() : "null") +
-                '}';
+        return "Order{"
+                + "id=" + id
+                + ", orderDate=" + (orderDate != null ? orderDate : "null")
+                + ", loadingPoint='" + loadingPoint + '\''
+                + ", deliveryPoint='" + deliveryPoint + '\''
+                + ", clientId=" + (client != null ? client.getId() : "null")
+                + ", driverId=" + (driver != null ? driver.getId() : "null")
+                + '}';
     }
 }

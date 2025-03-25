@@ -1,10 +1,15 @@
 package com.myapp.transportlogistics.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Set;
 
 
 @Getter
@@ -23,10 +28,6 @@ public class Driver {
 
     @OneToMany(mappedBy = "driver", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Order> orders;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "truck_id", unique = true)
-    private Truck truck;
     
     public Driver() {
     }

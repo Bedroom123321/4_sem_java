@@ -53,13 +53,4 @@ public class DriverController {
         driverService.update(id, secondName, phoneNumber);
     }
 
-    @PutMapping ("/{driverId}/truck/{truckId}")
-    public void assignTruckToDriver(
-            @PathVariable Long driverId,
-            @PathVariable Long truckId) {
-        driverServiceImpl.assignTruckToDriver(driverId,truckId);
-    }
-
-
-
 }

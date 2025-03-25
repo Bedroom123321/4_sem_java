@@ -20,7 +20,8 @@ public class DriverServiceImpl implements DriverService {
     private final DriverMapper driverMapper;
     private final TruckRepository truckRepository;
 
-    public DriverServiceImpl(DriverRepository driverRepository, DriverMapper driverMapper, TruckRepository truckRepository) {
+    public DriverServiceImpl(DriverRepository driverRepository,
+                             DriverMapper driverMapper, TruckRepository truckRepository) {
         this.driverRepository = driverRepository;
         this.driverMapper = driverMapper;
         this.truckRepository = truckRepository;
@@ -85,23 +86,4 @@ public class DriverServiceImpl implements DriverService {
         driverRepository.save(driver);
     }
 
-    @Transactional
-    public void assignTruckToDriver(Long driverId, Long truckId) {
-        Optional<Driver> optionalDriver = driverRepository.findById(driverId);
-        if (optionalDriver.isEmpty()) {
-            throw new IllegalStateException("Водителя с id " + driverId + " нет в базе");
-        }
-        Optional<Truck> optionalTruck = truckRepository.findById(truckId);
-        if (optionalTruck.isEmpty()) {
-            throw new IllegalStateException("Транспорта с id " + truckId + " нет в базе");
-        }
-
-        Driver driver = optionalDriver.get();
-        Truck truck = optionalTruck.get();
-
-        driver.setTruck(truck);
-        truck.setDriver(driver);
-
-        driverRepository.save(driver);
-    }
 }
