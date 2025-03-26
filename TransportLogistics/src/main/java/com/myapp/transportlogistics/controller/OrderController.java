@@ -38,7 +38,7 @@ public class OrderController {
         return orderServiceImpl.createOrder(orderRequestDto);
     }
 
-    @DeleteMapping("delete")
+    @DeleteMapping("delete/{id}")
     public void deleteOrder(@PathVariable Long id) {
         orderServiceImpl.delete(id);
     }
