@@ -25,7 +25,7 @@ public class TruckServiceImpl implements TruckService {
     public TruckResponseDto findById(Long id) {
         Optional<Truck> optionalTruck = truckRepository.findById(id);
         if (optionalTruck.isEmpty()) {
-            throw new IllegalStateException("Транспорта с id " + id + " нет в базе");
+            throw new IllegalStateException();
         }
 
         Truck truck = optionalTruck.get();
@@ -43,7 +43,7 @@ public class TruckServiceImpl implements TruckService {
         Optional<Truck> optionalTruck =
                 truckRepository.findByNumberPlate(truckRequestDto.getNumberPlate());
         if (optionalTruck.isPresent()) {
-            throw new IllegalStateException("Транспорт с таким номером уже существует");
+            throw new IllegalStateException();
         }
 
         Truck truck = truckMapper.toEntity(truckRequestDto);
@@ -54,7 +54,7 @@ public class TruckServiceImpl implements TruckService {
     public void delete(Long id) {
         Optional<Truck> optionalTruck = truckRepository.findById(id);
         if (optionalTruck.isEmpty()) {
-            throw new IllegalStateException("Транспорта с id " + id + " нет в базе");
+            throw new IllegalStateException();
         }
         truckRepository.deleteById(id);
     }
@@ -64,7 +64,7 @@ public class TruckServiceImpl implements TruckService {
     public void update(Long id, String cargoType, int cargoVolume) {
         Optional<Truck> optionalTruck = truckRepository.findById(id);
         if (optionalTruck.isEmpty()) {
-            throw new IllegalStateException("Транспорта с id " + id + " нет в базе");
+            throw new IllegalStateException();
         }
 
         Truck truck = optionalTruck.get();

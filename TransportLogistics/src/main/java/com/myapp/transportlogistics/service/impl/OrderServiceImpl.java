@@ -44,7 +44,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponseDto getOrderById(Long id) {
         Optional<Order> optionalOrder = orderRepository.findById(id);
         if (optionalOrder.isEmpty()) {
-            throw new IllegalStateException("Заказа с id " + id + " нет в базе");
+            throw new IllegalStateException();
         }
 
         return orderMapper.toDto(optionalOrder.get());
@@ -54,20 +54,17 @@ public class OrderServiceImpl implements OrderService {
 
         Optional<Client> optionalClient = clientRepository.findById(orderRequestDto.getClientId());
         if (optionalClient.isEmpty()) {
-            throw new IllegalStateException("Клиента с id "
-                    + orderRequestDto.getClientId() + " нет в базе");
+            throw new IllegalStateException();
         }
 
         Optional<Driver> optionalDriver = driverRepository.findById(orderRequestDto.getDriverId());
         if (optionalDriver.isEmpty()) {
-            throw new IllegalStateException("Водителя с id "
-                    + orderRequestDto.getDriverId() + " нет в базе");
+            throw new IllegalStateException();
         }
 
         Optional<Truck> optionalTruck = truckRepository.findById(orderRequestDto.getTruckId());
         if (optionalTruck.isEmpty()) {
-            throw new IllegalStateException("Траснпорта с id "
-                    + orderRequestDto.getTruckId() + " нет в базе");
+            throw new IllegalStateException();
         }
 
         Order order = orderMapper.toEntity(orderRequestDto);
@@ -81,7 +78,7 @@ public class OrderServiceImpl implements OrderService {
     public void delete(Long id) {
         Optional<Order> optionalOrder = orderRepository.findById(id);
         if (optionalOrder.isEmpty()) {
-            throw new IllegalStateException("Заказа с id " + id + " нет в базе");
+            throw new IllegalStateException();
         }
         driverRepository.deleteById(id);
     }
@@ -93,7 +90,7 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderResponseDto> getOrderByClientId(Long clientId) {
         Optional<Client> optionalClient = clientRepository.findById(clientId);
         if (optionalClient.isEmpty()) {
-            throw new IllegalStateException("Клиента с id " + clientId + " нет в базе");
+            throw new IllegalStateException();
         }
 
         List<Order> orders = orderRepository.getOrderByClientId(clientId);

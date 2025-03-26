@@ -24,7 +24,7 @@ public class ClientServiceImpl implements ClientService {
     public ClientResponseDto findById(Long id) {
         Optional<Client> optionalClient = clientRepository.findById(id);
         if (optionalClient.isEmpty()) {
-            throw new IllegalStateException("Водителя с id " + id + " нет в базе");
+            throw new IllegalStateException();
         }
         return clientMapper.toDto(optionalClient.get());
     }
@@ -40,8 +40,7 @@ public class ClientServiceImpl implements ClientService {
         Optional<Client> optionalClient =
                 clientRepository.findByPhoneNumber(clientRequestDto.getPhoneNumber());
         if (optionalClient.isPresent()) {
-            throw new IllegalStateException("Клиент с таким номером "
-                    + "телефона уже зарегистрирован");
+            throw new IllegalStateException();
         }
 
         Client client = clientMapper.toEntity(clientRequestDto);
@@ -53,7 +52,7 @@ public class ClientServiceImpl implements ClientService {
     public void delete(Long id) {
         Optional<Client> optionalClient = clientRepository.findById(id);
         if (optionalClient.isEmpty()) {
-            throw new IllegalStateException("Клиента с id " + id + " нет в базе");
+            throw new IllegalStateException();
         }
         clientRepository.deleteById(id);
     }
@@ -62,7 +61,7 @@ public class ClientServiceImpl implements ClientService {
     public void update(Long id, String secondName, String phoneNumber) {
         Optional<Client> optionalClient = clientRepository.findById(id);
         if (optionalClient.isEmpty()) {
-            throw new IllegalStateException("Клиента с id " + id + " нет в базе");
+            throw new IllegalStateException();
         }
 
         Client client = optionalClient.get();

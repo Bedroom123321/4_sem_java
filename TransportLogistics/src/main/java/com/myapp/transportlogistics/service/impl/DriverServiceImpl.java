@@ -31,7 +31,7 @@ public class DriverServiceImpl implements DriverService {
     public DriverResponseDto findById(Long id) {
         Optional<Driver> optionalDriver = driverRepository.findById(id);
         if (optionalDriver.isEmpty()) {
-            throw new IllegalStateException("Водителя с id " + id + " нет в базе");
+            throw new IllegalStateException();
         }
         return driverMapper.toDto(optionalDriver.get());
     }
@@ -47,8 +47,7 @@ public class DriverServiceImpl implements DriverService {
         Optional<Driver> optionalDriver =
                 driverRepository.findByPhoneNumber(driverRequestDto.getPhoneNumber());
         if (optionalDriver.isPresent()) {
-            throw new IllegalStateException("Водитель с таким номером "
-                    + "телефона уже зарегистрирован");
+            throw new IllegalStateException();
         }
 
         Driver driver = driverMapper.toEntity(driverRequestDto);
@@ -60,7 +59,7 @@ public class DriverServiceImpl implements DriverService {
     public void delete(Long id) {
         Optional<Driver> optionalDriver = driverRepository.findById(id);
         if (optionalDriver.isEmpty()) {
-            throw new IllegalStateException("Водителя с id " + id + " нет в базе");
+            throw new IllegalStateException();
         }
         driverRepository.deleteById(id);
     }
