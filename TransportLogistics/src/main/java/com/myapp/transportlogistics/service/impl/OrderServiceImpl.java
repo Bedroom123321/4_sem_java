@@ -14,6 +14,8 @@ import com.myapp.transportlogistics.repository.TruckRepository;
 import com.myapp.transportlogistics.service.OrderService;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -83,6 +85,21 @@ public class OrderServiceImpl implements OrderService {
             throw new IllegalStateException("Заказа с id " + id + " нет в базе");
         }
         driverRepository.deleteById(id);
+    }
+
+    public Set<Order> getAllWithRelations() {
+        Set<Order> orders = orderRepository.findAllWithRelations();
+        return orders;
+    }
+
+    public List<OrderResponseDto> getOrderByClientId(Long clientId) {
+        Optional<Client> optionalClient = clientRepository.findById(clientId);
+        if (optionalClient.isEmpty()) {
+            throw new IllegalStateException("Клиента с id " + clientId + " нет в базе");
+        }
+
+        List<Order> orders = orderRepository.getOrderByClientId(clientId);
+        return orderMapper.toDtoList(orders);
     }
 }
 
