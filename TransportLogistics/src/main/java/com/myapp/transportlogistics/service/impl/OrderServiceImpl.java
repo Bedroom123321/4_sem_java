@@ -15,7 +15,6 @@ import com.myapp.transportlogistics.service.OrderService;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -88,8 +87,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public Set<Order> getAllWithRelations() {
-        Set<Order> orders = orderRepository.findAllWithRelations();
-        return orders;
+        return orderRepository.findAllWithRelations();
     }
 
     public List<OrderResponseDto> getOrderByClientId(Long clientId) {
