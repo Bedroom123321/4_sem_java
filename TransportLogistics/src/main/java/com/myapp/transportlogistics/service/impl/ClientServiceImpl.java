@@ -6,6 +6,7 @@ import com.myapp.transportlogistics.mapper.ClientMapper;
 import com.myapp.transportlogistics.model.Client;
 import com.myapp.transportlogistics.repository.ClientRepository;
 import com.myapp.transportlogistics.service.ClientService;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    @Transactional
     public ClientResponseDto findById(Long id) {
         Optional<Client> optionalClient = clientRepository.findById(id);
         if (optionalClient.isEmpty()) {
@@ -30,12 +32,14 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    @Transactional
     public List<ClientResponseDto> findAllClients() {
         List<Client> clients = clientRepository.findAll();
         return clientMapper.toDtoList(clients);
     }
 
     @Override
+    @Transactional
     public ClientResponseDto create(ClientRequestDto clientRequestDto) {
         Optional<Client> optionalClient =
                 clientRepository.findByPhoneNumber(clientRequestDto.getPhoneNumber());
@@ -49,6 +53,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Optional<Client> optionalClient = clientRepository.findById(id);
         if (optionalClient.isEmpty()) {
@@ -58,6 +63,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    @Transactional
     public void update(Long id, String secondName, String phoneNumber) {
         Optional<Client> optionalClient = clientRepository.findById(id);
         if (optionalClient.isEmpty()) {

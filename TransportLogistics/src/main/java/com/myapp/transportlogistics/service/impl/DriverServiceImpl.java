@@ -23,6 +23,7 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
+    @Transactional
     public DriverResponseDto findById(Long id) {
         Optional<Driver> optionalDriver = driverRepository.findById(id);
         if (optionalDriver.isEmpty()) {
@@ -32,12 +33,14 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
+    @Transactional
     public List<DriverResponseDto> findAllDrivers() {
         List<Driver> drivers = driverRepository.findAll();
         return driverMapper.toDtoList(drivers);
     }
 
     @Override
+    @Transactional
     public DriverResponseDto create(DriverRequestDto driverRequestDto) {
         Optional<Driver> optionalDriver =
                 driverRepository.findByPhoneNumber(driverRequestDto.getPhoneNumber());
@@ -51,6 +54,7 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Optional<Driver> optionalDriver = driverRepository.findById(id);
         if (optionalDriver.isEmpty()) {

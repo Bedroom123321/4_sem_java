@@ -22,6 +22,7 @@ public class TruckServiceImpl implements TruckService {
     }
 
     @Override
+    @Transactional
     public TruckResponseDto findById(Long id) {
         Optional<Truck> optionalTruck = truckRepository.findById(id);
         if (optionalTruck.isEmpty()) {
@@ -33,12 +34,14 @@ public class TruckServiceImpl implements TruckService {
     }
 
     @Override
+    @Transactional
     public List<TruckResponseDto> findAllTrucks() {
         List<Truck> trucks = truckRepository.findAll();
         return truckMapper.toDtoList(trucks);
     }
 
     @Override
+    @Transactional
     public TruckResponseDto create(TruckRequestDto truckRequestDto) {
         Optional<Truck> optionalTruck =
                 truckRepository.findByNumberPlate(truckRequestDto.getNumberPlate());
@@ -51,6 +54,7 @@ public class TruckServiceImpl implements TruckService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Optional<Truck> optionalTruck = truckRepository.findById(id);
         if (optionalTruck.isEmpty()) {

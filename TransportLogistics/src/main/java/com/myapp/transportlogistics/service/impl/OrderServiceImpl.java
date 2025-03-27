@@ -13,6 +13,7 @@ import com.myapp.transportlogistics.repository.DriverRepository;
 import com.myapp.transportlogistics.repository.OrderRepository;
 import com.myapp.transportlogistics.repository.TruckRepository;
 import com.myapp.transportlogistics.service.OrderService;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -36,11 +37,15 @@ public class OrderServiceImpl implements OrderService {
         this.orderMapper = orderMapper;
     }
 
+    @Override
+    @Transactional
     public List<OrderResponseDto> getAllOrders() {
         List<Order> orders = orderRepository.findAll();
         return orderMapper.toDtoList(orders);
     }
 
+    @Override
+    @Transactional
     public OrderResponseDto getOrderById(Long id) {
         Optional<Order> optionalOrder = orderRepository.findById(id);
         if (optionalOrder.isEmpty()) {
@@ -50,6 +55,8 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.toDto(optionalOrder.get());
     }
 
+    @Override
+    @Transactional
     public Order createOrder(OrderRequestDto orderRequestDto) {
 
         Optional<Client> optionalClient = clientRepository.findById(orderRequestDto.getClientId());
@@ -75,6 +82,8 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.save(order);
     }
 
+    @Override
+    @Transactional
     public void delete(Long id) {
         Optional<Order> optionalOrder = orderRepository.findById(id);
         if (optionalOrder.isEmpty()) {
@@ -83,11 +92,15 @@ public class OrderServiceImpl implements OrderService {
         driverRepository.deleteById(id);
     }
 
+    @Override
+    @Transactional
     public List<OrderWithRelationsDto> getAllWithRelations() {
         List<Order> orders = orderRepository.findAllWithRelations();
         return orderMapper.toDtoWithRelationsList(orders);
     }
 
+    @Override
+    @Transactional
     public List<OrderResponseDto> getOrderByClientId(Long clientId) {
         Optional<Client> optionalClient = clientRepository.findById(clientId);
         if (optionalClient.isEmpty()) {
