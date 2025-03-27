@@ -13,7 +13,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("SELECT DISTINCT o FROM Order o LEFT JOIN FETCH o.truck "
             + "LEFT JOIN FETCH o.client LEFT JOIN FETCH o.driver")
-    Set<Order> findAllWithRelations();
+    List<Order> findAllWithRelations();
 
     List<Order> getOrderByClientId(Long clientId);
 }

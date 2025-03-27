@@ -19,11 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class DriverController {
 
     private final DriverServiceImpl driverService;
-    private final DriverServiceImpl driverServiceImpl;
 
-    public DriverController(DriverServiceImpl driverService, DriverServiceImpl driverServiceImpl) {
+    public DriverController(DriverServiceImpl driverService) {
         this.driverService = driverService;
-        this.driverServiceImpl = driverServiceImpl;
     }
 
     @GetMapping("get/{id}")

@@ -69,8 +69,10 @@ public class DriverServiceImpl implements DriverService {
     public void update(Long id, String secondName, String phoneNumber) {
         Optional<Driver> optionalDriver = driverRepository.findById(id);
         if (optionalDriver.isEmpty()) {
-            throw new IllegalStateException("Водителя с id " + id + " нет в базе");
+            throw new IllegalStateException();
         }
+
+        System.out.println(phoneNumber);
 
         Driver driver = optionalDriver.get();
 

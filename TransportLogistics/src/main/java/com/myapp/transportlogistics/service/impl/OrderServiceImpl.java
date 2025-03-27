@@ -2,6 +2,7 @@ package com.myapp.transportlogistics.service.impl;
 
 import com.myapp.transportlogistics.dto.request.OrderRequestDto;
 import com.myapp.transportlogistics.dto.response.OrderResponseDto;
+import com.myapp.transportlogistics.dto.response.OrderWithRelationsDto;
 import com.myapp.transportlogistics.mapper.OrderMapper;
 import com.myapp.transportlogistics.model.Client;
 import com.myapp.transportlogistics.model.Driver;
@@ -83,8 +84,9 @@ public class OrderServiceImpl implements OrderService {
         driverRepository.deleteById(id);
     }
 
-    public Set<Order> getAllWithRelations() {
-        return orderRepository.findAllWithRelations();
+    public List<OrderWithRelationsDto> getAllWithRelations() {
+        List<Order> orders = orderRepository.findAllWithRelations();
+        return orderMapper.toDtoWithRelationsList(orders);
     }
 
     public List<OrderResponseDto> getOrderByClientId(Long clientId) {

@@ -2,10 +2,10 @@ package com.myapp.transportlogistics.controller;
 
 import com.myapp.transportlogistics.dto.request.OrderRequestDto;
 import com.myapp.transportlogistics.dto.response.OrderResponseDto;
+import com.myapp.transportlogistics.dto.response.OrderWithRelationsDto;
 import com.myapp.transportlogistics.model.Order;
 import com.myapp.transportlogistics.service.impl.OrderServiceImpl;
 import java.util.List;
-import java.util.Set;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,7 +45,7 @@ public class OrderController {
     }
 
     @GetMapping("get/all")
-    public Set<Order> getAllOrdersWithRelations() {
+    public List<OrderWithRelationsDto> getAllOrdersWithRelations() {
         return orderServiceImpl.getAllWithRelations();
     }
 
