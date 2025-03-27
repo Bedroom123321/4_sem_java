@@ -5,7 +5,6 @@ import com.myapp.transportlogistics.dto.response.DriverResponseDto;
 import com.myapp.transportlogistics.mapper.DriverMapper;
 import com.myapp.transportlogistics.model.Driver;
 import com.myapp.transportlogistics.repository.DriverRepository;
-import com.myapp.transportlogistics.repository.TruckRepository;
 import com.myapp.transportlogistics.service.DriverService;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -18,8 +17,7 @@ public class DriverServiceImpl implements DriverService {
     private final DriverRepository driverRepository;
     private final DriverMapper driverMapper;
 
-    public DriverServiceImpl(DriverRepository driverRepository,
-                             DriverMapper driverMapper, TruckRepository truckRepository) {
+    public DriverServiceImpl(DriverRepository driverRepository, DriverMapper driverMapper) {
         this.driverRepository = driverRepository;
         this.driverMapper = driverMapper;
     }
