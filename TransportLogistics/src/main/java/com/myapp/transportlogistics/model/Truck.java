@@ -7,8 +7,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,7 +27,7 @@ public class Truck {
     private String cargoType;
 
     @OneToMany(mappedBy = "truck", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<Order> orders = new HashSet<>();
+    private List<Order> orders = new ArrayList<>();
 
     public Truck() {
     }

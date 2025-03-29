@@ -24,14 +24,29 @@ public class OrderController {
         this.orderServiceImpl = orderServiceImpl;
     }
 
-    @GetMapping
+    @GetMapping("get/all")
     public List<OrderResponseDto> getAllOrders() {
         return orderServiceImpl.getAllOrders();
+    }
+
+    @GetMapping("get/all-with_relations")
+    public List<OrderWithRelationsDto> getAllOrdersWithRelations() {
+        return orderServiceImpl.getAllWithRelations();
     }
 
     @GetMapping("get/{id}")
     public OrderResponseDto getOrderById(@PathVariable Long id) {
         return orderServiceImpl.getOrderById(id);
+    }
+
+    @GetMapping("get/by-client/{clientId}")
+    public List<OrderResponseDto> getOrderByClientId(@PathVariable Long clientId) {
+        return orderServiceImpl.getOrderByClientId(clientId);
+    }
+
+    @GetMapping("get/by-driver/{driverId}")
+    public List<OrderResponseDto> getOrderByDriverId(@PathVariable Long driverId) {
+        return orderServiceImpl.getOrderByDriverId(driverId);
     }
 
     @PostMapping("post")
@@ -43,17 +58,5 @@ public class OrderController {
     public void deleteOrder(@PathVariable Long id) {
         orderServiceImpl.delete(id);
     }
-
-    @GetMapping("get/all")
-    public List<OrderWithRelationsDto> getAllOrdersWithRelations() {
-        return orderServiceImpl.getAllWithRelations();
-    }
-
-    @GetMapping("get/by-client/{clientId}")
-    public List<OrderResponseDto> getOrderByClientId(@PathVariable Long clientId) {
-        return orderServiceImpl.getOrderByClientId(clientId);
-    }
-
-
 }
 

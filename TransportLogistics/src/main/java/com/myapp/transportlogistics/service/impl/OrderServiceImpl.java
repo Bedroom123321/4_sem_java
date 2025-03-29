@@ -87,9 +87,9 @@ public class OrderServiceImpl implements OrderService {
     public void delete(Long id) {
         Optional<Order> optionalOrder = orderRepository.findById(id);
         if (optionalOrder.isEmpty()) {
-            throw new IllegalStateException();
+            throw new IllegalStateException("Не найден");
         }
-        driverRepository.deleteById(id);
+        orderRepository.deleteById(id);
     }
 
     @Override
@@ -97,6 +97,18 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderWithRelationsDto> getAllWithRelations() {
         List<Order> orders = orderRepository.findAllWithRelations();
         return orderMapper.toDtoWithRelationsList(orders);
+    }
+
+    @Transactional
+    @Override
+    public List<OrderResponseDto> getOrderByDriverId(Long driverId) {
+        Optional<Driver> optionalDriver = driverRepository.findById(driverId);
+        if (optionalDriver.isEmpty()) {
+            throw new IllegalStateException();
+        }
+
+        List<Order> orders = orderRepository.getOrderByDriverId(driverId);
+        return orderMapper.toDtoList(orders);
     }
 
     @Override

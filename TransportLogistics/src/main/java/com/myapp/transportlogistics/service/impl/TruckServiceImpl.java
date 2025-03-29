@@ -3,7 +3,9 @@ package com.myapp.transportlogistics.service.impl;
 import com.myapp.transportlogistics.dto.request.TruckRequestDto;
 import com.myapp.transportlogistics.dto.response.TruckResponseDto;
 import com.myapp.transportlogistics.mapper.TruckMapper;
+import com.myapp.transportlogistics.model.Driver;
 import com.myapp.transportlogistics.model.Truck;
+import com.myapp.transportlogistics.repository.DriverRepository;
 import com.myapp.transportlogistics.repository.TruckRepository;
 import com.myapp.transportlogistics.service.TruckService;
 import jakarta.transaction.Transactional;
@@ -14,10 +16,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class TruckServiceImpl implements TruckService {
     private final TruckRepository truckRepository;
+    private final DriverRepository driverRepository;
     private final TruckMapper truckMapper;
 
-    public TruckServiceImpl(TruckRepository truckRepository, TruckMapper truckMapper) {
+    public TruckServiceImpl(TruckRepository truckRepository,
+                            DriverRepository driverRepository, TruckMapper truckMapper) {
         this.truckRepository = truckRepository;
+        this.driverRepository = driverRepository;
         this.truckMapper = truckMapper;
     }
 
@@ -84,4 +89,15 @@ public class TruckServiceImpl implements TruckService {
         truckRepository.save(truck);
     }
 
+    @Override
+    @Transactional
+    public List<TruckResponseDto> getTrucksByDriverId(Long driverId) {
+        Optional<Driver> optionalDriver = driverRepository.findById(driverId);
+        if (optionalDriver.isEmpty()) {
+            throw new IllegalStateException();
+        }
+
+        List<Truck> trucks = truckRepository.getTrucksByDriverId(driverId);
+        return truckMapper.toDtoList(trucks);
+    }
 }
