@@ -1,7 +1,6 @@
 package com.myapp.transportlogistics.controller;
 
 import com.myapp.transportlogistics.dto.request.TruckRequestDto;
-import com.myapp.transportlogistics.dto.response.DriverResponseDto;
 import com.myapp.transportlogistics.dto.response.TruckResponseDto;
 import com.myapp.transportlogistics.service.impl.TruckServiceImpl;
 import java.util.List;
