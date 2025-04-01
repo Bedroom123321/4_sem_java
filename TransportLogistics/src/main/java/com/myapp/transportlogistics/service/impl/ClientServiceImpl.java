@@ -64,17 +64,13 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     @Transactional
-    public void update(Long id, String secondName, String phoneNumber) {
+    public void update(Long id, String phoneNumber) {
         Optional<Client> optionalClient = clientRepository.findById(id);
         if (optionalClient.isEmpty()) {
             throw new IllegalStateException();
         }
 
         Client client = optionalClient.get();
-
-        if (secondName != null && !secondName.equals(client.getSecondName())) {
-            client.setSecondName(secondName);
-        }
 
         if (phoneNumber != null && !phoneNumber.equals(client.getPhoneNumber())) {
             client.setPhoneNumber(phoneNumber);

@@ -45,8 +45,8 @@ public class ClientController {
 
     @PutMapping("update/{id}")
     public void updateClient(@PathVariable Long id,
-                             @RequestParam(required = false) String companyName,
-                             @RequestParam(required = false) String contactPerson) {
-        clientService.update(id, companyName, contactPerson);
+                             @RequestParam String phoneNumber) {
+        System.out.println(phoneNumber);
+        clientService.update(id, phoneNumber);
     }
 }

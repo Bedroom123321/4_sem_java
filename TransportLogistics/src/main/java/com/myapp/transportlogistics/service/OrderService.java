@@ -18,8 +18,9 @@ public interface OrderService {
 
     List<OrderWithRelationsDto> getAllWithRelations();
 
-    List<OrderResponseDto> getOrderByClientId(Long clientId);
-
     @Transactional
     List<OrderResponseDto> getOrderByDriverId(Long driverId);
+
+    @Transactional
+    List<OrderResponseDto> getOrderByClientPhoneNumber(String phoneNumber);
 }

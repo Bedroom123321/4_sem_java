@@ -113,13 +113,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public List<OrderResponseDto> getOrderByClientId(Long clientId) {
-        Optional<Client> optionalClient = clientRepository.findById(clientId);
+    public List<OrderResponseDto> getOrderByClientPhoneNumber(String phoneNumber) {
+        Optional<Client> optionalClient = clientRepository.findByPhoneNumber(phoneNumber);
         if (optionalClient.isEmpty()) {
             throw new IllegalStateException();
         }
 
-        List<Order> orders = orderRepository.getOrderByClientId(clientId);
+        List<Order> orders = orderRepository.getOrderByClientPhoneNumber(phoneNumber);
         return orderMapper.toDtoList(orders);
     }
 }

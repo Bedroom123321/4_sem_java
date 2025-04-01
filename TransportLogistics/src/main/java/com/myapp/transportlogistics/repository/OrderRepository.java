@@ -4,6 +4,7 @@ import com.myapp.transportlogistics.model.Order;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
@@ -14,7 +15,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             + "LEFT JOIN FETCH o.client LEFT JOIN FETCH o.driver")
     List<Order> findAllWithRelations();
 
-    List<Order> getOrderByClientId(Long clientId);
+    @Query("SELECT o FROM Order o WHERE o.client.phoneNumber = :phoneNumber")
+    List<Order> getOrderByClientPhoneNumber(@Param("phoneNumber") String phoneNumber);
 
     List<Order> getOrderByDriverId(Long driverId);
 }
