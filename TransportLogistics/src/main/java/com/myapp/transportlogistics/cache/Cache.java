@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Cache<K, Object> {
-    private final Map<K, Object> cacheStorage;
+public class Cache<K, V> {
+    private final Map<K, V> cacheStorage;
     private final Queue<K> sequence;
     private static final int MAX_SIZE = 100;
 
@@ -22,7 +22,7 @@ public class Cache<K, Object> {
         this.sequence = new ArrayDeque<>();
     }
 
-    public void put(K key, Object value) {
+    public void put(K key, V value) {
 
         if (getSize() >= MAX_SIZE) {
             K oldestKey = sequence.poll();
