@@ -1,6 +1,5 @@
 package com.myapp.transportlogistics.service.impl;
 
-import com.myapp.transportlogistics.cache.Cache;
 import com.myapp.transportlogistics.dto.request.ClientRequestDto;
 import com.myapp.transportlogistics.dto.response.ClientResponseDto;
 import com.myapp.transportlogistics.mapper.ClientMapper;
@@ -17,7 +16,7 @@ public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
     private final ClientMapper clientMapper;
 
-    public ClientServiceImpl(ClientRepository clientRepository, ClientMapper clientMapper, Cache cache) {
+    public ClientServiceImpl(ClientRepository clientRepository, ClientMapper clientMapper) {
         this.clientRepository = clientRepository;
         this.clientMapper = clientMapper;
     }

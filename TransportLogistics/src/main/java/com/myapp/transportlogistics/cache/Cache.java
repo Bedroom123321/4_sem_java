@@ -10,25 +10,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Cache {
-    private final Map<String, Object> cacheStorage;
-    private final Queue<String> sequence;
+public class Cache<K, Object> {
+    private final Map<K, Object> cacheStorage;
+    private final Queue<K> sequence;
     private static final int MAX_SIZE = 100;
 
     private static final Logger logger = LoggerFactory.getLogger(Cache.class);
 
     public Cache() {
-        this.cacheStorage = new HashMap<>(MAX_SIZE);
+        this.cacheStorage = new HashMap<>(MAX_SIZE, 0.75f);
         this.sequence = new ArrayDeque<>();
     }
 
-    public void put(String key, Object value) {
+    public void put(K key, Object value) {
 
         if (getSize() >= MAX_SIZE) {
-            String oldestKey = sequence.poll();
-            if (oldestKey != null) {
-                cacheStorage.remove(oldestKey);
-            }
+            K oldestKey = sequence.poll();
+            remove(oldestKey);
         }
 
         cacheStorage.put(key, value);
@@ -36,7 +34,7 @@ public class Cache {
         logger.info("Записано в кэш: ключ={}, значение={}", key, value);
     }
 
-    public Optional<Object> get(String key) {
+    public Optional<Object> get(K key) {
         Object value = cacheStorage.get(key);
 
         if (value != null) {
@@ -50,7 +48,7 @@ public class Cache {
         return Optional.ofNullable(value);
     }
 
-    public void remove(String key) {
+    public void remove(K key) {
         if (key == null) {
             logger.warn("Попытка удалить несуществующий ключ");
             return;
