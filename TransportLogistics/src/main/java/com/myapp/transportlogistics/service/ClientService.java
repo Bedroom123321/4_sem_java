@@ -2,7 +2,6 @@ package com.myapp.transportlogistics.service;
 
 import com.myapp.transportlogistics.dto.request.ClientRequestDto;
 import com.myapp.transportlogistics.dto.response.ClientResponseDto;
-
 import java.util.List;
 
 public interface ClientService {
