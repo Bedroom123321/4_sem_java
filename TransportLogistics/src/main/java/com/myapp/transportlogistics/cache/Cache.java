@@ -11,14 +11,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Cache {
-    private final Map<String, Object> cache;
+    private final Map<String, Object> cacheStorage;
     private final Queue<String> sequence;
-    private final int maxSize = 100;
+    private static final int maxSize = 100;
 
     private static final Logger logger = LoggerFactory.getLogger(Cache.class);
 
     public Cache() {
-        this.cache = new HashMap<>(maxSize);
+        this.cacheStorage = new HashMap<>(maxSize);
         this.sequence = new ArrayDeque<>();
     }
 
@@ -27,17 +27,17 @@ public class Cache {
         if (getSize() >= maxSize) {
             String oldestKey = sequence.poll();
             if (oldestKey != null) {
-                cache.remove(oldestKey);
+                cacheStorage.remove(oldestKey);
             }
         }
 
-        cache.put(key, value);
+        cacheStorage.put(key, value);
         sequence.add(key);
         logger.info("Записано в кэш: ключ={}, значение={}", key, value);
     }
 
     public Optional<Object> get(String key) {
-        Object value = cache.get(key);
+        Object value = cacheStorage.get(key);
 
         if (value != null) {
             sequence.remove(key);
@@ -56,14 +56,14 @@ public class Cache {
             return;
         }
 
-        if (cache.remove(key) != null) {
+        if (cacheStorage.remove(key) != null) {
             sequence.remove(key);
             logger.info("Удалено из кэша: ключ={}", key);
         }
     }
 
     public int getSize() {
-        int size = cache.size();
+        int size = cacheStorage.size();
         logger.info("Текущий размер кэша: {}", size);
         return size;
     }
