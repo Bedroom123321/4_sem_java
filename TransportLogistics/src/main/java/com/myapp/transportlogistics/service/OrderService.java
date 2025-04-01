@@ -4,7 +4,6 @@ import com.myapp.transportlogistics.dto.request.OrderRequestDto;
 import com.myapp.transportlogistics.dto.response.OrderResponseDto;
 import com.myapp.transportlogistics.dto.response.OrderWithRelationsDto;
 import com.myapp.transportlogistics.model.Order;
-import jakarta.transaction.Transactional;
 import java.util.List;
 
 public interface OrderService {
@@ -18,9 +17,7 @@ public interface OrderService {
 
     List<OrderWithRelationsDto> getAllWithRelations();
 
-    @Transactional
-    List<OrderResponseDto> getOrderByDriverId(Long driverId);
+    List<OrderResponseDto> getOrderByDriver(String name, String secondName);
 
-    @Transactional
     List<OrderResponseDto> getOrderByClientPhoneNumber(String phoneNumber);
 }

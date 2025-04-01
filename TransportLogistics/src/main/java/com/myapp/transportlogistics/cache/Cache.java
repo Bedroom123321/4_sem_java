@@ -34,8 +34,8 @@ public class Cache<K, V> {
         logger.info("Записано в кэш: ключ={}, значение={}", key, value);
     }
 
-    public Optional<Object> get(K key) {
-        Object value = cacheStorage.get(key);
+    public Optional<V> get(K key) {
+        V value = cacheStorage.get(key);
 
         if (value != null) {
             sequence.remove(key);

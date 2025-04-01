@@ -15,4 +15,6 @@ public interface DriverRepository extends JpaRepository<Driver, Long> {
             + "JOIN Order o ON d.id = o.driver.id "
             + "WHERE o.truck.id = :truckId")
     List<Driver> getDriversByTruckId(Long truckId);
+
+    Optional<Driver> findBySecondName(String secondName);
 }

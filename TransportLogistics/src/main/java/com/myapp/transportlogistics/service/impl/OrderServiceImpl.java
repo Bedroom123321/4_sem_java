@@ -101,13 +101,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public List<OrderResponseDto> getOrderByDriverId(Long driverId) {
-        Optional<Driver> optionalDriver = driverRepository.findById(driverId);
+    public List<OrderResponseDto> getOrderByDriver(String name, String secondName) {
+        Optional<Driver> optionalDriver = driverRepository.findBySecondName(secondName);
         if (optionalDriver.isEmpty()) {
             throw new IllegalStateException();
         }
 
-        List<Order> orders = orderRepository.getOrderByDriverId(driverId);
+        List<Order> orders = orderRepository.getOrderByDriver(name, secondName);
         return orderMapper.toDtoList(orders);
     }
 

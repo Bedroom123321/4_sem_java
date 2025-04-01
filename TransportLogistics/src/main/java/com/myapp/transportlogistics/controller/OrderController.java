@@ -45,9 +45,10 @@ public class OrderController {
         return orderServiceImpl.getOrderByClientPhoneNumber(phoneNumber);
     }
 
-    @GetMapping("get/by-driver/{driverId}")
-    public List<OrderResponseDto> getOrderByDriverId(@PathVariable Long driverId) {
-        return orderServiceImpl.getOrderByDriverId(driverId);
+    @GetMapping("get/by-driver")
+    public List<OrderResponseDto> getOrderByDriverId(@RequestParam String name,
+                                                     @RequestParam String secondName) {
+        return orderServiceImpl.getOrderByDriver(name, secondName);
     }
 
     @PostMapping("post")

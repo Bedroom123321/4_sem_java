@@ -30,7 +30,7 @@ public class Order {
     private String deliveryPoint;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "truck_id")
+    @JoinColumn(name = "truck_id", nullable = true)
     private Truck truck;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,7 +38,7 @@ public class Order {
     private Client client;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "driver_id")
+    @JoinColumn(name = "driver_id", nullable = true)
     private Driver driver;
 
     public Order() {

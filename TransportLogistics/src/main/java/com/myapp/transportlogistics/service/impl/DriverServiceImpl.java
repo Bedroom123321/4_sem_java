@@ -1,11 +1,10 @@
 package com.myapp.transportlogistics.service.impl;
 
+import com.myapp.transportlogistics.cache.Cache;  // Импортируйте ваш кэш
 import com.myapp.transportlogistics.dto.request.DriverRequestDto;
 import com.myapp.transportlogistics.dto.response.DriverResponseDto;
 import com.myapp.transportlogistics.mapper.DriverMapper;
-import com.myapp.transportlogistics.model.Client;
 import com.myapp.transportlogistics.model.Driver;
-import com.myapp.transportlogistics.model.Order;
 import com.myapp.transportlogistics.model.Truck;
 import com.myapp.transportlogistics.repository.DriverRepository;
 import com.myapp.transportlogistics.repository.TruckRepository;
@@ -21,21 +20,30 @@ public class DriverServiceImpl implements DriverService {
     private final DriverRepository driverRepository;
     private final TruckRepository truckRepository;
     private final DriverMapper driverMapper;
+    private final Cache<Long, Driver> cache;
 
-    public DriverServiceImpl(DriverRepository driverRepository,
-                             TruckRepository truckRepository, DriverMapper driverMapper) {
+    public DriverServiceImpl(DriverRepository driverRepository, TruckRepository truckRepository,
+                             DriverMapper driverMapper, Cache<Long, Driver> cache) {
         this.driverRepository = driverRepository;
         this.truckRepository = truckRepository;
         this.driverMapper = driverMapper;
+        this.cache = cache;
     }
 
     @Override
     @Transactional
     public DriverResponseDto findById(Long id) {
+        Optional<Driver> cachedDriver = cache.get(id);
+        if (cachedDriver.isPresent()) {
+            return driverMapper.toDto(cachedDriver.get());
+        }
+
         Optional<Driver> optionalDriver = driverRepository.findById(id);
         if (optionalDriver.isEmpty()) {
             throw new IllegalStateException();
         }
+
+        cache.put(id, optionalDriver.get());
         return driverMapper.toDto(optionalDriver.get());
     }
 
@@ -43,6 +51,11 @@ public class DriverServiceImpl implements DriverService {
     @Transactional
     public List<DriverResponseDto> findAllDrivers() {
         List<Driver> drivers = driverRepository.findAll();
+
+        for (Driver driver : drivers) {
+            cache.put(driver.getId(), driver);
+        }
+
         return driverMapper.toDtoList(drivers);
     }
 
@@ -57,17 +70,24 @@ public class DriverServiceImpl implements DriverService {
 
         Driver driver = driverMapper.toEntity(driverRequestDto);
         Driver savedDriver = driverRepository.save(driver);
+
+        cache.put(savedDriver.getId(), savedDriver);
         return driverMapper.toDto(savedDriver);
     }
 
     @Override
-    @Transactional
     public void delete(Long id) {
         Optional<Driver> optionalDriver = driverRepository.findById(id);
         if (optionalDriver.isEmpty()) {
             throw new IllegalStateException();
         }
         driverRepository.deleteById(id);
+
+        optionalDriver = driverRepository.findById(id);
+
+        if (optionalDriver.isEmpty()) {
+            cache.remove(id);
+        }
     }
 
     @Override
@@ -89,6 +109,7 @@ public class DriverServiceImpl implements DriverService {
         }
 
         driverRepository.save(driver);
+        cache.put(driver.getId(), driver);
     }
 
     @Override
