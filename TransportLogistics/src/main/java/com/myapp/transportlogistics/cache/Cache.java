@@ -13,18 +13,18 @@ import org.springframework.stereotype.Component;
 public class Cache {
     private final Map<String, Object> cacheStorage;
     private final Queue<String> sequence;
-    private static final int maxSize = 100;
+    private static final int MAX_SIZE = 100;
 
     private static final Logger logger = LoggerFactory.getLogger(Cache.class);
 
     public Cache() {
-        this.cacheStorage = new HashMap<>(maxSize);
+        this.cacheStorage = new HashMap<>(MAX_SIZE);
         this.sequence = new ArrayDeque<>();
     }
 
     public void put(String key, Object value) {
 
-        if (getSize() >= maxSize) {
+        if (getSize() >= MAX_SIZE) {
             String oldestKey = sequence.poll();
             if (oldestKey != null) {
                 cacheStorage.remove(oldestKey);
