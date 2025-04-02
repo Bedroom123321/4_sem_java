@@ -58,15 +58,15 @@ public class OrderMapper {
         dto.setDeliveryPoint(order.getDeliveryPoint());
 
         if (order.getClient() != null) {
-            dto.setClientResponseDto(clientMapper.toDto(order.getClient()));
+            dto.setClient(clientMapper.toDto(order.getClient()));
         }
 
         if (order.getDriver() != null) {
-            dto.setDriverResponseDto(driverMapper.toDto(order.getDriver()));
+            dto.setDriver(driverMapper.toDto(order.getDriver()));
         }
 
         if (order.getTruck() != null) {
-            dto.setTruckResponseDto(truckMapper.toDto(order.getTruck()));
+            dto.setTruck(truckMapper.toDto(order.getTruck()));
         }
 
         return dto;

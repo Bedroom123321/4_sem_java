@@ -28,7 +28,7 @@ public class ClientController {
         return clientService.findById(id);
     }
 
-    @GetMapping("get")
+    @GetMapping("get/all")
     public List<ClientResponseDto> getAllClients() {
         return clientService.findAllClients();
     }

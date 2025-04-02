@@ -22,8 +22,8 @@ public class Driver {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    private String name;
-    private String secondName;
+    private String firstName;
+    private String lastName;
     private String phoneNumber;
     private String workExperience;
 
@@ -33,10 +33,10 @@ public class Driver {
     public Driver() {
     }
 
-    public Driver(String name, String secondName,
+    public Driver(String firstName, String lastName,
                   String phoneNumber, String workExperience) {
-        this.name = name;
-        this.secondName = secondName;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.workExperience = workExperience;
     }
@@ -45,8 +45,8 @@ public class Driver {
     public String toString() {
         return "Driver{"
                 + "id=" + id
-                + ", name='" + name + '\''
-                + ", secondBName=" + secondName
+                + ", name='" + firstName + '\''
+                + ", secondBName=" + lastName
                 + ", phoneNumber=" + phoneNumber
                 + ", workExperience='" + workExperience + '\''
                 + '}';

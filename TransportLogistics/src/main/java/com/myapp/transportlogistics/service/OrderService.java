@@ -3,7 +3,6 @@ package com.myapp.transportlogistics.service;
 import com.myapp.transportlogistics.dto.request.OrderRequestDto;
 import com.myapp.transportlogistics.dto.response.OrderResponseDto;
 import com.myapp.transportlogistics.dto.response.OrderWithRelationsDto;
-import com.myapp.transportlogistics.model.Order;
 import java.util.List;
 
 public interface OrderService {
@@ -11,13 +10,13 @@ public interface OrderService {
 
     OrderResponseDto getOrderById(Long id);
 
-    Order createOrder(OrderRequestDto orderRequestDto);
+    OrderResponseDto createOrder(OrderRequestDto orderRequestDto);
 
     void delete(Long id);
 
     List<OrderWithRelationsDto> getAllWithRelations();
 
-    List<OrderResponseDto> getOrderByDriver(String name, String secondName);
+    List<OrderResponseDto> getOrderByDriver(String firstName, String lastName);
 
     List<OrderResponseDto> getOrderByClientPhoneNumber(String phoneNumber);
 }

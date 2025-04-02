@@ -11,7 +11,7 @@ public class OrderWithRelationsDto {
     private Date orderDate;
     private String loadingPoint;
     private String deliveryPoint;
-    private ClientResponseDto clientResponseDto;
-    private DriverResponseDto driverResponseDto;
-    private TruckResponseDto truckResponseDto;
+    private ClientResponseDto client;
+    private DriverResponseDto driver;
+    private TruckResponseDto truck;
 }

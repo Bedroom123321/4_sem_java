@@ -21,8 +21,8 @@ public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    private String name;
-    private String secondName;
+    private String firstName;
+    private String lastName;
     private String phoneNumber;
 
     @OneToMany(mappedBy = "client", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
@@ -32,9 +32,9 @@ public class Client {
     public Client() {
     }
 
-    public Client(String name, String secondName, String phoneNumber) {
-        this.name = name;
-        this.secondName = secondName;
+    public Client(String firstName, String lastName, String phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.phoneNumber = phoneNumber;
     }
 
@@ -42,8 +42,8 @@ public class Client {
     public String toString() {
         return "Client{"
                 + "id=" + id
-                + ", name='" + name + '\''
-                + ", secondName='" + secondName + '\''
+                + ", name='" + firstName + '\''
+                + ", secondName='" + lastName + '\''
                 + ", phoneNumber='" + phoneNumber + '\''
                 + '}';
     }

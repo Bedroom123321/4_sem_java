@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 public class ClientMapper {
     public Client toEntity(ClientRequestDto dto) {
         Client client = new Client();
-        client.setName(dto.getName());
-        client.setSecondName(dto.getSecondName());
+        client.setFirstName(dto.getFirstName());
+        client.setLastName(dto.getLastName());
         client.setPhoneNumber(dto.getPhoneNumber());
         return client;
     }
@@ -20,8 +20,8 @@ public class ClientMapper {
     public ClientResponseDto toDto(Client client) {
         ClientResponseDto dto = new ClientResponseDto();
         dto.setId(client.getId());
-        dto.setName(client.getName());
-        dto.setSecondName(client.getSecondName());
+        dto.setFirstName(client.getFirstName());
+        dto.setLastName(client.getLastName());
         dto.setPhoneNumber(client.getPhoneNumber());
         return dto;
     }

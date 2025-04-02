@@ -19,7 +19,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> getOrderByClientPhoneNumber(@Param("phoneNumber") String phoneNumber);
 
     @Query(value = "SELECT o.* FROM orders o JOIN drivers d ON o.driver_id = d.id "
-            + "WHERE d.name = :name AND d.second_name = :secondName", nativeQuery = true)
-    List<Order> getOrderByDriver(@Param("name")String name, @Param("secondName")String secondName);
+            + "WHERE d.first_name = :firstName AND d.last_name = :lastName", nativeQuery = true)
+    List<Order> getOrderByDriver(String firstName, String lastName);
 }
 

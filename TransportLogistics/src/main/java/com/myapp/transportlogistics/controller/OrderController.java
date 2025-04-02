@@ -3,7 +3,6 @@ package com.myapp.transportlogistics.controller;
 import com.myapp.transportlogistics.dto.request.OrderRequestDto;
 import com.myapp.transportlogistics.dto.response.OrderResponseDto;
 import com.myapp.transportlogistics.dto.response.OrderWithRelationsDto;
-import com.myapp.transportlogistics.model.Order;
 import com.myapp.transportlogistics.service.impl.OrderServiceImpl;
 import java.util.List;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,13 +45,13 @@ public class OrderController {
     }
 
     @GetMapping("get/by-driver")
-    public List<OrderResponseDto> getOrderByDriverId(@RequestParam String name,
-                                                     @RequestParam String secondName) {
-        return orderServiceImpl.getOrderByDriver(name, secondName);
+    public List<OrderResponseDto> getOrderByDriverId(@RequestParam String firstName,
+                                                     @RequestParam String lastName) {
+        return orderServiceImpl.getOrderByDriver(firstName, lastName);
     }
 
     @PostMapping("post")
-    public Order createOrder(@RequestBody OrderRequestDto orderRequestDto) {
+    public OrderResponseDto createOrder(@RequestBody OrderRequestDto orderRequestDto) {
         return orderServiceImpl.createOrder(orderRequestDto);
     }
 

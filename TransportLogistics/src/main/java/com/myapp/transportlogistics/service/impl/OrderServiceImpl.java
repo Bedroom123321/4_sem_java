@@ -57,8 +57,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order createOrder(OrderRequestDto orderRequestDto) {
-
+    public OrderResponseDto createOrder(OrderRequestDto orderRequestDto) {
         Optional<Client> optionalClient = clientRepository.findById(orderRequestDto.getClientId());
         if (optionalClient.isEmpty()) {
             throw new IllegalStateException();
@@ -79,7 +78,7 @@ public class OrderServiceImpl implements OrderService {
         order.setDriver(optionalDriver.get());
         order.setTruck(optionalTruck.get());
 
-        return orderRepository.save(order);
+        return orderMapper.toDto(orderRepository.save(order));
     }
 
     @Override
@@ -101,13 +100,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public List<OrderResponseDto> getOrderByDriver(String name, String secondName) {
-        Optional<Driver> optionalDriver = driverRepository.findBySecondName(secondName);
+    public List<OrderResponseDto> getOrderByDriver(String firstName, String lastName) {
+        Optional<Driver> optionalDriver = driverRepository.findByLastName(lastName);
         if (optionalDriver.isEmpty()) {
             throw new IllegalStateException();
         }
 
-        List<Order> orders = orderRepository.getOrderByDriver(name, secondName);
+        List<Order> orders = orderRepository.getOrderByDriver(firstName, lastName);
         return orderMapper.toDtoList(orders);
     }
 

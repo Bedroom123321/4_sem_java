@@ -100,8 +100,8 @@ public class DriverServiceImpl implements DriverService {
 
         Driver driver = optionalDriver.get();
 
-        if (secondName != null && !secondName.equals(driver.getSecondName())) {
-            driver.setSecondName(secondName);
+        if (secondName != null && !secondName.equals(driver.getLastName())) {
+            driver.setLastName(secondName);
         }
 
         if (phoneNumber != null && !phoneNumber.equals(driver.getPhoneNumber())) {

@@ -51,9 +51,9 @@ public class DriverController {
 
     @PutMapping("update/{id}")
     public void updateDriver(@PathVariable Long id,
-                             @RequestParam(required = false) String secondName,
+                             @RequestParam(required = false) String lastName,
                              @RequestParam(required = false) String phoneNumber) {
-        driverServiceImpl.update(id, secondName, phoneNumber);
+        driverServiceImpl.update(id, lastName, phoneNumber);
     }
 
 }

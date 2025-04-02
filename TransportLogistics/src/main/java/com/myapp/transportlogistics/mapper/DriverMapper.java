@@ -12,8 +12,8 @@ public class DriverMapper {
 
     public Driver toEntity(DriverRequestDto dto) {
         Driver driver = new Driver();
-        driver.setName(dto.getName());
-        driver.setSecondName(dto.getSecondName());
+        driver.setFirstName(dto.getFirstName());
+        driver.setLastName(dto.getLastName());
         driver.setPhoneNumber(dto.getPhoneNumber());
         driver.setWorkExperience(dto.getWorkExperience());
         return driver;
@@ -22,8 +22,8 @@ public class DriverMapper {
     public DriverResponseDto toDto(Driver driver) {
         DriverResponseDto dto = new DriverResponseDto();
         dto.setId(driver.getId());
-        dto.setName(driver.getName());
-        dto.setSecondName(driver.getSecondName());
+        dto.setFirstName(driver.getFirstName());
+        dto.setLastName(driver.getLastName());
         dto.setPhoneNumber(driver.getPhoneNumber());
         dto.setWorkExperience(driver.getWorkExperience());
         return dto;

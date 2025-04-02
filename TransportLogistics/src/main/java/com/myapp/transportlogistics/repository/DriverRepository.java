@@ -16,5 +16,5 @@ public interface DriverRepository extends JpaRepository<Driver, Long> {
             + "WHERE o.truck.id = :truckId")
     List<Driver> getDriversByTruckId(Long truckId);
 
-    Optional<Driver> findBySecondName(String secondName);
+    Optional<Driver> findByLastName(String secondName);
 }
