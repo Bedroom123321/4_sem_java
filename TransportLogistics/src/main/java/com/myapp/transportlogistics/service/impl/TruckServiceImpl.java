@@ -20,8 +20,8 @@ public class TruckServiceImpl implements TruckService {
     private final OrderServiceImpl orderServiceImpl;
     private final TruckMapper truckMapper;
 
-    public TruckServiceImpl(TruckRepository truckRepository,
-                            DriverRepository driverRepository, OrderServiceImpl orderServiceImpl, TruckMapper truckMapper) {
+    public TruckServiceImpl(TruckRepository truckRepository, DriverRepository driverRepository,
+                            OrderServiceImpl orderServiceImpl, TruckMapper truckMapper) {
         this.truckRepository = truckRepository;
         this.driverRepository = driverRepository;
         this.orderServiceImpl = orderServiceImpl;

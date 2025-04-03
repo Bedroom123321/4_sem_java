@@ -4,7 +4,6 @@ import com.myapp.transportlogistics.dto.request.OrderRequestDto;
 import com.myapp.transportlogistics.dto.response.OrderResponseDto;
 import com.myapp.transportlogistics.dto.response.OrderWithRelationsDto;
 import jakarta.transaction.Transactional;
-
 import java.util.List;
 
 public interface OrderService {

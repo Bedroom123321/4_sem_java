@@ -24,8 +24,9 @@ public class DriverServiceImpl implements DriverService {
     private final DriverMapper driverMapper;
     private final Cache<Long, Driver> cache;
 
-    public DriverServiceImpl(DriverRepository driverRepository, TruckRepository truckRepository, OrderServiceImpl orderServiceImpl,
-                             DriverMapper driverMapper, Cache<Long, Driver> cache) {
+    public DriverServiceImpl(DriverRepository driverRepository, TruckRepository truckRepository,
+                             OrderServiceImpl orderServiceImpl, DriverMapper driverMapper,
+                             Cache<Long, Driver> cache) {
         this.driverRepository = driverRepository;
         this.truckRepository = truckRepository;
         this.orderServiceImpl = orderServiceImpl;

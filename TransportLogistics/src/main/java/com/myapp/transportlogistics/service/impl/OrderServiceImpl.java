@@ -14,11 +14,8 @@ import com.myapp.transportlogistics.repository.OrderRepository;
 import com.myapp.transportlogistics.repository.TruckRepository;
 import com.myapp.transportlogistics.service.OrderService;
 import jakarta.transaction.Transactional;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -132,7 +129,7 @@ public class OrderServiceImpl implements OrderService {
         if (orders.isEmpty()) {
             throw new IllegalStateException();
         }
-        for(Order order: orders) {
+        for (Order order : orders) {
             order.setDriver(null);
             orderRepository.save(order);
         }
@@ -146,7 +143,7 @@ public class OrderServiceImpl implements OrderService {
             throw new IllegalStateException();
         }
 
-        for(Order order: orders) {
+        for (Order order : orders) {
             order.setTruck(null);
             orderRepository.save(order);
         }
