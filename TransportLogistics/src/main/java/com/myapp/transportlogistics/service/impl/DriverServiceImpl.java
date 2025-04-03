@@ -7,6 +7,7 @@ import com.myapp.transportlogistics.mapper.DriverMapper;
 import com.myapp.transportlogistics.model.Driver;
 import com.myapp.transportlogistics.model.Truck;
 import com.myapp.transportlogistics.repository.DriverRepository;
+import com.myapp.transportlogistics.repository.OrderRepository;
 import com.myapp.transportlogistics.repository.TruckRepository;
 import com.myapp.transportlogistics.service.DriverService;
 import jakarta.transaction.Transactional;
@@ -19,13 +20,15 @@ public class DriverServiceImpl implements DriverService {
 
     private final DriverRepository driverRepository;
     private final TruckRepository truckRepository;
+    private final OrderServiceImpl orderServiceImpl;
     private final DriverMapper driverMapper;
     private final Cache<Long, Driver> cache;
 
-    public DriverServiceImpl(DriverRepository driverRepository, TruckRepository truckRepository,
+    public DriverServiceImpl(DriverRepository driverRepository, TruckRepository truckRepository, OrderServiceImpl orderServiceImpl,
                              DriverMapper driverMapper, Cache<Long, Driver> cache) {
         this.driverRepository = driverRepository;
         this.truckRepository = truckRepository;
+        this.orderServiceImpl = orderServiceImpl;
         this.driverMapper = driverMapper;
         this.cache = cache;
     }
@@ -81,6 +84,8 @@ public class DriverServiceImpl implements DriverService {
         if (optionalDriver.isEmpty()) {
             throw new IllegalStateException();
         }
+
+        orderServiceImpl.setDriverToNull(id);
         driverRepository.deleteById(id);
 
         optionalDriver = driverRepository.findById(id);

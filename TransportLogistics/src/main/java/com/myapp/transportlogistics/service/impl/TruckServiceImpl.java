@@ -17,12 +17,14 @@ import org.springframework.stereotype.Service;
 public class TruckServiceImpl implements TruckService {
     private final TruckRepository truckRepository;
     private final DriverRepository driverRepository;
+    private final OrderServiceImpl orderServiceImpl;
     private final TruckMapper truckMapper;
 
     public TruckServiceImpl(TruckRepository truckRepository,
-                            DriverRepository driverRepository, TruckMapper truckMapper) {
+                            DriverRepository driverRepository, OrderServiceImpl orderServiceImpl, TruckMapper truckMapper) {
         this.truckRepository = truckRepository;
         this.driverRepository = driverRepository;
+        this.orderServiceImpl = orderServiceImpl;
         this.truckMapper = truckMapper;
     }
 
@@ -65,6 +67,8 @@ public class TruckServiceImpl implements TruckService {
         if (optionalTruck.isEmpty()) {
             throw new IllegalStateException();
         }
+
+        orderServiceImpl.setTruckToNull(id);
         truckRepository.deleteById(id);
     }
 

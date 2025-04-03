@@ -14,8 +14,11 @@ import com.myapp.transportlogistics.repository.OrderRepository;
 import com.myapp.transportlogistics.repository.TruckRepository;
 import com.myapp.transportlogistics.service.OrderService;
 import jakarta.transaction.Transactional;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -86,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
     public void delete(Long id) {
         Optional<Order> optionalOrder = orderRepository.findById(id);
         if (optionalOrder.isEmpty()) {
-            throw new IllegalStateException("Не найден");
+            throw new IllegalStateException();
         }
         orderRepository.deleteById(id);
     }
@@ -120,6 +123,34 @@ public class OrderServiceImpl implements OrderService {
 
         List<Order> orders = orderRepository.getOrderByClientPhoneNumber(phoneNumber);
         return orderMapper.toDtoList(orders);
+    }
+
+    @Override
+    @Transactional
+    public void setDriverToNull(Long driverId) {
+        List<Order> orders = orderRepository.findByDriverId(driverId);
+        if (orders.isEmpty()) {
+            throw new IllegalStateException();
+        }
+        for(Order order: orders) {
+            order.setDriver(null);
+            orderRepository.save(order);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void setTruckToNull(Long truckId) {
+        List<Order> orders = orderRepository.findByTruckId(truckId);
+        if (orders.isEmpty()) {
+            throw new IllegalStateException();
+        }
+
+        for(Order order: orders) {
+            order.setTruck(null);
+            orderRepository.save(order);
+        }
+
     }
 }
 
