@@ -56,10 +56,6 @@ public class DriverServiceImpl implements DriverService {
     public List<DriverResponseDto> findAllDrivers() {
         List<Driver> drivers = driverRepository.findAll();
 
-        for (Driver driver : drivers) {
-            cache.put(driver.getId(), driver);
-        }
-
         return driverMapper.toDtoList(drivers);
     }
 
@@ -89,11 +85,7 @@ public class DriverServiceImpl implements DriverService {
         orderServiceImpl.setDriverToNull(id);
         driverRepository.deleteById(id);
 
-        optionalDriver = driverRepository.findById(id);
-
-        if (optionalDriver.isEmpty()) {
-            cache.remove(id);
-        }
+        cache.remove(id);
     }
 
     @Override
