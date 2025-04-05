@@ -1,16 +1,17 @@
 package com.myapp.transportlogistics.dto.request;
 
 import java.util.Date;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
-@Getter
-@Setter
+@Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderRequestDto {
-    private Date orderDate;
-    private String loadingPoint;
-    private String deliveryPoint;
-    private Long clientId;
-    private Long driverId;
-    private Long truckId;
+    Date orderDate;
+    String loadingPoint;
+    String deliveryPoint;
+    Long clientId;
+    Long driverId;
+    Long truckId;
 }

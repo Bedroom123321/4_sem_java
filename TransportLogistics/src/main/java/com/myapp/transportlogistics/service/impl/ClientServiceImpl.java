@@ -9,17 +9,18 @@ import com.myapp.transportlogistics.service.ClientService;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class ClientServiceImpl implements ClientService {
-    private final ClientRepository clientRepository;
-    private final ClientMapper clientMapper;
 
-    public ClientServiceImpl(ClientRepository clientRepository, ClientMapper clientMapper) {
-        this.clientRepository = clientRepository;
-        this.clientMapper = clientMapper;
-    }
+    ClientRepository clientRepository;
+    ClientMapper clientMapper;
 
     @Override
     @Transactional

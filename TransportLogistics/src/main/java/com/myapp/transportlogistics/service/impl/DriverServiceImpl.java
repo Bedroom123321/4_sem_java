@@ -1,38 +1,32 @@
 package com.myapp.transportlogistics.service.impl;
 
-import com.myapp.transportlogistics.cache.Cache;  // Импортируйте ваш кэш
+import com.myapp.transportlogistics.cache.Cache;
 import com.myapp.transportlogistics.dto.request.DriverRequestDto;
 import com.myapp.transportlogistics.dto.response.DriverResponseDto;
 import com.myapp.transportlogistics.mapper.DriverMapper;
 import com.myapp.transportlogistics.model.Driver;
 import com.myapp.transportlogistics.model.Truck;
 import com.myapp.transportlogistics.repository.DriverRepository;
-import com.myapp.transportlogistics.repository.OrderRepository;
 import com.myapp.transportlogistics.repository.TruckRepository;
 import com.myapp.transportlogistics.service.DriverService;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class DriverServiceImpl implements DriverService {
 
-    private final DriverRepository driverRepository;
-    private final TruckRepository truckRepository;
-    private final OrderServiceImpl orderServiceImpl;
-    private final DriverMapper driverMapper;
-    private final Cache<Long, Driver> cache;
-
-    public DriverServiceImpl(DriverRepository driverRepository, TruckRepository truckRepository,
-                             OrderServiceImpl orderServiceImpl, DriverMapper driverMapper,
-                             Cache<Long, Driver> cache) {
-        this.driverRepository = driverRepository;
-        this.truckRepository = truckRepository;
-        this.orderServiceImpl = orderServiceImpl;
-        this.driverMapper = driverMapper;
-        this.cache = cache;
-    }
+    DriverRepository driverRepository;
+    TruckRepository truckRepository;
+    OrderServiceImpl orderServiceImpl;
+    DriverMapper driverMapper;
+    Cache<Long, Driver> cache;
 
     @Override
     @Transactional

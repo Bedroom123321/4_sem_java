@@ -1,14 +1,15 @@
 package com.myapp.transportlogistics.dto.response;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
-@Setter
-@Getter
+@Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class TruckResponseDto {
-    private Long id;
-    private String numberPlate;
-    private int liftingCapacity;
-    private int cargoVolume;
-    private String cargoType;
+    Long id;
+    String numberPlate;
+    int liftingCapacity;
+    int cargoVolume;
+    String cargoType;
 }

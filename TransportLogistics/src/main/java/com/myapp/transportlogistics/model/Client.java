@@ -9,25 +9,28 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "clients")
 public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-    private String firstName;
-    private String lastName;
-    private String phoneNumber;
+    Long id;
+    String firstName;
+    String lastName;
+    String phoneNumber;
 
     @OneToMany(mappedBy = "client", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
         CascadeType.REMOVE})
-    private List<Order> orders = new ArrayList<>();
+    List<Order> orders = new ArrayList<>();
 
     public Client() {
     }

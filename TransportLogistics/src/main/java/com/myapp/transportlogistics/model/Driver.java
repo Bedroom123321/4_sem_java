@@ -9,26 +9,29 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "drivers")
 public class Driver {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-    private String firstName;
-    private String lastName;
-    private String phoneNumber;
-    private String workExperience;
+    Long id;
+    String firstName;
+    String lastName;
+    String phoneNumber;
+    String workExperience;
 
     @OneToMany(mappedBy = "driver", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<Order> orders = new ArrayList<>();
+    List<Order> orders = new ArrayList<>();
     
     public Driver() {
     }

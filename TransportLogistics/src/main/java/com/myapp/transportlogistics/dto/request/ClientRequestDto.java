@@ -1,12 +1,13 @@
 package com.myapp.transportlogistics.dto.request;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
-@Setter
-@Getter
+@Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ClientRequestDto {
-    private String firstName;
-    private String lastName;
-    private String phoneNumber;
+    String firstName;
+    String lastName;
+    String phoneNumber;
 }

@@ -1,14 +1,15 @@
 package com.myapp.transportlogistics.dto.response;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
-@Setter
-@Getter
+@Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class DriverResponseDto {
-    private Long id;
-    private String firstName;
-    private String lastName;
-    private String phoneNumber;
-    private String workExperience;
+    Long id;
+    String firstName;
+    String lastName;
+    String phoneNumber;
+    String workExperience;
 }

@@ -5,17 +5,20 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Queue;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Component
 public class Cache<K, V> {
-    private final Map<K, V> cacheStorage;
-    private final Queue<K> sequence;
-    private static final int MAX_SIZE = 100;
+    Map<K, V> cacheStorage;
+    Queue<K> sequence;
+    static int MAX_SIZE = 100;
 
-    private static final Logger logger = LoggerFactory.getLogger(Cache.class);
+    static Logger logger = LoggerFactory.getLogger(Cache.class);
 
     public Cache() {
         this.cacheStorage = new HashMap<>(MAX_SIZE, 0.75f);
