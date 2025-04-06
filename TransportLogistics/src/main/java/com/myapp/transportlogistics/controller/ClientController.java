@@ -2,17 +2,14 @@ package com.myapp.transportlogistics.controller;
 
 import com.myapp.transportlogistics.dto.request.ClientRequestDto;
 import com.myapp.transportlogistics.dto.response.ClientResponseDto;
+import com.myapp.transportlogistics.exceprion.ValidationException;
 import com.myapp.transportlogistics.service.impl.ClientServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Positive;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Validated
 @Tag(name = "Client Controller")
 @RestController
 @RequestMapping("clients")
@@ -40,9 +36,10 @@ public class ClientController {
                description = "Получате ID клиента, отправляет в сервис и возвращает DTO ответа"
     )
     @GetMapping("get/{id}")
-    public ClientResponseDto getClientById(@PathVariable(value = "id")
-                                           @Positive(message = "ID должен быть больше нуля")
-                                           Long id) {
+    public ClientResponseDto getClientById(@PathVariable(value = "id") Long id)
+            throws ValidationException {
+
+        idException(id);
         return clientService.findById(id);
     }
 
@@ -59,7 +56,10 @@ public class ClientController {
                     + "возвращает DTO ответа созданного клиента"
     )
     @PostMapping("post")
-    public ClientResponseDto createClient(@Valid @RequestBody ClientRequestDto clientRequestDto) {
+    public ClientResponseDto createClient(@Valid @RequestBody ClientRequestDto clientRequestDto)
+            throws ValidationException {
+
+        clientException(clientRequestDto);
         return clientService.create(clientRequestDto);
     }
 
@@ -67,8 +67,9 @@ public class ClientController {
             description = "Принимает ID клиента и удаляет соответствующую запись из базы данных"
     )
     @DeleteMapping("delete/{id}")
-    public void deleteClient(@PathVariable("id") @Positive
-            (message = "ID должен быть больше нуля") Long id) {
+    public void deleteClient(@PathVariable("id") Long id) {
+
+        idException(id);
         clientService.delete(id);
     }
 
@@ -77,13 +78,41 @@ public class ClientController {
                     + "обновляет данные в базе данных"
     )
     @PutMapping("update/{id}")
-    public void updateClientPhoneNumber(@PathVariable("id") @Positive
-                                        (message = "ID должен быть больше нуля") Long id,
-                                        @NotBlank(message = "Номер телефона обязателен")
-                                        @RequestParam @Pattern
-                                        (regexp = "^\\+375(17|25|29|33|44)\\d{7}$",
-                                        message = "Номер должен быть в формате +375XXXXXXXXX")
-                                        String phoneNumber) {
+    public void updateClientPhoneNumber(@PathVariable("id") Long id,
+                                        @RequestParam String phoneNumber)
+            throws ValidationException {
+
+        idException(id);
+        phoneNumberException(phoneNumber);
+
         clientService.update(id, phoneNumber);
+    }
+
+    private void idException(Long id) {
+
+        if (id == null || id <= 0) {
+            throw new ValidationException("ID должен быть больше нуля");
+        }
+
+    }
+
+    private void phoneNumberException(String phoneNumber)throws ValidationException {
+
+        String pattern = "^\\+375(17|25|29|33|44)\\d{7}$";
+        if (phoneNumber == null || phoneNumber.trim().isEmpty() || !phoneNumber.matches(pattern)) {
+            throw new ValidationException("Номер должен быть в формате +375XXXXXXXXX");
+        }
+
+    }
+
+    private void clientException(ClientRequestDto clientRequestDto) {
+
+        if (clientRequestDto.getFirstName() == null || clientRequestDto.getFirstName().isEmpty()) {
+            throw new ValidationException("Имя клиента обязательно");
+        }
+        if (clientRequestDto.getLastName() == null || clientRequestDto.getLastName().isEmpty()) {
+            throw new ValidationException("Фамилия клиента обязательна");
+        }
+        phoneNumberException(clientRequestDto.getPhoneNumber());
     }
 }

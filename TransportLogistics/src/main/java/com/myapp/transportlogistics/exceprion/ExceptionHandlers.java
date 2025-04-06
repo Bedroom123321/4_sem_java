@@ -28,21 +28,22 @@ public class ExceptionHandlers {
     }
 
     @ExceptionHandler
-    public ResponseEntity<String> handleTypeMismatch(MethodArgumentTypeMismatchException exception) {
-        return new ResponseEntity<>("ID должен быть числом",HttpStatus.BAD_REQUEST);
+    public ResponseEntity<String> handleTypeMismatch(
+            MethodArgumentTypeMismatchException exception) {
+        return new ResponseEntity<>("ID должен быть числом", HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
     public ResponseEntity<String> methodArgumentNotValidException(
             MethodArgumentNotValidException exception) {
         FieldError fieldError = exception.getBindingResult().getFieldError();
-        return new ResponseEntity<>(fieldError.getDefaultMessage(),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(fieldError.getDefaultMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
     public ResponseEntity<String> constraintViolationException(
             ConstraintViolationException exception) {
-        return new ResponseEntity<>(exception.getMessage(),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
 }
