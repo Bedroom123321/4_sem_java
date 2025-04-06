@@ -85,7 +85,7 @@ public class TruckController {
     )
     @PutMapping("update/{id}")
     public void updateTruck(@PathVariable Long id, @RequestParam(required = false) String cargoType,
-                            @RequestParam(required = false) int cargoVolume) {
+                            @RequestParam(required = false) Integer cargoVolume) {
         idException(id);
         cargoTypeException(cargoType);
         cargoVolumeException(cargoVolume);
