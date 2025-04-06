@@ -3,6 +3,8 @@ package com.myapp.transportlogistics.service.impl;
 import com.myapp.transportlogistics.cache.Cache;
 import com.myapp.transportlogistics.dto.request.DriverRequestDto;
 import com.myapp.transportlogistics.dto.response.DriverResponseDto;
+import com.myapp.transportlogistics.exceprion.EntityAlreadyExistsException;
+import com.myapp.transportlogistics.exceprion.EntityNotFoundException;
 import com.myapp.transportlogistics.mapper.DriverMapper;
 import com.myapp.transportlogistics.model.Driver;
 import com.myapp.transportlogistics.model.Truck;
@@ -30,23 +32,6 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     @Transactional
-    public DriverResponseDto findById(Long id) {
-        Optional<Driver> cachedDriver = cache.get(id);
-        if (cachedDriver.isPresent()) {
-            return driverMapper.toDto(cachedDriver.get());
-        }
-
-        Optional<Driver> optionalDriver = driverRepository.findById(id);
-        if (optionalDriver.isEmpty()) {
-            throw new IllegalStateException();
-        }
-
-        cache.put(id, optionalDriver.get());
-        return driverMapper.toDto(optionalDriver.get());
-    }
-
-    @Override
-    @Transactional
     public List<DriverResponseDto> findAllDrivers() {
         List<Driver> drivers = driverRepository.findAll();
 
@@ -55,11 +40,28 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     @Transactional
+    public DriverResponseDto findById(Long id) {
+        Optional<Driver> cachedDriver = cache.get(id);
+        if (cachedDriver.isPresent()) {
+            return driverMapper.toDto(cachedDriver.get());
+        }
+
+        Optional<Driver> optionalDriver = driverRepository.findById(id);
+        if (optionalDriver.isEmpty()) {
+            throw new EntityNotFoundException("Водитель с таким ID не найден");
+        }
+
+        cache.put(id, optionalDriver.get());
+        return driverMapper.toDto(optionalDriver.get());
+    }
+
+    @Override
+    @Transactional
     public DriverResponseDto create(DriverRequestDto driverRequestDto) {
         Optional<Driver> optionalDriver =
                 driverRepository.findByPhoneNumber(driverRequestDto.getPhoneNumber());
         if (optionalDriver.isPresent()) {
-            throw new IllegalStateException();
+            throw new EntityAlreadyExistsException("Такой водитель уже существует");
         }
 
         Driver driver = driverMapper.toEntity(driverRequestDto);
@@ -73,7 +75,7 @@ public class DriverServiceImpl implements DriverService {
     public void delete(Long id) {
         Optional<Driver> optionalDriver = driverRepository.findById(id);
         if (optionalDriver.isEmpty()) {
-            throw new IllegalStateException();
+            throw new EntityNotFoundException("Водитель с таким ID не найден");
         }
 
         orderServiceImpl.setDriverToNull(id);
@@ -87,7 +89,7 @@ public class DriverServiceImpl implements DriverService {
     public void update(Long id, String secondName, String phoneNumber) {
         Optional<Driver> optionalDriver = driverRepository.findById(id);
         if (optionalDriver.isEmpty()) {
-            throw new IllegalStateException();
+            throw new EntityNotFoundException("Водитель с таким ID не найден");
         }
 
         Driver driver = optionalDriver.get();
@@ -109,7 +111,7 @@ public class DriverServiceImpl implements DriverService {
     public List<DriverResponseDto> getDriversByTruckId(Long truckId) {
         Optional<Truck> optionalTruck = truckRepository.findById(truckId);
         if (optionalTruck.isEmpty()) {
-            throw new IllegalStateException();
+            throw new EntityNotFoundException("Транспорт с таким ID не найден");
         }
 
         List<Driver> drivers = driverRepository.getDriversByTruckId(truckId);

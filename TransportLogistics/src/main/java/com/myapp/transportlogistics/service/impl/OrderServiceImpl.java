@@ -3,6 +3,7 @@ package com.myapp.transportlogistics.service.impl;
 import com.myapp.transportlogistics.dto.request.OrderRequestDto;
 import com.myapp.transportlogistics.dto.response.OrderResponseDto;
 import com.myapp.transportlogistics.dto.response.OrderWithRelationsDto;
+import com.myapp.transportlogistics.exceprion.EntityNotFoundException;
 import com.myapp.transportlogistics.mapper.OrderMapper;
 import com.myapp.transportlogistics.model.Client;
 import com.myapp.transportlogistics.model.Driver;
@@ -44,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponseDto getOrderById(Long id) {
         Optional<Order> optionalOrder = orderRepository.findById(id);
         if (optionalOrder.isEmpty()) {
-            throw new IllegalStateException();
+            throw new EntityNotFoundException("Заказ с таким ID не найден");
         }
 
         return orderMapper.toDto(optionalOrder.get());
@@ -55,17 +56,17 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponseDto createOrder(OrderRequestDto orderRequestDto) {
         Optional<Client> optionalClient = clientRepository.findById(orderRequestDto.getClientId());
         if (optionalClient.isEmpty()) {
-            throw new IllegalStateException();
+            throw new EntityNotFoundException("Клиент с таким ID не найден");
         }
 
         Optional<Driver> optionalDriver = driverRepository.findById(orderRequestDto.getDriverId());
         if (optionalDriver.isEmpty()) {
-            throw new IllegalStateException();
+            throw new EntityNotFoundException("Водитель с таким ID не найден");
         }
 
         Optional<Truck> optionalTruck = truckRepository.findById(orderRequestDto.getTruckId());
         if (optionalTruck.isEmpty()) {
-            throw new IllegalStateException();
+            throw new EntityNotFoundException("Транспорт с таким ID не найден");
         }
 
         Order order = orderMapper.toEntity(orderRequestDto);
@@ -81,7 +82,7 @@ public class OrderServiceImpl implements OrderService {
     public void delete(Long id) {
         Optional<Order> optionalOrder = orderRepository.findById(id);
         if (optionalOrder.isEmpty()) {
-            throw new IllegalStateException();
+            throw new EntityNotFoundException("Заказ с таким ID не найден");
         }
         orderRepository.deleteById(id);
     }
@@ -98,7 +99,7 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderResponseDto> getOrderByDriver(String firstName, String lastName) {
         Optional<Driver> optionalDriver = driverRepository.findByLastName(lastName);
         if (optionalDriver.isEmpty()) {
-            throw new IllegalStateException();
+            throw new EntityNotFoundException("Водитель с таким ID не найден");
         }
 
         List<Order> orders = orderRepository.getOrderByDriver(firstName, lastName);
@@ -110,7 +111,7 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderResponseDto> getOrderByClientPhoneNumber(String phoneNumber) {
         Optional<Client> optionalClient = clientRepository.findByPhoneNumber(phoneNumber);
         if (optionalClient.isEmpty()) {
-            throw new IllegalStateException();
+            throw new EntityNotFoundException("Клиент с таким ID не найден");
         }
 
         List<Order> orders = orderRepository.getOrderByClientPhoneNumber(phoneNumber);
@@ -121,12 +122,11 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public void setDriverToNull(Long driverId) {
         List<Order> orders = orderRepository.findByDriverId(driverId);
-        if (orders.isEmpty()) {
-            throw new IllegalStateException();
-        }
-        for (Order order : orders) {
-            order.setDriver(null);
-            orderRepository.save(order);
+        if (!orders.isEmpty()) {
+            for (Order order : orders) {
+                order.setDriver(null);
+                orderRepository.save(order);
+            }
         }
     }
 
@@ -135,14 +135,11 @@ public class OrderServiceImpl implements OrderService {
     public void setTruckToNull(Long truckId) {
         List<Order> orders = orderRepository.findByTruckId(truckId);
         if (orders.isEmpty()) {
-            throw new IllegalStateException();
+            for (Order order : orders) {
+                order.setTruck(null);
+                orderRepository.save(order);
+            }
         }
-
-        for (Order order : orders) {
-            order.setTruck(null);
-            orderRepository.save(order);
-        }
-
     }
 }
 

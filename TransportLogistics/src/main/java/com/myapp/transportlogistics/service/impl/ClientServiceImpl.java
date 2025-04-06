@@ -2,6 +2,8 @@ package com.myapp.transportlogistics.service.impl;
 
 import com.myapp.transportlogistics.dto.request.ClientRequestDto;
 import com.myapp.transportlogistics.dto.response.ClientResponseDto;
+import com.myapp.transportlogistics.exceprion.EntityAlreadyExistsException;
+import com.myapp.transportlogistics.exceprion.EntityNotFoundException;
 import com.myapp.transportlogistics.mapper.ClientMapper;
 import com.myapp.transportlogistics.model.Client;
 import com.myapp.transportlogistics.repository.ClientRepository;
@@ -27,7 +29,7 @@ public class ClientServiceImpl implements ClientService {
     public ClientResponseDto findById(Long id) {
         Optional<Client> optionalClient = clientRepository.findById(id);
         if (optionalClient.isEmpty()) {
-            throw new IllegalStateException();
+            throw new EntityNotFoundException("Клиент с таким ID не найден");
         }
         return clientMapper.toDto(optionalClient.get());
     }
@@ -45,7 +47,7 @@ public class ClientServiceImpl implements ClientService {
         Optional<Client> optionalClient =
                 clientRepository.findByPhoneNumber(clientRequestDto.getPhoneNumber());
         if (optionalClient.isPresent()) {
-            throw new IllegalStateException();
+            throw new EntityAlreadyExistsException("Такой клиент уже существует");
         }
 
         Client client = clientMapper.toEntity(clientRequestDto);
@@ -58,7 +60,7 @@ public class ClientServiceImpl implements ClientService {
     public void delete(Long id) {
         Optional<Client> optionalClient = clientRepository.findById(id);
         if (optionalClient.isEmpty()) {
-            throw new IllegalStateException();
+            throw new EntityNotFoundException("Клиент с таким ID не найден");
         }
         clientRepository.deleteById(id);
     }
@@ -68,7 +70,7 @@ public class ClientServiceImpl implements ClientService {
     public void update(Long id, String phoneNumber) {
         Optional<Client> optionalClient = clientRepository.findById(id);
         if (optionalClient.isEmpty()) {
-            throw new IllegalStateException();
+            throw new EntityNotFoundException("Клиент с таким ID не найден");
         }
 
         Client client = optionalClient.get();

@@ -2,6 +2,8 @@ package com.myapp.transportlogistics.service.impl;
 
 import com.myapp.transportlogistics.dto.request.TruckRequestDto;
 import com.myapp.transportlogistics.dto.response.TruckResponseDto;
+import com.myapp.transportlogistics.exceprion.EntityAlreadyExistsException;
+import com.myapp.transportlogistics.exceprion.EntityNotFoundException;
 import com.myapp.transportlogistics.mapper.TruckMapper;
 import com.myapp.transportlogistics.model.Driver;
 import com.myapp.transportlogistics.model.Truck;
@@ -31,7 +33,7 @@ public class TruckServiceImpl implements TruckService {
     public TruckResponseDto findById(Long id) {
         Optional<Truck> optionalTruck = truckRepository.findById(id);
         if (optionalTruck.isEmpty()) {
-            throw new IllegalStateException();
+            throw new EntityNotFoundException("Транспорт с таким ID не найден");
         }
 
         Truck truck = optionalTruck.get();
@@ -51,7 +53,7 @@ public class TruckServiceImpl implements TruckService {
         Optional<Truck> optionalTruck =
                 truckRepository.findByNumberPlate(truckRequestDto.getNumberPlate());
         if (optionalTruck.isPresent()) {
-            throw new IllegalStateException();
+            throw new EntityAlreadyExistsException("Такой транспорт уже существует");
         }
 
         Truck truck = truckMapper.toEntity(truckRequestDto);
@@ -63,7 +65,7 @@ public class TruckServiceImpl implements TruckService {
     public void delete(Long id) {
         Optional<Truck> optionalTruck = truckRepository.findById(id);
         if (optionalTruck.isEmpty()) {
-            throw new IllegalStateException();
+            throw new EntityNotFoundException("Транспорт с таким ID не найден");
         }
 
         orderServiceImpl.setTruckToNull(id);
@@ -75,7 +77,7 @@ public class TruckServiceImpl implements TruckService {
     public void update(Long id, String cargoType, int cargoVolume) {
         Optional<Truck> optionalTruck = truckRepository.findById(id);
         if (optionalTruck.isEmpty()) {
-            throw new IllegalStateException();
+            throw new EntityNotFoundException("Транспорт с таким ID не найден");
         }
 
         Truck truck = optionalTruck.get();
@@ -96,7 +98,7 @@ public class TruckServiceImpl implements TruckService {
     public List<TruckResponseDto> getTrucksByDriverId(Long driverId) {
         Optional<Driver> optionalDriver = driverRepository.findById(driverId);
         if (optionalDriver.isEmpty()) {
-            throw new IllegalStateException();
+            throw new EntityNotFoundException("Водитель с таким ID не найден");
         }
 
         List<Truck> trucks = truckRepository.getTrucksByDriverId(driverId);

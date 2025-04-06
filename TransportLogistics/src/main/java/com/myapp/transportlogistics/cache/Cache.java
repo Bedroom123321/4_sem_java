@@ -17,7 +17,6 @@ public class Cache<K, V> {
     Map<K, V> cacheStorage;
     Queue<K> sequence;
     static int maxSize = 100;
-
     static Logger logger = LoggerFactory.getLogger(Cache.class);
 
     public Cache() {
