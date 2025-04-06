@@ -86,7 +86,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     @Transactional
-    public void update(Long id, String secondName, String phoneNumber) {
+    public void update(Long id, String lastName, String phoneNumber) {
         Optional<Driver> optionalDriver = driverRepository.findById(id);
         if (optionalDriver.isEmpty()) {
             throw new EntityNotFoundException("Водитель с таким ID не найден");
@@ -94,8 +94,8 @@ public class DriverServiceImpl implements DriverService {
 
         Driver driver = optionalDriver.get();
 
-        if (secondName != null && !secondName.equals(driver.getLastName())) {
-            driver.setLastName(secondName);
+        if (lastName != null && !lastName.equals(driver.getLastName())) {
+            driver.setLastName(lastName);
         }
 
         if (phoneNumber != null && !phoneNumber.equals(driver.getPhoneNumber())) {

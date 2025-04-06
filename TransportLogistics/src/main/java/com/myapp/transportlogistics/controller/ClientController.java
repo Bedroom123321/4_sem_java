@@ -100,7 +100,8 @@ public class ClientController {
 
         String pattern = "^\\+375(17|25|29|33|44)\\d{7}$";
         if (phoneNumber == null || phoneNumber.trim().isEmpty() || !phoneNumber.matches(pattern)) {
-            throw new ValidationException("Номер должен быть в формате +375XXXXXXXXX");
+            throw new ValidationException(
+                    "Номер должен быть в формате +375XXXXXXXXX (после кода оператора 7 цифр)");
         }
 
     }

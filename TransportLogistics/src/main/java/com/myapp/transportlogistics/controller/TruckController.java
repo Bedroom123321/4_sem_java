@@ -1,7 +1,9 @@
 package com.myapp.transportlogistics.controller;
 
+import com.myapp.transportlogistics.dto.request.DriverRequestDto;
 import com.myapp.transportlogistics.dto.request.TruckRequestDto;
 import com.myapp.transportlogistics.dto.response.TruckResponseDto;
+import com.myapp.transportlogistics.exceprion.ValidationException;
 import com.myapp.transportlogistics.service.impl.TruckServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,6 +45,7 @@ public class TruckController {
     )
     @GetMapping("get/{id}")
     public TruckResponseDto getTruckById(@PathVariable Long id) {
+        idException(id);
         return truckServiceImpl.findById(id);
     }
 
@@ -53,6 +56,7 @@ public class TruckController {
     )
     @GetMapping("get/by-driver/{driverId}")
     public List<TruckResponseDto> getTrucksByDriverId(@PathVariable Long driverId) {
+        idException(driverId);
         return truckServiceImpl.getTrucksByDriverId(driverId);
     }
 
@@ -62,6 +66,7 @@ public class TruckController {
     )
     @PostMapping("post")
     public TruckResponseDto creatTruck(@RequestBody TruckRequestDto truckRequestDto) {
+        truckException(truckRequestDto);
         return truckServiceImpl.create(truckRequestDto);
     }
 
@@ -70,6 +75,7 @@ public class TruckController {
     )
     @DeleteMapping("delete/{id}")
     public void deleteTruck(@PathVariable Long id) {
+        idException(id);
         truckServiceImpl.delete(id);
     }
 
@@ -79,7 +85,55 @@ public class TruckController {
     )
     @PutMapping("update/{id}")
     public void updateTruck(@PathVariable Long id, @RequestParam(required = false) String cargoType,
-                            @RequestParam(required = false) Integer cargoVolume) {
+                            @RequestParam(required = false) int cargoVolume) {
+        idException(id);
+        cargoTypeException(cargoType);
+        cargoVolumeException(cargoVolume);
+
         truckServiceImpl.update(id, cargoType, cargoVolume);
+    }
+
+    private void idException(Long id) {
+
+        if (id == null || id <= 0) {
+            throw new ValidationException("ID должен быть больше нуля");
+        }
+
+    }
+
+    private void cargoTypeException(String cargoType)throws ValidationException {
+
+        if (cargoType == null || cargoType.isEmpty()) {
+            throw new ValidationException("Тип превозимого груза обязателен");
+        }
+
+    }
+
+    private void cargoVolumeException(Integer cargoVolume) {
+
+        if (cargoVolume == null || cargoVolume <= 0) {
+            throw new ValidationException("Объем груза должен быть больше нуля");
+        }
+
+    }
+
+    private void truckException(TruckRequestDto truckRequestDto) {
+
+        String pattern = "^[A-Z]{2}\\\\d{5}$";
+        if (truckRequestDto.getNumberPlate() == null
+                || truckRequestDto.getNumberPlate().trim().isEmpty()
+                || !truckRequestDto.getNumberPlate().matches(pattern)) {
+            throw new ValidationException(
+                    "Номер должен начинаться с двух заглавных букв, а затем следует 5 цифр");
+        }
+
+        if (truckRequestDto.getLiftingCapacity() <= 3500) {
+            throw new ValidationException("Грузоподъёмность не может быть меньше 3500 кг");
+        }
+
+        cargoTypeException(truckRequestDto.getCargoType());
+
+        cargoVolumeException(truckRequestDto.getCargoVolume());
+
     }
 }

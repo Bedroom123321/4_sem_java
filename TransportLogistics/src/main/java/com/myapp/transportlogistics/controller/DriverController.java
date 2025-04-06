@@ -1,7 +1,9 @@
 package com.myapp.transportlogistics.controller;
 
+import com.myapp.transportlogistics.dto.request.ClientRequestDto;
 import com.myapp.transportlogistics.dto.request.DriverRequestDto;
 import com.myapp.transportlogistics.dto.response.DriverResponseDto;
+import com.myapp.transportlogistics.exceprion.ValidationException;
 import com.myapp.transportlogistics.service.impl.DriverServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,6 +45,7 @@ public class DriverController {
     )
     @GetMapping("get/{id}")
     public DriverResponseDto getDriverById(@PathVariable Long id) {
+        idException(id);
         return driverServiceImpl.findById(id);
     }
 
@@ -52,6 +55,7 @@ public class DriverController {
     )
     @GetMapping("get/by-truck/{truckId}")
     public List<DriverResponseDto> getDriversByTruckId(@PathVariable Long truckId) {
+        idException(truckId);
         return driverServiceImpl.getDriversByTruckId(truckId);
     }
 
@@ -61,6 +65,7 @@ public class DriverController {
     )
     @PostMapping("post")
     public DriverResponseDto createDriver(@RequestBody DriverRequestDto driverRequestDto) {
+        driverException(driverRequestDto);
         return driverServiceImpl.create(driverRequestDto);
     }
 
@@ -69,18 +74,64 @@ public class DriverController {
     )
     @DeleteMapping("delete/{id}")
     public void deleteDriver(@PathVariable Long id) {
+        idException(id);
         driverServiceImpl.delete(id);
     }
 
-    @Operation(summary = "Обновляет имя и фамилию водителя",
+    @Operation(summary = "Обновляет фамилию и номер телефона водителя",
             description = "Принимает ID водителя, а также данные, которые нужно"
-                    + " изменить(имя и/или фамили), обновляет данные в базе данных"
+                    + " изменить(фамилию и/или номер телефона), обновляет данные в базе данных"
     )
     @PutMapping("update/{id}")
     public void updateDriver(@PathVariable Long id,
                              @RequestParam(required = false) String lastName,
                              @RequestParam(required = false) String phoneNumber) {
+        idException(id);
+        lastNameException(lastName);
+        phoneNumberException(phoneNumber);
+
         driverServiceImpl.update(id, lastName, phoneNumber);
     }
 
+    private void idException(Long id) {
+
+        if (id == null || id <= 0) {
+            throw new ValidationException("ID должен быть больше нуля");
+        }
+
+    }
+
+    private void phoneNumberException(String phoneNumber)throws ValidationException {
+
+        String pattern = "^\\+375(17|25|29|33|44)\\d{7}$";
+        if (phoneNumber == null || phoneNumber.trim().isEmpty() || !phoneNumber.matches(pattern)) {
+            throw new ValidationException(
+                    "Номер должен быть в формате +375XXXXXXXXX (после кода оператора 7 цифр)");
+        }
+
+    }
+
+    private void lastNameException(String lastName)throws ValidationException {
+
+        if (lastName == null || lastName.isEmpty()) {
+            throw new ValidationException("Фамилия водителя обязательна");
+        }
+
+    }
+
+    private void driverException(DriverRequestDto driverRequestDto) {
+
+        if (driverRequestDto.getFirstName() == null || driverRequestDto.getFirstName().isEmpty()) {
+            throw new ValidationException("Имя водителя обязательно");
+        }
+
+        lastNameException(driverRequestDto.getLastName());
+
+        phoneNumberException(driverRequestDto.getPhoneNumber());
+
+        if (driverRequestDto.getWorkExperience() == null
+                || driverRequestDto.getWorkExperience().isEmpty()) {
+            throw new ValidationException("Стаж водителя обязателен");
+        }
+    }
 }

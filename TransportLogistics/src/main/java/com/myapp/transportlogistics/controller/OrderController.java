@@ -1,8 +1,10 @@
 package com.myapp.transportlogistics.controller;
 
+import com.myapp.transportlogistics.dto.request.DriverRequestDto;
 import com.myapp.transportlogistics.dto.request.OrderRequestDto;
 import com.myapp.transportlogistics.dto.response.OrderResponseDto;
 import com.myapp.transportlogistics.dto.response.OrderWithRelationsDto;
+import com.myapp.transportlogistics.exceprion.ValidationException;
 import com.myapp.transportlogistics.service.impl.OrderServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -52,6 +54,7 @@ public class OrderController {
     )
     @GetMapping("get/{id}")
     public OrderResponseDto getOrderById(@PathVariable Long id) {
+        idException(id, "ID должен быть больше нуля");
         return orderServiceImpl.getOrderById(id);
     }
 
@@ -61,6 +64,7 @@ public class OrderController {
     )
     @GetMapping("get/by-client")
     public List<OrderResponseDto> getOrderByClientPhoneNumber(@RequestParam String phoneNumber) {
+        phoneNumberException(phoneNumber);
         return orderServiceImpl.getOrderByClientPhoneNumber(phoneNumber);
     }
 
@@ -71,6 +75,7 @@ public class OrderController {
     @GetMapping("get/by-driver")
     public List<OrderResponseDto> getOrderByDriverId(@RequestParam String firstName,
                                                      @RequestParam String lastName) {
+        driverException(firstName, lastName);
         return orderServiceImpl.getOrderByDriver(firstName, lastName);
     }
 
@@ -80,6 +85,7 @@ public class OrderController {
     )
     @PostMapping("post")
     public OrderResponseDto createOrder(@RequestBody OrderRequestDto orderRequestDto) {
+        orderException(orderRequestDto);
         return orderServiceImpl.createOrder(orderRequestDto);
     }
 
@@ -88,7 +94,55 @@ public class OrderController {
     )
     @DeleteMapping("delete/{id}")
     public void deleteOrder(@PathVariable Long id) {
+        idException(id, "ID должен быть больше нуля");
         orderServiceImpl.delete(id);
+    }
+
+    private void idException(Long id, String message) {
+
+        if (id == null || id <= 0) {
+            throw new ValidationException(message);
+        }
+
+    }
+
+    private void phoneNumberException(String phoneNumber)throws ValidationException {
+
+        String pattern = "^\\+375(17|25|29|33|44)\\d{7}$";
+        if (phoneNumber == null || phoneNumber.trim().isEmpty() || !phoneNumber.matches(pattern)) {
+            throw new ValidationException(
+                    "Номер должен быть в формате +375XXXXXXXXX (после кода оператора 7 цифр)");
+        }
+
+    }
+
+    private void driverException(String firstName, String lastName) {
+
+        if (firstName == null || firstName.isEmpty()) {
+            throw new ValidationException("Имя водителя обязательно");
+        }
+
+        if (lastName == null || lastName.isEmpty()) {
+            throw new ValidationException("Фамилия водителя обязательна");
+        }
+    }
+
+    private void orderException(OrderRequestDto orderRequestDto) {
+
+        if (orderRequestDto.getOrderDate() == null) {
+            throw new ValidationException("Дата заказа обязательна");
+        }
+        if (orderRequestDto.getLoadingPoint() == null
+                || orderRequestDto.getLoadingPoint().isEmpty()) {
+            throw new ValidationException("Место загрузки обязательно");
+        }
+        if (orderRequestDto.getDeliveryPoint() == null
+                || orderRequestDto.getDeliveryPoint().isEmpty()) {
+            throw new ValidationException("Место доставки обязательно");
+        }
+        idException(orderRequestDto.getClientId(), "ID клиента обязателен");
+        idException(orderRequestDto.getDriverId(), "ID водителя обязателен");
+        idException(orderRequestDto.getTruckId(), "ID транспорта обязателен");
     }
 }
 
