@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class LoggingAspect {
 
+    private final String methodWithoutArguments = "Метод без аргуметов";
+
     @Pointcut("execution(public * com.myapp.transportlogistics.controller.*.*(..))")
     public void controllerLog() {}
 
@@ -25,7 +27,7 @@ public class LoggingAspect {
     @Before("controllerLog()")
     public void doBeforeController(JoinPoint jp) {
         Object[] args = jp.getArgs();
-        String argsString = args.length > 0 ? Arrays.toString(args) : "Метод без аргуметов";
+        String argsString = args.length > 0 ? Arrays.toString(args) : methodWithoutArguments;
         log.info("Вызов метода контроллера: {}. Аргументы метода: {}",
                 jp.getSignature().toShortString(), argsString);
     }
@@ -44,7 +46,7 @@ public class LoggingAspect {
     @AfterThrowing(throwing = "exception", pointcut = "controllerLog()")
     public void trowsExceptionInController(JoinPoint jp, Exception exception) {
         Object[] args = jp.getArgs();
-        String argsString = args.length > 0 ? Arrays.toString(args) : "Метод без аргуметов";
+        String argsString = args.length > 0 ? Arrays.toString(args) : methodWithoutArguments;
         log.error("Исключение в методе контроллера: {}. "
                         + "Аргументы метода: {}. Сообщение исключения: {}",
                 jp.getSignature().toShortString(), argsString, exception.getMessage());
@@ -53,7 +55,7 @@ public class LoggingAspect {
     @Before("serviceLog()")
     public void doBeforeService(JoinPoint jp) {
         Object[] args = jp.getArgs();
-        String argsString = args.length > 0 ? Arrays.toString(args) : "Метод без аргуметов";
+        String argsString = args.length > 0 ? Arrays.toString(args) : methodWithoutArguments;
         log.info("Вызов метода сервиса: {}. Аргументы метода: {}",
                 jp.getSignature().toShortString(), argsString);
     }
@@ -72,7 +74,7 @@ public class LoggingAspect {
     @AfterThrowing(throwing = "exception", pointcut = "serviceLog()()")
     public void trowsExceptionInService(JoinPoint jp, Exception exception) {
         Object[] args = jp.getArgs();
-        String argsString = args.length > 0 ? Arrays.toString(args) : "Метод без аргуметов";
+        String argsString = args.length > 0 ? Arrays.toString(args) : methodWithoutArguments;
         log.error("Исключение в методе сервиса: {}. Аргументы метода: {}. Сообщение исключения: {}",
                 jp.getSignature().toShortString(), argsString, exception.getMessage());
     }
@@ -80,7 +82,7 @@ public class LoggingAspect {
     @Before("execution(public * com.myapp.transportlogistics.cache.Cache.*(..))")
     public void doBeforeCache(JoinPoint jp) {
         Object[] args = jp.getArgs();
-        String argsString = args.length > 0 ? Arrays.toString(args) : "Метод без аргуметов";
+        String argsString = args.length > 0 ? Arrays.toString(args) : methodWithoutArguments;
         log.info("Вызов метода кэша: {}. Аргументы метода: {}",
                 jp.getSignature().toShortString(), argsString);
     }
