@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @Tag(name = "Client Controller")
 @RestController
 @RequestMapping("clients")
@@ -36,9 +38,7 @@ public class ClientController {
                description = "Получате ID клиента, отправляет в сервис и возвращает DTO ответа"
     )
     @GetMapping("get/{id}")
-    public ClientResponseDto getClientById(@PathVariable(value = "id") Long id)
-            throws ValidationException {
-
+    public ClientResponseDto getClientById(@PathVariable(value = "id") Long id) {
         idException(id);
         return clientService.findById(id);
     }
@@ -56,9 +56,7 @@ public class ClientController {
                     + "возвращает DTO ответа созданного клиента"
     )
     @PostMapping("post")
-    public ClientResponseDto createClient(@Valid @RequestBody ClientRequestDto clientRequestDto)
-            throws ValidationException {
-
+    public ClientResponseDto createClient(@Valid @RequestBody ClientRequestDto clientRequestDto) {
         clientException(clientRequestDto);
         return clientService.create(clientRequestDto);
     }
@@ -68,7 +66,6 @@ public class ClientController {
     )
     @DeleteMapping("delete/{id}")
     public void deleteClient(@PathVariable("id") Long id) {
-
         idException(id);
         clientService.delete(id);
     }
@@ -79,9 +76,7 @@ public class ClientController {
     )
     @PutMapping("update/{id}")
     public void updateClientPhoneNumber(@PathVariable("id") Long id,
-                                        @RequestParam String phoneNumber)
-            throws ValidationException {
-
+                                        @RequestParam String phoneNumber) {
         idException(id);
         phoneNumberException(phoneNumber);
 
