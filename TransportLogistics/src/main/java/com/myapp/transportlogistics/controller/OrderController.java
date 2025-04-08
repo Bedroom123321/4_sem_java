@@ -1,6 +1,5 @@
 package com.myapp.transportlogistics.controller;
 
-import com.myapp.transportlogistics.dto.request.DriverRequestDto;
 import com.myapp.transportlogistics.dto.request.OrderRequestDto;
 import com.myapp.transportlogistics.dto.response.OrderResponseDto;
 import com.myapp.transportlogistics.dto.response.OrderWithRelationsDto;
@@ -23,10 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Order Controller")
 @RestController
 @RequestMapping("orders")
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class OrderController {
 
-    OrderServiceImpl orderServiceImpl;
+    private final OrderServiceImpl orderServiceImpl;
 
     public OrderController(OrderServiceImpl orderServiceImpl) {
         this.orderServiceImpl = orderServiceImpl;

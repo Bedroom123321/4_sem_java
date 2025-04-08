@@ -8,8 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,10 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Client Controller")
 @RestController
 @RequestMapping("clients")
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class ClientController {
 
-    ClientServiceImpl clientService;
+    private final ClientServiceImpl clientService;
 
     public ClientController(ClientServiceImpl clientService) {
         this.clientService = clientService;

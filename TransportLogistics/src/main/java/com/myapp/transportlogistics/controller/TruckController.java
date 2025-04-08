@@ -8,8 +8,6 @@ import com.myapp.transportlogistics.service.impl.TruckServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,10 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Truck Controller")
 @RestController
 @RequestMapping("trucks")
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class TruckController {
 
-    TruckServiceImpl truckServiceImpl;
+    private final TruckServiceImpl truckServiceImpl;
 
     public TruckController(TruckServiceImpl truckServiceImpl) {
         this.truckServiceImpl = truckServiceImpl;

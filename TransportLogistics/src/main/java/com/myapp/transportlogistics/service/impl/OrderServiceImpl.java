@@ -17,21 +17,18 @@ import com.myapp.transportlogistics.service.OrderService;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class OrderServiceImpl implements OrderService {
 
-    OrderRepository orderRepository;
-    ClientRepository clientRepository;
-    DriverRepository driverRepository;
-    TruckRepository truckRepository;
-    OrderMapper orderMapper;
+    private final OrderRepository orderRepository;
+    private final ClientRepository clientRepository;
+    private final DriverRepository driverRepository;
+    private final TruckRepository truckRepository;
+    private final OrderMapper orderMapper;
 
     @Override
     @Transactional

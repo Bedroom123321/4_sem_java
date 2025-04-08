@@ -5,18 +5,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Queue;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Component
 public class Cache<K, V> {
-    Map<K, V> cacheStorage;
-    Queue<K> sequence;
-    static int maxSize = 100;
+    private final Map<K, V> cacheStorage;
+    private final Queue<K> sequence;
+    private static final int maxSize = 100;
 
     public Cache() {
         this.cacheStorage = new HashMap<>(maxSize, 0.75f);

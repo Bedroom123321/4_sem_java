@@ -2,6 +2,8 @@ package com.myapp.transportlogistics.controller;
 
 import com.myapp.transportlogistics.exceprion.LogsException;
 import com.myapp.transportlogistics.exceprion.ValidationException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -14,10 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Log Controller")
 @RestController
 @RequestMapping("logs")
 public class LogController {
 
+    @Operation(summary = "Извлекает логи за определенное число всех",
+            description = "Принимает дату, формирует файл .log за "
+                    + "эту дату и возвращает логи из этого файла"
+    )
     @GetMapping("get")
     public byte[] getLog(@RequestParam String date) {
         if (!date.matches("\\d{4}-\\d{2}-\\d{2}")) {
@@ -31,8 +38,17 @@ public class LogController {
             StringBuilder logs = new StringBuilder();
             String line;
 
-            while ((line = reader.readLine()) != null && line.contains(date)) {
-                logs.append(line).append(System.lineSeparator());
+            boolean hasLogs = false;
+
+            while ((line = reader.readLine()) != null) {
+                if (line.contains(date)) {
+                    logs.append(line).append(System.lineSeparator());
+                    hasLogs = true;
+                }
+            }
+
+            if (!hasLogs) {
+                throw new LogsException("Логи за указанную дату отсутствуют");
             }
 
             if (!logs.isEmpty()) {
@@ -40,8 +56,6 @@ public class LogController {
                         new FileWriter(targetLogFileName))) {
                     writer.write(logs.toString());
                 }
-            } else {
-                throw new LogsException("Логи за указанную дату отсутствуют");
             }
 
         } catch (IOException e) {
