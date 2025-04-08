@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TruckRequestDto {
 
-    @Pattern(regexp = "^[A-Za-z]{2}[0-9]{5}$",
+    @Pattern(regexp = "^[A-Za-z]{2}\\d{5}$",
             message = "Некорректный автомобильный номер (пример AB1245)")
     String numberPlate;
 
