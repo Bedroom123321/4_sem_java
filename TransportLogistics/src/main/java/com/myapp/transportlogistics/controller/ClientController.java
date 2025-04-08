@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Validated
 @Slf4j
 @Tag(name = "Client Controller")
 @RestController
@@ -54,7 +56,6 @@ public class ClientController {
     )
     @PostMapping("post")
     public ClientResponseDto createClient(@Valid @RequestBody ClientRequestDto clientRequestDto) {
-        clientException(clientRequestDto);
         return clientService.create(clientRequestDto);
     }
 
@@ -98,14 +99,4 @@ public class ClientController {
 
     }
 
-    private void clientException(ClientRequestDto clientRequestDto) {
-
-        if (clientRequestDto.getFirstName() == null || clientRequestDto.getFirstName().isEmpty()) {
-            throw new ValidationException("Имя клиента обязательно");
-        }
-        if (clientRequestDto.getLastName() == null || clientRequestDto.getLastName().isEmpty()) {
-            throw new ValidationException("Фамилия клиента обязательна");
-        }
-        phoneNumberException(clientRequestDto.getPhoneNumber());
-    }
 }

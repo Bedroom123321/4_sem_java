@@ -6,9 +6,9 @@ import com.myapp.transportlogistics.exceprion.ValidationException;
 import com.myapp.transportlogistics.service.impl.DriverServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Validated
 @Tag(name = "Driver Controller")
 @RestController
 @RequestMapping("drivers")
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class DriverController {
 
-    DriverServiceImpl driverServiceImpl;
+    private final DriverServiceImpl driverServiceImpl;
 
     public DriverController(DriverServiceImpl driverService) {
         this.driverServiceImpl = driverService;
@@ -63,8 +63,7 @@ public class DriverController {
                     + "возвращает DTO ответа созданного водителя"
     )
     @PostMapping("post")
-    public DriverResponseDto createDriver(@RequestBody DriverRequestDto driverRequestDto) {
-        driverException(driverRequestDto);
+    public DriverResponseDto createDriver(@Valid @RequestBody DriverRequestDto driverRequestDto) {
         return driverServiceImpl.create(driverRequestDto);
     }
 
@@ -118,19 +117,4 @@ public class DriverController {
 
     }
 
-    private void driverException(DriverRequestDto driverRequestDto) {
-
-        if (driverRequestDto.getFirstName() == null || driverRequestDto.getFirstName().isEmpty()) {
-            throw new ValidationException("Имя водителя обязательно");
-        }
-
-        lastNameException(driverRequestDto.getLastName());
-
-        phoneNumberException(driverRequestDto.getPhoneNumber());
-
-        if (driverRequestDto.getWorkExperience() == null
-                || driverRequestDto.getWorkExperience().isEmpty()) {
-            throw new ValidationException("Стаж водителя обязателен");
-        }
-    }
 }

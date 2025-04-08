@@ -7,7 +7,9 @@ import com.myapp.transportlogistics.exceprion.ValidationException;
 import com.myapp.transportlogistics.service.impl.TruckServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Validated
 @Tag(name = "Truck Controller")
 @RestController
 @RequestMapping("trucks")
@@ -62,8 +65,7 @@ public class TruckController {
                     + "возвращает DTO ответа созданного транспорта"
     )
     @PostMapping("post")
-    public TruckResponseDto creatTruck(@RequestBody TruckRequestDto truckRequestDto) {
-        truckException(truckRequestDto);
+    public TruckResponseDto creatTruck(@Valid @RequestBody TruckRequestDto truckRequestDto) {
         return truckServiceImpl.create(truckRequestDto);
     }
 
@@ -111,26 +113,6 @@ public class TruckController {
         if (cargoVolume == null || cargoVolume <= 0) {
             throw new ValidationException("Объем груза должен быть больше нуля");
         }
-
-    }
-
-    private void truckException(TruckRequestDto truckRequestDto) {
-
-        String pattern = "^[A-Z]{2}\\\\d{5}$";
-        if (truckRequestDto.getNumberPlate() == null
-                || truckRequestDto.getNumberPlate().trim().isEmpty()
-                || !truckRequestDto.getNumberPlate().matches(pattern)) {
-            throw new ValidationException(
-                    "Номер должен начинаться с двух заглавных букв, а затем следует 5 цифр");
-        }
-
-        if (truckRequestDto.getLiftingCapacity() <= 3500) {
-            throw new ValidationException("Грузоподъёмность не может быть меньше 3500 кг");
-        }
-
-        cargoTypeException(truckRequestDto.getCargoType());
-
-        cargoVolumeException(truckRequestDto.getCargoVolume());
 
     }
 }
