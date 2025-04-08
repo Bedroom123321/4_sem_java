@@ -13,7 +13,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 public class ExceptionHandlers {
 
     @ExceptionHandler
-    public ResponseEntity<String> runtimeException(RuntimeException exception) {
+    public ResponseEntity<String> logsException(LogsException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

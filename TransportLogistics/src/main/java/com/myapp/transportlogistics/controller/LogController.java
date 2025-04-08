@@ -1,5 +1,6 @@
 package com.myapp.transportlogistics.controller;
 
+import com.myapp.transportlogistics.exceprion.LogsException;
 import com.myapp.transportlogistics.exceprion.ValidationException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -40,18 +41,18 @@ public class LogController {
                     writer.write(logs.toString());
                 }
             } else {
-                throw new RuntimeException("Логи за указанную дату отсутствуют.");
+                throw new LogsException("Логи за указанную дату отсутствуют");
             }
 
         } catch (IOException e) {
-            throw new RuntimeException("Ошибка при обработке лог-файлов.", e);
+            throw new LogsException("Ошибка при обработке лог-файлов");
         }
 
         byte[] logFileBytes;
         try {
             logFileBytes = Files.readAllBytes(Path.of(targetLogFileName));
         } catch (IOException e) {
-            throw new RuntimeException("Ошибка при чтении отфильтрованного лог-файла.", e);
+            throw new LogsException("Ошибка при чтении отфильтрованного лог-файла");
         }
 
         return logFileBytes;
