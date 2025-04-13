@@ -1,8 +1,10 @@
 package com.myapp.transportlogistics.controller;
 
 import com.myapp.transportlogistics.dto.request.OrderRequestDto;
+import com.myapp.transportlogistics.dto.request.TruckRequestDto;
 import com.myapp.transportlogistics.dto.response.OrderResponseDto;
 import com.myapp.transportlogistics.dto.response.OrderWithRelationsDto;
+import com.myapp.transportlogistics.dto.response.TruckResponseDto;
 import com.myapp.transportlogistics.exceprion.ValidationException;
 import com.myapp.transportlogistics.service.impl.OrderServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,7 +37,7 @@ public class OrderController {
     @Operation(summary = "Извлекает данные всех заказов",
             description = "Возвращает список всех заказов в базе в виде DTO ответа"
     )
-    @GetMapping("get/all")
+    @GetMapping("all")
     public List<OrderResponseDto> getAllOrders() {
         return orderServiceImpl.getAllOrders();
     }
@@ -44,7 +46,7 @@ public class OrderController {
             description = "Возвращает список всех заказов в базе с данными "
                         + "клиентов, водитлей и транспорта в виде DTO ответа"
     )
-    @GetMapping("get/all-with_relations")
+    @GetMapping("all-with_relations")
     public List<OrderWithRelationsDto> getAllOrdersWithRelations() {
         return orderServiceImpl.getAllWithRelations();
     }
@@ -52,7 +54,7 @@ public class OrderController {
     @Operation(summary = "Извлекает данные заказа по его ID",
             description = "Получате ID заказа, отправляет в сервис и возвращает DTO ответа"
     )
-    @GetMapping("get/{id}")
+    @GetMapping("{id}")
     public OrderResponseDto getOrderById(@PathVariable @Min(value = 1, message =
             "ID должен быть больше 0") Long id) {
         return orderServiceImpl.getOrderById(id);
@@ -62,7 +64,7 @@ public class OrderController {
             description = "Получате ID клиента, отправляет в сервис и возвращает"
                         + " список всех заказов клиента в виде DTO ответа"
     )
-    @GetMapping("get/by-client")
+    @GetMapping("by-client")
     public List<OrderResponseDto> getOrderByClientPhoneNumber(@RequestParam String phoneNumber) {
         phoneNumberException(phoneNumber);
         return orderServiceImpl.getOrderByClientPhoneNumber(phoneNumber);
@@ -72,7 +74,7 @@ public class OrderController {
             description = "Получате ID водителя, отправляет в сервис и возвращает"
                         + " список всех заказов, выполненых водителем, в виде DTO ответа"
     )
-    @GetMapping("get/by-driver")
+    @GetMapping("by-driver")
     public List<OrderResponseDto> getOrderByDriverId(@RequestParam String firstName,
                                                      @RequestParam String lastName) {
         driverException(firstName, lastName);

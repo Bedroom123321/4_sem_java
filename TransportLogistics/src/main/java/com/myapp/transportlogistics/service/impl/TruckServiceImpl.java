@@ -46,7 +46,7 @@ public class TruckServiceImpl implements TruckService {
 
     @Override
     @Transactional
-    public TruckResponseDto create(TruckRequestDto truckRequestDto) {
+    public TruckResponseDto addTruck(TruckRequestDto truckRequestDto) {
         Optional<Truck> optionalTruck =
                 truckRepository.findByNumberPlate(truckRequestDto.getNumberPlate());
         if (optionalTruck.isPresent()) {
@@ -55,6 +55,17 @@ public class TruckServiceImpl implements TruckService {
 
         Truck truck = truckMapper.toEntity(truckRequestDto);
         return truckMapper.toDto(truckRepository.save(truck));
+    }
+
+    @Override
+    @Transactional
+    public List<TruckResponseDto> addTrucks(List<TruckRequestDto> truckRequestDtos) {
+        return  truckRequestDtos.stream()
+                .distinct()
+                .map(truckMapper::toEntity)
+                .map(truckRepository::save)
+                .map(truckMapper::toDto)
+                .toList();
     }
 
     @Override
@@ -101,4 +112,5 @@ public class TruckServiceImpl implements TruckService {
         List<Truck> trucks = truckRepository.getTrucksByDriverId(driverId);
         return truckMapper.toDtoList(trucks);
     }
+
 }

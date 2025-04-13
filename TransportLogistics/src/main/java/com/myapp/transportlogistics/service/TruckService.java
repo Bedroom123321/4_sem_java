@@ -9,7 +9,9 @@ public interface TruckService {
 
     List<TruckResponseDto> findAllTrucks();
 
-    TruckResponseDto create(TruckRequestDto truck);
+    TruckResponseDto addTruck(TruckRequestDto truck);
+
+    List<TruckResponseDto> addTrucks(List<TruckRequestDto> truckRequestDtos);
 
     void delete(Long id);
 

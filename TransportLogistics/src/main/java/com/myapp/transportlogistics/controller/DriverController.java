@@ -1,6 +1,8 @@
 package com.myapp.transportlogistics.controller;
 
+import com.myapp.transportlogistics.dto.request.ClientRequestDto;
 import com.myapp.transportlogistics.dto.request.DriverRequestDto;
+import com.myapp.transportlogistics.dto.response.ClientResponseDto;
 import com.myapp.transportlogistics.dto.response.DriverResponseDto;
 import com.myapp.transportlogistics.exceprion.ValidationException;
 import com.myapp.transportlogistics.service.impl.DriverServiceImpl;
@@ -35,7 +37,7 @@ public class DriverController {
     @Operation(summary = "Извлекает данные всех водителей",
             description = "Возвращает список всех водителей в базе в виде DTO ответа"
     )
-    @GetMapping("get/all")
+    @GetMapping("all")
     public List<DriverResponseDto> getAllDrivers() {
         return driverServiceImpl.findAllDrivers();
     }
@@ -43,7 +45,7 @@ public class DriverController {
     @Operation(summary = "Извлекает данные водителя по его ID",
             description = "Получате ID водителя, отправляет в сервис и возвращает DTO ответа"
     )
-    @GetMapping("get/{id}")
+    @GetMapping("{id}")
     public DriverResponseDto getDriverById(@PathVariable @Min(value = 1, message =
             "ID должен быть больше 0") Long id) {
         return driverServiceImpl.findById(id);
@@ -53,7 +55,7 @@ public class DriverController {
             description = "Получате ID транспорта и возвращает список всех водителей в базе, "
                     + "использующих этот транспорт, в виде DTO ответа"
     )
-    @GetMapping("get/by-truck/{truckId}")
+    @GetMapping("by-truck/{truckId}")
     public List<DriverResponseDto> getDriversByTruckId(@PathVariable
                                                            @Min(value = 1, message =
                                                                    "ID должен быть больше 0")
@@ -65,15 +67,25 @@ public class DriverController {
             description = "Принимает DTO запроса с данными водителя, сохраняет в базу и "
                     + "возвращает DTO ответа созданного водителя"
     )
-    @PostMapping("post")
-    public DriverResponseDto createDriver(@Valid @RequestBody DriverRequestDto driverRequestDto) {
+    @PostMapping
+    public DriverResponseDto addDriver(@Valid @RequestBody DriverRequestDto driverRequestDto) {
         return driverServiceImpl.create(driverRequestDto);
+    }
+
+    @Operation(summary = "Добавляет несколько новых водителей",
+            description = "Принимает список DTO запроса с данными водителей, сохраняет в базу и "
+                    + "возвращает список DTO ответа добавленных водителей"
+    )
+    @PostMapping("bulk")
+    public List<DriverResponseDto>  addDrivers(@RequestBody
+                                              List<DriverRequestDto> driverRequestDtos) {
+        return driverServiceImpl.addDrivers(driverRequestDtos);
     }
 
     @Operation(summary = "Удаляет водителя по его ID",
             description = "Принимает ID водителя и удаляет соответствующую запись из базы данных"
     )
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("{id}")
     public void deleteDriver(@PathVariable @Min(value = 1, message =
             "ID должен быть больше 0") Long id) {
         driverServiceImpl.delete(id);
@@ -84,7 +96,7 @@ public class DriverController {
                     + " изменить(фамилию и/или номер телефона), "
                     + "обновляет данные в базе данных"
     )
-    @PutMapping("update/{id}")
+    @PutMapping("{id}")
     public void updateDriver(@PathVariable @Min(value = 1, message =
                                          "ID должен быть больше 0") Long id,
                              @RequestParam(required = false) String lastName,

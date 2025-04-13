@@ -1,6 +1,8 @@
 package com.myapp.transportlogistics.controller;
 
+import com.myapp.transportlogistics.dto.request.DriverRequestDto;
 import com.myapp.transportlogistics.dto.request.TruckRequestDto;
+import com.myapp.transportlogistics.dto.response.DriverResponseDto;
 import com.myapp.transportlogistics.dto.response.TruckResponseDto;
 import com.myapp.transportlogistics.exceprion.ValidationException;
 import com.myapp.transportlogistics.service.impl.TruckServiceImpl;
@@ -35,7 +37,7 @@ public class TruckController {
     @Operation(summary = "Извлекает данные всеx транспортных средств",
             description = "Возвращает список всех транспортных средств в базе в виде DTO ответа"
     )
-    @GetMapping("get/all")
+    @GetMapping("all")
     public List<TruckResponseDto> getTrucks() {
         return truckServiceImpl.findAllTrucks();
     }
@@ -43,7 +45,7 @@ public class TruckController {
     @Operation(summary = "Извлекает данные транспорта по его ID",
             description = "Получате ID транспорта, отправляет в сервис и возвращает DTO ответа"
     )
-    @GetMapping("get/{id}")
+    @GetMapping("{id}")
     public TruckResponseDto getTruckById(@PathVariable @Min(value = 1, message =
             "ID должен быть больше 0") Long id) {
         return truckServiceImpl.findById(id);
@@ -54,7 +56,7 @@ public class TruckController {
             description = "Получате ID водителя и возвращает список всех транспортных средств"
                         + " в базе, которые использовал данный водитель, в виде DTO ответа"
     )
-    @GetMapping("get/by-driver/{driverId}")
+    @GetMapping("by-driver/{driverId}")
     public List<TruckResponseDto> getTrucksByDriverId(@PathVariable
                                                           @Min(value = 1, message =
                                                                   "ID должен быть больше 0")
@@ -66,15 +68,26 @@ public class TruckController {
             description = "Принимает DTO запроса с данными транспорта, сохраняет в базу и "
                     + "возвращает DTO ответа созданного транспорта"
     )
-    @PostMapping("post")
-    public TruckResponseDto creatTruck(@Valid @RequestBody TruckRequestDto truckRequestDto) {
-        return truckServiceImpl.create(truckRequestDto);
+    @PostMapping
+    public TruckResponseDto addTruck(@Valid @RequestBody TruckRequestDto truckRequestDto) {
+        return truckServiceImpl.addTruck(truckRequestDto);
+    }
+
+    @Operation(summary = "Добавляет несколько новых транспортных средств",
+            description = "Принимает список DTO запроса с данными "
+                    + "транспортных средств, сохраняет в базу и "
+                    + "возвращает список DTO ответа добавленных транспортных средств"
+    )
+    @PostMapping("bulk")
+    public List<TruckResponseDto>  addTrucks(@RequestBody
+                                               List<TruckRequestDto> truckRequestDtos) {
+        return truckServiceImpl.addTrucks(truckRequestDtos);
     }
 
     @Operation(summary = "Удаляет транспорт по его ID",
             description = "Принимает ID транспорта и удаляет соответствующую запись из базы данных"
     )
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("{id}")
     public void deleteTruck(@PathVariable @Min(value = 1, message =
             "ID должен быть больше 0") Long id) {
         truckServiceImpl.delete(id);
@@ -84,7 +97,7 @@ public class TruckController {
             description = "Принимает ID транспорта, а также данные, которые нужно"
                     + " изменить(тип и/или объём груза), обновляет данные в базе данных"
     )
-    @PutMapping("update/{id}")
+    @PutMapping("{id}")
     public void updateTruck(@PathVariable @Min(value = 1, message =
                                         "ID должен быть больше 0") Long id,
                             @RequestParam(required = false) String cargoType,

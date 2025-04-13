@@ -2,6 +2,7 @@ package com.myapp.transportlogistics.service.impl;
 
 import com.myapp.transportlogistics.cache.Cache;
 import com.myapp.transportlogistics.dto.request.DriverRequestDto;
+import com.myapp.transportlogistics.dto.response.ClientResponseDto;
 import com.myapp.transportlogistics.dto.response.DriverResponseDto;
 import com.myapp.transportlogistics.exceprion.EntityAlreadyExistsException;
 import com.myapp.transportlogistics.exceprion.EntityNotFoundException;
@@ -69,6 +70,17 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
+    @Transactional
+    public List<DriverResponseDto> addDrivers(List<DriverRequestDto> driverRequestDtos) {
+        return  driverRequestDtos.stream()
+                .distinct()
+                .map(driverMapper::toEntity)
+                .map(driverRepository::save)
+                .map(driverMapper::toDto)
+                .toList();
+    }
+
+    @Override
     public void delete(Long id) {
         Optional<Driver> optionalDriver = driverRepository.findById(id);
         if (optionalDriver.isEmpty()) {
@@ -114,4 +126,5 @@ public class DriverServiceImpl implements DriverService {
         List<Driver> drivers = driverRepository.getDriversByTruckId(truckId);
         return driverMapper.toDtoList(drivers);
     }
+
 }
