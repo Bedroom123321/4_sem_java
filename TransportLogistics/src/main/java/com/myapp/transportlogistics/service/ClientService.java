@@ -9,7 +9,9 @@ public interface ClientService {
 
     List<ClientResponseDto> findAllClients();
 
-    ClientResponseDto create(ClientRequestDto clientRequestDto);
+    ClientResponseDto addClient(ClientRequestDto clientRequestDto);
+
+    List<ClientResponseDto> addClients(List<ClientRequestDto> clientRequestDtos);
 
     void delete(Long id);
 

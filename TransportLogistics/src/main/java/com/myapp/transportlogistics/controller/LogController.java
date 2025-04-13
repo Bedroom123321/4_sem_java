@@ -1,9 +1,9 @@
 package com.myapp.transportlogistics.controller;
 
 import com.myapp.transportlogistics.exceprion.LogsException;
-import com.myapp.transportlogistics.exceprion.ValidationException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.Pattern;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -26,10 +26,8 @@ public class LogController {
                     + "эту дату и возвращает логи из этого файла"
     )
     @GetMapping("get")
-    public byte[] getLog(@RequestParam String date) {
-        if (!date.matches("\\d{4}-\\d{2}-\\d{2}")) {
-            throw new ValidationException("Дата должна быть в формате yyyy-MM-dd");
-        }
+    public byte[] getLog(@RequestParam @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}",
+            message = "Дата должна быть в формате yyyy-MM-dd") String date) {
 
         String sourceLogFile = "logback/transportlogistics.log"; // общий файл логов
         String targetLogFileName = String.format("logback/transportlogistics_%s.log", date);

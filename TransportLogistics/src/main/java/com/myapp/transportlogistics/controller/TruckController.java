@@ -1,6 +1,5 @@
 package com.myapp.transportlogistics.controller;
 
-import com.myapp.transportlogistics.dto.request.DriverRequestDto;
 import com.myapp.transportlogistics.dto.request.TruckRequestDto;
 import com.myapp.transportlogistics.dto.response.TruckResponseDto;
 import com.myapp.transportlogistics.exceprion.ValidationException;
@@ -8,6 +7,7 @@ import com.myapp.transportlogistics.service.impl.TruckServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,8 +44,8 @@ public class TruckController {
             description = "Получате ID транспорта, отправляет в сервис и возвращает DTO ответа"
     )
     @GetMapping("get/{id}")
-    public TruckResponseDto getTruckById(@PathVariable Long id) {
-        idException(id);
+    public TruckResponseDto getTruckById(@PathVariable @Min(value = 1, message =
+            "ID должен быть больше 0") Long id) {
         return truckServiceImpl.findById(id);
     }
 
@@ -55,8 +55,10 @@ public class TruckController {
                         + " в базе, которые использовал данный водитель, в виде DTO ответа"
     )
     @GetMapping("get/by-driver/{driverId}")
-    public List<TruckResponseDto> getTrucksByDriverId(@PathVariable Long driverId) {
-        idException(driverId);
+    public List<TruckResponseDto> getTrucksByDriverId(@PathVariable
+                                                          @Min(value = 1, message =
+                                                                  "ID должен быть больше 0")
+                                                          Long driverId) {
         return truckServiceImpl.getTrucksByDriverId(driverId);
     }
 
@@ -73,8 +75,8 @@ public class TruckController {
             description = "Принимает ID транспорта и удаляет соответствующую запись из базы данных"
     )
     @DeleteMapping("delete/{id}")
-    public void deleteTruck(@PathVariable Long id) {
-        idException(id);
+    public void deleteTruck(@PathVariable @Min(value = 1, message =
+            "ID должен быть больше 0") Long id) {
         truckServiceImpl.delete(id);
     }
 
@@ -83,21 +85,14 @@ public class TruckController {
                     + " изменить(тип и/или объём груза), обновляет данные в базе данных"
     )
     @PutMapping("update/{id}")
-    public void updateTruck(@PathVariable Long id, @RequestParam(required = false) String cargoType,
+    public void updateTruck(@PathVariable @Min(value = 1, message =
+                                        "ID должен быть больше 0") Long id,
+                            @RequestParam(required = false) String cargoType,
                             @RequestParam(required = false) Integer cargoVolume) {
-        idException(id);
         cargoTypeException(cargoType);
         cargoVolumeException(cargoVolume);
 
         truckServiceImpl.update(id, cargoType, cargoVolume);
-    }
-
-    private void idException(Long id) {
-
-        if (id == null || id <= 0) {
-            throw new ValidationException("ID должен быть больше нуля");
-        }
-
     }
 
     private void cargoTypeException(String cargoType)throws ValidationException {

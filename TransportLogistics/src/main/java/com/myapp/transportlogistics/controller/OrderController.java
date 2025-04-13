@@ -8,6 +8,7 @@ import com.myapp.transportlogistics.service.impl.OrderServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -52,8 +53,8 @@ public class OrderController {
             description = "Получате ID заказа, отправляет в сервис и возвращает DTO ответа"
     )
     @GetMapping("get/{id}")
-    public OrderResponseDto getOrderById(@PathVariable Long id) {
-        idException(id, "ID должен быть больше нуля");
+    public OrderResponseDto getOrderById(@PathVariable @Min(value = 1, message =
+            "ID должен быть больше 0") Long id) {
         return orderServiceImpl.getOrderById(id);
     }
 
@@ -91,17 +92,9 @@ public class OrderController {
             description = "Принимает ID заказа и удаляет соответствующую запись из базы данных"
     )
     @DeleteMapping("delete/{id}")
-    public void deleteOrder(@PathVariable Long id) {
-        idException(id, "ID должен быть больше нуля");
+    public void deleteOrder(@PathVariable @Min(value = 1, message =
+            "ID должен быть больше 0") Long id) {
         orderServiceImpl.delete(id);
-    }
-
-    private void idException(Long id, String message) {
-
-        if (id == null || id <= 0) {
-            throw new ValidationException(message);
-        }
-
     }
 
     private void phoneNumberException(String phoneNumber)throws ValidationException {

@@ -11,6 +11,7 @@ import com.myapp.transportlogistics.service.ClientService;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,9 +41,9 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     @Transactional
-    public ClientResponseDto create(ClientRequestDto clientRequestDto) {
-        Optional<Client> optionalClient =
-                clientRepository.findByPhoneNumber(clientRequestDto.getPhoneNumber());
+    public ClientResponseDto addClient(ClientRequestDto clientRequestDto) {
+        Optional<Client> optionalClient = clientRepository
+            .findByPhoneNumber(clientRequestDto.getPhoneNumber());
         if (optionalClient.isPresent()) {
             throw new EntityAlreadyExistsException("Такой клиент уже существует");
         }
@@ -50,6 +51,21 @@ public class ClientServiceImpl implements ClientService {
         Client client = clientMapper.toEntity(clientRequestDto);
         Client savedClients = clientRepository.save(client);
         return clientMapper.toDto(savedClients);
+    }
+
+    @Override
+    @Transactional
+    public List<ClientResponseDto> addClients(List<ClientRequestDto> clientRequestDtos) {
+        List<ClientResponseDto> savedClients = clientRequestDtos.stream()
+                .distinct()
+                .dropWhile(client -> clientRepository
+                        .findByPhoneNumber(client.getPhoneNumber()).isPresent())
+                .map(clientMapper::toEntity)
+                .map(clientRepository::save)
+                .map(clientMapper::toDto)
+                .collect(Collectors.toList());
+
+        return savedClients;
     }
 
     @Override
@@ -78,4 +94,5 @@ public class ClientServiceImpl implements ClientService {
 
         clientRepository.save(client);
     }
+
 }

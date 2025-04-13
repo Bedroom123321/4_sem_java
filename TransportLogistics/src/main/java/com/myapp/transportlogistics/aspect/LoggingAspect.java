@@ -1,5 +1,6 @@
-package com.myapp.transportlogistics.logging;
+package com.myapp.transportlogistics.aspect;
 
+import jakarta.validation.ConstraintViolationException;
 import java.util.Arrays;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -125,5 +126,17 @@ public class LoggingAspect {
             returning = "size")
     public void doAfterSize(int size) {
         log.info("Текущий размер кэша: {}", size);
+    }
+
+    @AfterThrowing(pointcut = "execution("
+            + "public * com.myapp.transportlogistics.controller.*.*(..))",
+            throwing = "exception")
+    public void logConstraintViolationException(JoinPoint jp,
+                                                ConstraintViolationException exception) {
+        Object[] args = jp.getArgs();
+        String argsString = args.length > 0 ? Arrays.toString(args) : METHOD_WITHOUT_ARGUMENTS;
+        log.error("Исключение валидации в методе: {}. "
+                        + "Аргументы метода: {}. Сообщение исключения: {}",
+                jp.getSignature().toShortString(), argsString, exception.getMessage());
     }
 }

@@ -7,6 +7,7 @@ import com.myapp.transportlogistics.service.impl.DriverServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,8 +44,8 @@ public class DriverController {
             description = "Получате ID водителя, отправляет в сервис и возвращает DTO ответа"
     )
     @GetMapping("get/{id}")
-    public DriverResponseDto getDriverById(@PathVariable Long id) {
-        idException(id);
+    public DriverResponseDto getDriverById(@PathVariable @Min(value = 1, message =
+            "ID должен быть больше 0") Long id) {
         return driverServiceImpl.findById(id);
     }
 
@@ -53,8 +54,10 @@ public class DriverController {
                     + "использующих этот транспорт, в виде DTO ответа"
     )
     @GetMapping("get/by-truck/{truckId}")
-    public List<DriverResponseDto> getDriversByTruckId(@PathVariable Long truckId) {
-        idException(truckId);
+    public List<DriverResponseDto> getDriversByTruckId(@PathVariable
+                                                           @Min(value = 1, message =
+                                                                   "ID должен быть больше 0")
+                                                           Long truckId) {
         return driverServiceImpl.getDriversByTruckId(truckId);
     }
 
@@ -71,32 +74,25 @@ public class DriverController {
             description = "Принимает ID водителя и удаляет соответствующую запись из базы данных"
     )
     @DeleteMapping("delete/{id}")
-    public void deleteDriver(@PathVariable Long id) {
-        idException(id);
+    public void deleteDriver(@PathVariable @Min(value = 1, message =
+            "ID должен быть больше 0") Long id) {
         driverServiceImpl.delete(id);
     }
 
     @Operation(summary = "Обновляет фамилию и номер телефона водителя",
             description = "Принимает ID водителя, а также данные, которые нужно"
-                    + " изменить(фамилию и/или номер телефона), обновляет данные в базе данных"
+                    + " изменить(фамилию и/или номер телефона), "
+                    + "обновляет данные в базе данных"
     )
     @PutMapping("update/{id}")
-    public void updateDriver(@PathVariable Long id,
+    public void updateDriver(@PathVariable @Min(value = 1, message =
+                                         "ID должен быть больше 0") Long id,
                              @RequestParam(required = false) String lastName,
                              @RequestParam(required = false) String phoneNumber) {
-        idException(id);
         lastNameException(lastName);
         phoneNumberException(phoneNumber);
 
         driverServiceImpl.update(id, lastName, phoneNumber);
-    }
-
-    private void idException(Long id) {
-
-        if (id == null || id <= 0) {
-            throw new ValidationException("ID должен быть больше нуля");
-        }
-
     }
 
     private void phoneNumberException(String phoneNumber)throws ValidationException {

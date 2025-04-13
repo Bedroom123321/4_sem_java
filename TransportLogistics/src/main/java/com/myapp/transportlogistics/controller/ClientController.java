@@ -7,6 +7,7 @@ import com.myapp.transportlogistics.service.impl.ClientServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -36,35 +37,46 @@ public class ClientController {
     @Operation(summary = "Извлекает данные клиента по его ID",
                description = "Получате ID клиента, отправляет в сервис и возвращает DTO ответа"
     )
-    @GetMapping("get/{id}")
-    public ClientResponseDto getClientById(@PathVariable(value = "id") Long id) {
-        idException(id);
+    @GetMapping("{id}")
+    public ClientResponseDto getClientById(@PathVariable(value = "id")
+                                               @Min(value = 1, message =
+                                                       "ID должен быть больше 0") Long id) {
         return clientService.findById(id);
     }
 
     @Operation(summary = "Извлекает данные всех клиентов",
             description = "Возвращает список всех клиентов в базе в виде DTO ответа"
     )
-    @GetMapping("get/all")
+    @GetMapping("all")
     public List<ClientResponseDto> getAllClients() {
         return clientService.findAllClients();
     }
 
-    @Operation(summary = "Создаёт нового клиента",
+    @Operation(summary = "Добавляет нового клиента",
             description = "Принимает DTO запроса с данными клиента, сохраняет в базу и "
-                    + "возвращает DTO ответа созданного клиента"
+                    + "возвращает DTO ответа добавленного клиента"
     )
-    @PostMapping("post")
-    public ClientResponseDto createClient(@Valid @RequestBody ClientRequestDto clientRequestDto) {
-        return clientService.create(clientRequestDto);
+    @PostMapping
+    public ClientResponseDto addClient(@Valid @RequestBody ClientRequestDto clientRequestDto) {
+        return clientService.addClient(clientRequestDto);
+    }
+
+    @Operation(summary = "Добавляет несколько новых клиентов",
+            description = "Принимает список DTO запроса с данными клиентов, сохраняет в базу и "
+                    + "возвращает список DTO ответа добавленных клиентов"
+    )
+    @PostMapping("bulk")
+    public List<ClientResponseDto> addClients(@RequestBody
+                                                  List<ClientRequestDto> clientRequestDtos) {
+        return clientService.addClients(clientRequestDtos);
     }
 
     @Operation(summary = "Удаляет клиента по его ID",
             description = "Принимает ID клиента и удаляет соответствующую запись из базы данных"
     )
     @DeleteMapping("delete/{id}")
-    public void deleteClient(@PathVariable("id") Long id) {
-        idException(id);
+    public void deleteClient(@PathVariable("id") @Min(value = 1, message =
+            "ID должен быть больше 0") Long id) {
         clientService.delete(id);
     }
 
@@ -73,23 +85,15 @@ public class ClientController {
                     + "обновляет данные в базе данных"
     )
     @PutMapping("update/{id}")
-    public void updateClientPhoneNumber(@PathVariable("id") Long id,
+    public void updateClientPhoneNumber(@PathVariable("id") @Min(value = 1, message =
+                                                    "ID должен быть больше 0") Long id,
                                         @RequestParam String phoneNumber) {
-        idException(id);
         phoneNumberException(phoneNumber);
 
         clientService.update(id, phoneNumber);
     }
 
-    private void idException(Long id) {
-
-        if (id == null || id <= 0) {
-            throw new ValidationException("ID должен быть больше нуля");
-        }
-
-    }
-
-    private void phoneNumberException(String phoneNumber)throws ValidationException {
+    private void phoneNumberException(String phoneNumber) {
 
         String pattern = "^\\+375(17|25|29|33|44)\\d{7}$";
         if (phoneNumber == null || phoneNumber.trim().isEmpty() || !phoneNumber.matches(pattern)) {
