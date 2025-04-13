@@ -56,16 +56,15 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional
     public List<ClientResponseDto> addClients(List<ClientRequestDto> clientRequestDtos) {
-        List<ClientResponseDto> savedClients = clientRequestDtos.stream()
+
+        return  clientRequestDtos.stream()
                 .distinct()
                 .dropWhile(client -> clientRepository
                         .findByPhoneNumber(client.getPhoneNumber()).isPresent())
                 .map(clientMapper::toEntity)
                 .map(clientRepository::save)
                 .map(clientMapper::toDto)
-                .collect(Collectors.toList());
-
-        return savedClients;
+                .toList();
     }
 
     @Override
