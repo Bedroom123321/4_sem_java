@@ -2,7 +2,6 @@ package com.myapp.transportlogistics.service.impl;
 
 import com.myapp.transportlogistics.cache.Cache;
 import com.myapp.transportlogistics.dto.request.DriverRequestDto;
-import com.myapp.transportlogistics.dto.response.ClientResponseDto;
 import com.myapp.transportlogistics.dto.response.DriverResponseDto;
 import com.myapp.transportlogistics.exceprion.EntityAlreadyExistsException;
 import com.myapp.transportlogistics.exceprion.EntityNotFoundException;
@@ -74,6 +73,8 @@ public class DriverServiceImpl implements DriverService {
     public List<DriverResponseDto> addDrivers(List<DriverRequestDto> driverRequestDtos) {
         return  driverRequestDtos.stream()
                 .distinct()
+                .filter(driver -> driverRepository
+                        .findByPhoneNumber(driver.getPhoneNumber()).isEmpty())
                 .map(driverMapper::toEntity)
                 .map(driverRepository::save)
                 .map(driverMapper::toDto)

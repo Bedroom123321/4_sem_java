@@ -59,6 +59,8 @@ public class ClientServiceImpl implements ClientService {
 
         return  clientRequestDtos.stream()
                 .distinct()
+                .filter(client -> clientRepository
+                        .findByPhoneNumber(client.getPhoneNumber()).isEmpty())
                 .map(clientMapper::toEntity)
                 .map(clientRepository::save)
                 .map(clientMapper::toDto)

@@ -62,6 +62,8 @@ public class TruckServiceImpl implements TruckService {
     public List<TruckResponseDto> addTrucks(List<TruckRequestDto> truckRequestDtos) {
         return  truckRequestDtos.stream()
                 .distinct()
+                .filter(truck -> truckRepository
+                        .findByNumberPlate(truck.getNumberPlate()).isEmpty())
                 .map(truckMapper::toEntity)
                 .map(truckRepository::save)
                 .map(truckMapper::toDto)
