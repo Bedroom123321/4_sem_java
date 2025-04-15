@@ -1,4 +1,4 @@
-package com.myapp.transportlogistics.exceprion;
+package com.myapp.transportlogistics.exception;
 
 import jakarta.validation.ConstraintViolationException;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class ExceptionHandlers {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<String> handleTypeMismatch() {
-        return new ResponseEntity<>("Ожидалось число", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Некорректный ввод", HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler

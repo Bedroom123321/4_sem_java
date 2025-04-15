@@ -2,8 +2,8 @@ package com.myapp.transportlogistics.service.impl;
 
 import com.myapp.transportlogistics.dto.request.ClientRequestDto;
 import com.myapp.transportlogistics.dto.response.ClientResponseDto;
-import com.myapp.transportlogistics.exceprion.EntityAlreadyExistsException;
-import com.myapp.transportlogistics.exceprion.EntityNotFoundException;
+import com.myapp.transportlogistics.exception.EntityAlreadyExistsException;
+import com.myapp.transportlogistics.exception.EntityNotFoundException;
 import com.myapp.transportlogistics.mapper.ClientMapper;
 import com.myapp.transportlogistics.model.Client;
 import com.myapp.transportlogistics.repository.ClientRepository;
@@ -11,7 +11,6 @@ import com.myapp.transportlogistics.service.ClientService;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -89,9 +88,9 @@ public class ClientServiceImpl implements ClientService {
 
         if (phoneNumber != null && !phoneNumber.equals(client.getPhoneNumber())) {
             client.setPhoneNumber(phoneNumber);
+            clientRepository.save(client);
         }
 
-        clientRepository.save(client);
     }
 
 }

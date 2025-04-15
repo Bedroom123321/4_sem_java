@@ -3,9 +3,11 @@ package com.myapp.transportlogistics.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class ClientRequestDto {
 
     @NotBlank(message = "Имя клиента обязательно")
@@ -19,4 +21,5 @@ public class ClientRequestDto {
     @Pattern(regexp = "^\\+375(17|25|29|33|44)\\d{7}$", message =
             "Номер должен быть в формате +375XXXXXXXXX (после кода оператора 7 цифр)")
     private String phoneNumber;
+
 }

@@ -1,10 +1,8 @@
 package com.myapp.transportlogistics.controller;
 
-import com.myapp.transportlogistics.dto.request.ClientRequestDto;
 import com.myapp.transportlogistics.dto.request.DriverRequestDto;
-import com.myapp.transportlogistics.dto.response.ClientResponseDto;
 import com.myapp.transportlogistics.dto.response.DriverResponseDto;
-import com.myapp.transportlogistics.exceprion.ValidationException;
+import com.myapp.transportlogistics.exception.ValidationException;
 import com.myapp.transportlogistics.service.impl.DriverServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

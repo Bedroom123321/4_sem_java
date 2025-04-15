@@ -3,7 +3,7 @@ package com.myapp.transportlogistics.service.impl;
 import com.myapp.transportlogistics.dto.request.OrderRequestDto;
 import com.myapp.transportlogistics.dto.response.OrderResponseDto;
 import com.myapp.transportlogistics.dto.response.OrderWithRelationsDto;
-import com.myapp.transportlogistics.exceprion.EntityNotFoundException;
+import com.myapp.transportlogistics.exception.EntityNotFoundException;
 import com.myapp.transportlogistics.mapper.OrderMapper;
 import com.myapp.transportlogistics.model.Client;
 import com.myapp.transportlogistics.model.Driver;

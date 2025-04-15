@@ -1,14 +1,16 @@
 package com.myapp.transportlogistics.dto.response;
 
-import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.experimental.FieldDefaults;
 
 @Data
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@AllArgsConstructor
 public class ClientResponseDto {
-    Long id;
-    String firstName;
-    String lastName;
-    String phoneNumber;
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
+
+    public ClientResponseDto() {
+    }
 }

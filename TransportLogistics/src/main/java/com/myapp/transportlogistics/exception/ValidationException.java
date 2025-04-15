@@ -1,4 +1,4 @@
-package com.myapp.transportlogistics.exceprion;
+package com.myapp.transportlogistics.exception;
 
 public class ValidationException extends RuntimeException {
     public ValidationException(String message) {

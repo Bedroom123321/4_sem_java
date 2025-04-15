@@ -2,8 +2,8 @@ package com.myapp.transportlogistics.service.impl;
 
 import com.myapp.transportlogistics.dto.request.TruckRequestDto;
 import com.myapp.transportlogistics.dto.response.TruckResponseDto;
-import com.myapp.transportlogistics.exceprion.EntityAlreadyExistsException;
-import com.myapp.transportlogistics.exceprion.EntityNotFoundException;
+import com.myapp.transportlogistics.exception.EntityAlreadyExistsException;
+import com.myapp.transportlogistics.exception.EntityNotFoundException;
 import com.myapp.transportlogistics.mapper.TruckMapper;
 import com.myapp.transportlogistics.model.Driver;
 import com.myapp.transportlogistics.model.Truck;
