@@ -17,7 +17,7 @@ class TruckServiceImplTest {
     private TruckRepository truckRepository;
     @Mock
     private TruckMapper truckMapper;
-    
+
     @Test
     void findById() {
     }

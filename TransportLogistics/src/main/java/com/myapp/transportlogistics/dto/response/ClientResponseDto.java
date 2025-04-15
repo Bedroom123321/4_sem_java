@@ -1,10 +1,8 @@
 package com.myapp.transportlogistics.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class ClientResponseDto {
     private Long id;
     private String firstName;
@@ -12,5 +10,12 @@ public class ClientResponseDto {
     private String phoneNumber;
 
     public ClientResponseDto() {
+    }
+
+    public ClientResponseDto(Long id, String firstName, String lastName, String phoneNumber) {
+        this.lastName = lastName;
+        this.id = id;
+        this.firstName = firstName;
+        this.phoneNumber = phoneNumber;
     }
 }
