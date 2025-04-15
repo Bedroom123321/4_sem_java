@@ -41,7 +41,7 @@ class ClientServiceImplTest {
     private final String newPhoneNumber = "+375293332211";
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         client1 = new Client(1L, "Роман"
                 , "Бадестов", "+375291184712");
 
