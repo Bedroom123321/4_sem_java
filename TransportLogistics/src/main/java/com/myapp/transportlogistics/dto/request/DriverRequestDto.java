@@ -23,4 +23,17 @@ public class DriverRequestDto {
 
     @Positive(message = "Стаж должен быть корректным(больше или равно 0)")
     private String workExperience;
+
+
+    public DriverRequestDto(String firstName, String lastName,
+                            String phoneNumber, String workExperience) {
+        this.firstName = firstName;
+        this.workExperience = workExperience;
+        this.phoneNumber = phoneNumber;
+        this.lastName = lastName;
+    }
+
+    public DriverRequestDto() {
+
+    }
 }

@@ -2,7 +2,19 @@
 <configuration scan="true">
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %d{yyyy.MM.dd HH:mm:ss.SSS} [%thread] %highligh(%-5level) %logger{36} - %msg%n
+            </pattern>
+            <charset>
+                utf8
+            </charset>
+        </encoder>
+    </appender>
+
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>logback/transportlogistics.log</file>
                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>logback/transportlogistics - %d{yyyy.MM.dd}.log</fileNamePattern>
             <maxHistory>7</maxHistory>

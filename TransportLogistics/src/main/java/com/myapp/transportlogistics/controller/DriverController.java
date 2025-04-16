@@ -97,12 +97,10 @@ public class DriverController {
     @PutMapping("{id}")
     public void updateDriver(@PathVariable @Min(value = 1, message =
                                          "ID должен быть больше 0") Long id,
-                             @RequestParam(required = false) String lastName,
                              @RequestParam(required = false) String phoneNumber) {
-        lastNameException(lastName);
         phoneNumberException(phoneNumber);
 
-        driverServiceImpl.update(id, lastName, phoneNumber);
+        driverServiceImpl.update(id, phoneNumber);
     }
 
     private void phoneNumberException(String phoneNumber)throws ValidationException {
@@ -115,12 +113,5 @@ public class DriverController {
 
     }
 
-    private void lastNameException(String lastName)throws ValidationException {
-
-        if (lastName == null || lastName.isEmpty()) {
-            throw new ValidationException("Фамилия водителя обязательна");
-        }
-
-    }
 
 }

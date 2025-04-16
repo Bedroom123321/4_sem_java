@@ -29,14 +29,6 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     @Transactional
-    public List<DriverResponseDto> findAllDrivers() {
-        List<Driver> drivers = driverRepository.findAll();
-
-        return driverMapper.toDtoList(drivers);
-    }
-
-    @Override
-    @Transactional
     public DriverResponseDto findById(Long id) {
         Optional<Driver> cachedDriver = cache.get(id);
         if (cachedDriver.isPresent()) {
@@ -46,10 +38,17 @@ public class DriverServiceImpl implements DriverService {
         Optional<Driver> optionalDriver = driverRepository.findById(id);
         if (optionalDriver.isEmpty()) {
             throw new EntityNotFoundException("Водитель с таким ID не найден");
+        } else {
+            cache.put(id, optionalDriver.get());
+            return driverMapper.toDto(optionalDriver.get());
         }
+    }
 
-        cache.put(id, optionalDriver.get());
-        return driverMapper.toDto(optionalDriver.get());
+    @Override
+    @Transactional
+    public List<DriverResponseDto> findAllDrivers() {
+        List<Driver> drivers = driverRepository.findAll();
+        return driverMapper.toDtoList(drivers);
     }
 
     @Override
@@ -96,17 +95,13 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     @Transactional
-    public void update(Long id, String lastName, String phoneNumber) {
+    public void update(Long id, String phoneNumber) {
         Optional<Driver> optionalDriver = driverRepository.findById(id);
         if (optionalDriver.isEmpty()) {
             throw new EntityNotFoundException("Водитель с таким ID не найден");
         }
 
         Driver driver = optionalDriver.get();
-
-        if (lastName != null && !lastName.equals(driver.getLastName())) {
-            driver.setLastName(lastName);
-        }
 
         if (phoneNumber != null && !phoneNumber.equals(driver.getPhoneNumber())) {
             driver.setPhoneNumber(phoneNumber);

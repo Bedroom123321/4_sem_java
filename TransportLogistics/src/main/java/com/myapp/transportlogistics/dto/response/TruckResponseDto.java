@@ -12,4 +12,18 @@ public class TruckResponseDto {
     int liftingCapacity;
     int cargoVolume;
     String cargoType;
+
+
+    public TruckResponseDto(long id, String numberPlate,
+                            int liftingCapacity, int cargoVolume, String cargoType) {
+        this.id = id;
+        this.cargoVolume = cargoVolume;
+        this.numberPlate = numberPlate;
+        this.liftingCapacity = liftingCapacity;
+        this.cargoType = cargoType;
+    }
+
+    public TruckResponseDto() {
+
+    }
 }

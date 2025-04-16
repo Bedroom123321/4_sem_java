@@ -32,13 +32,15 @@ public class Driver {
     public Driver() {
     }
 
-    public Driver(String firstName, String lastName,
+    public Driver(long id, String firstName, String lastName,
                   String phoneNumber, String workExperience) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.workExperience = workExperience;
     }
+
 
     @Override
     public String toString() {

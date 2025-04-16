@@ -12,4 +12,18 @@ public class DriverResponseDto {
     String lastName;
     String phoneNumber;
     String workExperience;
+
+
+    public DriverResponseDto(Long id, String firstName, String lastName,
+                             String phoneNumber, String workExperience) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.workExperience = workExperience;
+    }
+
+    public DriverResponseDto() {
+
+    }
 }

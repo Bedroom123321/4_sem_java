@@ -20,7 +20,7 @@ public class LoggingAspect {
     private static final String METHOD_WITHOUT_ARGUMENTS = "Метод без аргуметов";
 
     @Pointcut("execution(public * com.myapp.transportlogistics.controller.*.*(..)) && "
-            + "within(com.myapp.transportlogistics.controller.LogController)")
+            + "!within(com.myapp.transportlogistics.controller.LogController)")
     public void controllerLog() {}
 
     @Pointcut("execution(public * com.myapp.transportlogistics.service.*.*(..)))")

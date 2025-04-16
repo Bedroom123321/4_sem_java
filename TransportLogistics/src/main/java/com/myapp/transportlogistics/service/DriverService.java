@@ -11,11 +11,11 @@ public interface DriverService {
 
     DriverResponseDto create(DriverRequestDto driverRequestDto);
 
-    List<DriverResponseDto>  addDrivers(List<DriverRequestDto> driverRequestDtos);
+    List<DriverResponseDto> addDrivers(List<DriverRequestDto> driverRequestDtos);
 
     void delete(Long id);
 
-    void update(Long id, String secondName, String phoneNumber);
+    void update(Long id, String phoneNumber);
 
     List<DriverResponseDto> getDriversByTruckId(Long truckId);
 }

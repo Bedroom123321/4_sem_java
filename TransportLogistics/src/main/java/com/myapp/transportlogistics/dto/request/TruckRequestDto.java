@@ -24,4 +24,12 @@ public class TruckRequestDto {
 
     @NotBlank(message = "Тип груза обязателен")
     String cargoType;
+
+    public TruckRequestDto(String numberPlate, int liftingCapacity,
+                           int cargoVolume, String cargoType) {
+        this.cargoVolume = cargoVolume;
+        this.numberPlate = numberPlate;
+        this.liftingCapacity = liftingCapacity;
+        this.cargoType = cargoType;
+    }
 }

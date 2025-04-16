@@ -32,8 +32,9 @@ public class Truck {
     public Truck() {
     }
 
-    public Truck(String numberPlate, int liftingCapacity,
+    public Truck(long id, String numberPlate, int liftingCapacity,
                  int cargoVolume, String cargoType) {
+        this.id = id;
         this.numberPlate = numberPlate;
         this.liftingCapacity = liftingCapacity;
         this.cargoVolume = cargoVolume;
