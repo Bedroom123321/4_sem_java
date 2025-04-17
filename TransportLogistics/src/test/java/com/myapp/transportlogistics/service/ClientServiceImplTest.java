@@ -37,7 +37,6 @@ class ClientServiceImplTest {
     private ClientRequestDto clientRequestDto1;
     private ClientRequestDto clientRequestDto2;
     private final long firstClientId = 1L;
-    private final long secondClientId = 2L;
     private final String newPhoneNumber = "+375293332211";
 
     @BeforeEach
@@ -75,9 +74,9 @@ class ClientServiceImplTest {
     @Test
     void testFindById_notFoundException() {
 
-        Mockito.when(clientRepository.findById(secondClientId)).thenReturn(Optional.empty());
+        Mockito.when(clientRepository.findById(firstClientId)).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(EntityNotFoundException.class, () -> clientServiceImpl.findById(secondClientId));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> clientServiceImpl.findById(firstClientId));
     }
 
     @Test
@@ -157,9 +156,9 @@ class ClientServiceImplTest {
 
     @Test
     void testDelete_notFoundException() {
-        Mockito.when(clientRepository.findById(secondClientId)).thenReturn(Optional.empty());
+        Mockito.when(clientRepository.findById(firstClientId)).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(EntityNotFoundException.class, () -> clientServiceImpl.delete(2L));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> clientServiceImpl.delete(firstClientId));
     }
 
     @Test
@@ -175,8 +174,8 @@ class ClientServiceImplTest {
 
     @Test
     void testUpdate_notFoundException() {
-        Mockito.when(clientRepository.findById(secondClientId)).thenReturn(Optional.empty());
-        Assertions.assertThrows(EntityNotFoundException.class, () -> clientServiceImpl.update(secondClientId, newPhoneNumber));
+        Mockito.when(clientRepository.findById(firstClientId)).thenReturn(Optional.empty());
+        Assertions.assertThrows(EntityNotFoundException.class, () -> clientServiceImpl.update(firstClientId, newPhoneNumber));
     }
 
 }

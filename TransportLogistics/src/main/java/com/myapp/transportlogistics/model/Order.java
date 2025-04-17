@@ -51,6 +51,17 @@ public class Order {
         this.deliveryPoint = deliveryPoint;
     }
 
+    public Order(Long id, Date orderDate, String loadingPoint, String deliveryPoint,
+                 Truck truck, Client client, Driver driver) {
+        this.id = id;
+        this.orderDate = orderDate;
+        this.loadingPoint = loadingPoint;
+        this.deliveryPoint = deliveryPoint;
+        this.truck = truck;
+        this.client = client;
+        this.driver = driver;
+    }
+
     @Override
     public String toString() {
         return "Order{"

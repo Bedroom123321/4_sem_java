@@ -2,9 +2,7 @@ package com.myapp.transportlogistics.service;
 
 import com.myapp.transportlogistics.cache.Cache;
 import com.myapp.transportlogistics.dto.request.DriverRequestDto;
-import com.myapp.transportlogistics.dto.response.ClientResponseDto;
 import com.myapp.transportlogistics.dto.response.DriverResponseDto;
-import com.myapp.transportlogistics.dto.response.TruckResponseDto;
 import com.myapp.transportlogistics.exception.EntityAlreadyExistsException;
 import com.myapp.transportlogistics.exception.EntityNotFoundException;
 import com.myapp.transportlogistics.mapper.DriverMapper;

@@ -94,7 +94,9 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public List<OrderResponseDto> getOrderByDriver(String firstName, String lastName) {
-        Optional<Driver> optionalDriver = driverRepository.findByLastName(lastName);
+        Optional<Driver> optionalDriver = driverRepository
+                .findByFirstNameAndLastName(firstName, lastName);
+        
         if (optionalDriver.isEmpty()) {
             throw new EntityNotFoundException("Водитель с таким ID не найден");
         }
@@ -131,7 +133,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public void setTruckToNull(Long truckId) {
         List<Order> orders = orderRepository.findByTruckId(truckId);
-        if (orders.isEmpty()) {
+        if (!orders.isEmpty()) {
             for (Order order : orders) {
                 order.setTruck(null);
                 orderRepository.save(order);
