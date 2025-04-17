@@ -35,9 +35,10 @@ class TruckServiceImplTest {
     private DriverRepository driverRepository;
     @Mock
     private TruckMapper truckMapper;
+    @Mock
+    private Truck truck1;
 
     private final long firstTruckId = 1L;
-    private Truck truck1;
     private TruckRequestDto truckRequestDto1;
     private TruckResponseDto truckResponseDto1;
     private final long secondTruckId = 2L;
@@ -49,8 +50,6 @@ class TruckServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        truck1 = new Truck(1L,"AB12345", 5000
-                , 30, "Furniture");
         truckRequestDto1 = new TruckRequestDto("AB12345", 5000
                 , 30, "Furniture");
         truckResponseDto1 = new TruckResponseDto(1L,"AB12345", 5000
@@ -163,14 +162,34 @@ class TruckServiceImplTest {
 
     @Test
     void testUpdate() {
-        Mockito.when(truckRepository.findById(firstTruckId)).thenReturn(Optional.of(truck1));
+        Mockito.when(truckRepository.findById(secondTruckId)).thenReturn(Optional.of(truck2));
 
-        truckServiceImpl.update(firstTruckId, newCargoType, newCargoVolume);
+        truckServiceImpl.update(secondTruckId, newCargoType, newCargoVolume);
 
-        Assertions.assertEquals(newCargoVolume,truck1.getCargoVolume());
-        Assertions.assertEquals(newCargoType,truck1.getCargoType());
-        Mockito.verify(truckRepository, Mockito.times(1)).save(truck1);
+        Assertions.assertEquals(newCargoVolume, truck2.getCargoVolume());
+        Assertions.assertEquals(newCargoType,truck2.getCargoType());
+        Mockito.verify(truckRepository, Mockito.times(1)).save(truck2);
 
+    }
+
+    @Test
+    public void testUpdate_SameCargoTypeAndVolume() {
+
+        Mockito.when(truckRepository.findById(secondTruckId)).thenReturn(Optional.of(truck2));
+
+        truckServiceImpl.update(secondTruckId, truck2.getCargoType(), truck2.getCargoVolume());
+
+        Mockito.verify(truckRepository, Mockito.times(0)).save(Mockito.any());
+    }
+
+    @Test
+    public void testUpdate_NullCargoTypeAndVolume() {
+
+        Mockito.when(truckRepository.findById(secondTruckId)).thenReturn(Optional.of(truck2));
+
+        truckServiceImpl.update(secondTruckId, null,0);
+
+        Mockito.verify(truckRepository, Mockito.times(0)).save(Mockito.any());
     }
 
     @Test

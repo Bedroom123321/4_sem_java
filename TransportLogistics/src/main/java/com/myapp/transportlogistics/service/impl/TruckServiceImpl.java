@@ -91,16 +91,21 @@ public class TruckServiceImpl implements TruckService {
         }
 
         Truck truck = optionalTruck.get();
+        boolean isUpdated = false;
 
         if (cargoType != null && !cargoType.equals(truck.getCargoType())) {
             truck.setCargoType(cargoType);
+            isUpdated = true;
         }
 
         if (cargoVolume != 0 && cargoVolume != truck.getCargoVolume()) {
             truck.setCargoVolume(cargoVolume);
+            isUpdated = true;
         }
 
-        truckRepository.save(truck);
+        if (isUpdated) {
+            truckRepository.save(truck);
+        }
     }
 
     @Override

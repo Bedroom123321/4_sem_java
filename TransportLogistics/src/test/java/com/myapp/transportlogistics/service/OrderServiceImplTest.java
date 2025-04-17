@@ -5,12 +5,14 @@ import com.myapp.transportlogistics.dto.request.OrderRequestDto;
 import com.myapp.transportlogistics.dto.response.ClientResponseDto;
 import com.myapp.transportlogistics.dto.response.DriverResponseDto;
 import com.myapp.transportlogistics.dto.response.OrderResponseDto;
+import com.myapp.transportlogistics.dto.response.OrderWithRelationsDto;
 import com.myapp.transportlogistics.exception.EntityAlreadyExistsException;
 import com.myapp.transportlogistics.exception.EntityNotFoundException;
 import com.myapp.transportlogistics.mapper.OrderMapper;
 import com.myapp.transportlogistics.model.Client;
 import com.myapp.transportlogistics.model.Driver;
 import com.myapp.transportlogistics.model.Order;
+import com.myapp.transportlogistics.model.Truck;
 import com.myapp.transportlogistics.repository.ClientRepository;
 import com.myapp.transportlogistics.repository.DriverRepository;
 import com.myapp.transportlogistics.repository.OrderRepository;
@@ -51,9 +53,10 @@ class OrderServiceImplTest {
     @Mock
     private Order order2;
     private OrderRequestDto orderRequestDto1 ;
-    private OrderRequestDto orderRequestDto2;
     private OrderResponseDto orderResponseDto1;
     private OrderResponseDto orderResponseDto2;
+    private OrderWithRelationsDto orderWithRelationsDto1;
+    private OrderWithRelationsDto orderWithRelationsDto2;
     private final Long firstOrderId = 1L;
     private final String clientPhoneNumber = "+375293332211";
     private final String driverFirstName = "Илья";
@@ -61,12 +64,12 @@ class OrderServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        /*order1 = new Order();*/
         orderRequestDto1 = new OrderRequestDto();
-        orderRequestDto2 = new OrderRequestDto();
-        /*order2 = new Order();*/
+
         orderResponseDto1 = new OrderResponseDto();
         orderResponseDto2 = new OrderResponseDto();
+        orderWithRelationsDto1 = new OrderWithRelationsDto();
+        orderWithRelationsDto2 = new OrderWithRelationsDto();
     }
 
     @Test
@@ -100,6 +103,49 @@ class OrderServiceImplTest {
 
     @Test
     void createOrder() {
+        Client client = new Client();
+        Driver driver = new Driver();
+        Truck truck = new Truck();
+
+        Mockito.when(clientRepository.findById(orderRequestDto1.getClientId())).thenReturn(Optional.of(client));
+        Mockito.when(driverRepository.findById(orderRequestDto1.getDriverId())).thenReturn(Optional.of(driver));
+        Mockito.when(truckRepository.findById(orderRequestDto1.getTruckId())).thenReturn(Optional.of(truck));
+        Mockito.when(orderMapper.toEntity(orderRequestDto1)).thenReturn(order1);
+        Mockito.when(orderRepository.save(order1)).thenReturn(order1);
+        Mockito.when(orderMapper.toDto(order1)).thenReturn(orderResponseDto1);
+
+        OrderResponseDto result = orderServiceImpl.createOrder(orderRequestDto1);
+
+        Assertions.assertEquals(orderResponseDto1, result);
+    }
+
+    @Test
+    void createOrder_clientNotFoundException() {
+        Mockito.when(clientRepository.findById(orderRequestDto1.getClientId())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> orderServiceImpl.createOrder(orderRequestDto1));
+    }
+
+    @Test
+    void createOrder_driverNotFoundException() {
+        Client client = new Client();
+
+        Mockito.when(clientRepository.findById(orderRequestDto1.getClientId())).thenReturn(Optional.of(client));
+        Mockito.when(driverRepository.findById(orderRequestDto1.getDriverId())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> orderServiceImpl.createOrder(orderRequestDto1));
+    }
+
+    @Test
+    void createOrder_truckNotFoundException() {
+        Client client = new Client();
+        Driver driver = new Driver();
+
+        Mockito.when(clientRepository.findById(orderRequestDto1.getClientId())).thenReturn(Optional.of(client));
+        Mockito.when(driverRepository.findById(orderRequestDto1.getDriverId())).thenReturn(Optional.of(driver));
+        Mockito.when(truckRepository.findById(orderRequestDto1.getTruckId())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> orderServiceImpl.createOrder(orderRequestDto1));
     }
 
     @Test
@@ -120,7 +166,13 @@ class OrderServiceImplTest {
 
     @Test
     void getAllWithRelations() {
+        Mockito.when(orderRepository.findAllWithRelations()).thenReturn(List.of(order1, order2));
+        Mockito.when(orderMapper.toDtoWithRelationsList(List.of(order1, order2)))
+                .thenReturn(List.of(orderWithRelationsDto1,orderWithRelationsDto2));
 
+        List<OrderWithRelationsDto> result = orderServiceImpl.getAllWithRelations();
+
+        Assertions.assertEquals(List.of(orderWithRelationsDto1,orderWithRelationsDto2), result);
     }
 
     @Test
@@ -134,7 +186,6 @@ class OrderServiceImplTest {
         List<OrderResponseDto> result = orderServiceImpl.getOrderByDriver(driverFirstName, driverLastName);
 
         Assertions.assertEquals(List.of(orderResponseDto1,orderResponseDto2), result);
-
     }
 
     @Test

@@ -50,6 +50,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
+    public List<OrderWithRelationsDto> getAllWithRelations() {
+        List<Order> orders = orderRepository.findAllWithRelations();
+        return orderMapper.toDtoWithRelationsList(orders);
+    }
+
+    @Override
+    @Transactional
     public OrderResponseDto createOrder(OrderRequestDto orderRequestDto) {
         Optional<Client> optionalClient = clientRepository.findById(orderRequestDto.getClientId());
         if (optionalClient.isEmpty()) {
@@ -82,13 +89,6 @@ public class OrderServiceImpl implements OrderService {
             throw new EntityNotFoundException("Заказ с таким ID не найден");
         }
         orderRepository.deleteById(id);
-    }
-
-    @Override
-    @Transactional
-    public List<OrderWithRelationsDto> getAllWithRelations() {
-        List<Order> orders = orderRepository.findAllWithRelations();
-        return orderMapper.toDtoWithRelationsList(orders);
     }
 
     @Transactional
