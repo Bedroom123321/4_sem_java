@@ -173,7 +173,7 @@ class TruckServiceImplTest {
     }
 
     @Test
-    public void testUpdate_SameCargoTypeAndVolume() {
+    void testUpdate_SameCargoTypeAndVolume() {
 
         Mockito.when(truckRepository.findById(secondTruckId)).thenReturn(Optional.of(truck2));
 
@@ -183,7 +183,7 @@ class TruckServiceImplTest {
     }
 
     @Test
-    public void testUpdate_NullCargoTypeAndVolume() {
+    void testUpdate_NullCargoTypeAndVolume() {
 
         Mockito.when(truckRepository.findById(secondTruckId)).thenReturn(Optional.of(truck2));
 
