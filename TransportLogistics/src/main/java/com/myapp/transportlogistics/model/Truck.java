@@ -9,11 +9,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "trucks")
 public class Truck {
@@ -50,5 +46,53 @@ public class Truck {
                 + ", cargoVolume=" + cargoVolume
                 + ", cargoType='" + cargoType + '\''
                 + '}';
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNumberPlate() {
+        return numberPlate;
+    }
+
+    public void setNumberPlate(String numberPlate) {
+        this.numberPlate = numberPlate;
+    }
+
+    public int getLiftingCapacity() {
+        return liftingCapacity;
+    }
+
+    public void setLiftingCapacity(int liftingCapacity) {
+        this.liftingCapacity = liftingCapacity;
+    }
+
+    public int getCargoVolume() {
+        return cargoVolume;
+    }
+
+    public void setCargoVolume(int cargoVolume) {
+        this.cargoVolume = cargoVolume;
+    }
+
+    public String getCargoType() {
+        return cargoType;
+    }
+
+    public void setCargoType(String cargoType) {
+        this.cargoType = cargoType;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }
