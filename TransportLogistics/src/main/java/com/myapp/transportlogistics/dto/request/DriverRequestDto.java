@@ -4,7 +4,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class DriverRequestDto {
 
     @NotBlank(message = "Имя клиента обязательно")
@@ -22,6 +26,9 @@ public class DriverRequestDto {
     @Positive(message = "Стаж должен быть корректным(больше или равно 0)")
     private String workExperience;
 
+    public DriverRequestDto() {
+
+    }
 
     public DriverRequestDto(String firstName, String lastName,
                             String phoneNumber, String workExperience) {
@@ -29,41 +36,5 @@ public class DriverRequestDto {
         this.workExperience = workExperience;
         this.phoneNumber = phoneNumber;
         this.lastName = lastName;
-    }
-
-    public DriverRequestDto() {
-
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getWorkExperience() {
-        return workExperience;
-    }
-
-    public void setWorkExperience(String workExperience) {
-        this.workExperience = workExperience;
     }
 }

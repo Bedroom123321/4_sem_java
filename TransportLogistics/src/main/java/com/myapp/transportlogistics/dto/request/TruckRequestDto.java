@@ -3,7 +3,11 @@ package com.myapp.transportlogistics.dto.request;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class TruckRequestDto {
 
     @Pattern(regexp = "^[A-Za-z]{2}\\d{5}$",
@@ -29,38 +33,6 @@ public class TruckRequestDto {
         this.cargoVolume = cargoVolume;
         this.numberPlate = numberPlate;
         this.liftingCapacity = liftingCapacity;
-        this.cargoType = cargoType;
-    }
-
-    public String getNumberPlate() {
-        return numberPlate;
-    }
-
-    public void setNumberPlate(String numberPlate) {
-        this.numberPlate = numberPlate;
-    }
-
-    public int getLiftingCapacity() {
-        return liftingCapacity;
-    }
-
-    public void setLiftingCapacity(int liftingCapacity) {
-        this.liftingCapacity = liftingCapacity;
-    }
-
-    public int getCargoVolume() {
-        return cargoVolume;
-    }
-
-    public void setCargoVolume(int cargoVolume) {
-        this.cargoVolume = cargoVolume;
-    }
-
-    public String getCargoType() {
-        return cargoType;
-    }
-
-    public void setCargoType(String cargoType) {
         this.cargoType = cargoType;
     }
 }
