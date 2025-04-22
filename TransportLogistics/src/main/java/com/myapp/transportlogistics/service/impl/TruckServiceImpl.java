@@ -60,12 +60,16 @@ public class TruckServiceImpl implements TruckService {
     @Override
     @Transactional
     public List<TruckResponseDto> addTrucks(List<TruckRequestDto> truckRequestDtos) {
-        return  truckRequestDtos.stream()
+        List<Truck> newTrucks = truckRequestDtos.stream()
                 .distinct()
                 .filter(truck -> truckRepository
                         .findByNumberPlate(truck.getNumberPlate()).isEmpty())
                 .map(truckMapper::toEntity)
-                .map(truckRepository::save)
+                .toList();
+
+        List<Truck> savedTrucks = truckRepository.saveAll(newTrucks);
+
+        return savedTrucks.stream()
                 .map(truckMapper::toDto)
                 .toList();
     }

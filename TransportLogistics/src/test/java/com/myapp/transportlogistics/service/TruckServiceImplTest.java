@@ -118,8 +118,7 @@ class TruckServiceImplTest {
         Mockito.when(truckMapper.toEntity(truckRequestDto1)).thenReturn(truck1);
         Mockito.when(truckMapper.toEntity(truckRequestDto2)).thenReturn(truck2);
 
-        Mockito.when(truckRepository.save(truck1)).thenReturn(truck1);
-        Mockito.when(truckRepository.save(truck2)).thenReturn(truck2);
+        Mockito.when(truckRepository.saveAll(List.of(truck1, truck2))).thenReturn(List.of(truck1, truck2));
 
         Mockito.when(truckMapper.toDto(truck1)).thenReturn(truckResponseDto1);
         Mockito.when(truckMapper.toDto(truck2)).thenReturn(truckResponseDto2);
@@ -134,8 +133,11 @@ class TruckServiceImplTest {
 
         Mockito.when(truckRepository.findByNumberPlate(truckRequestDto1.getNumberPlate())).thenReturn(Optional.of(truck1));
         Mockito.when(truckRepository.findByNumberPlate(truckRequestDto2.getNumberPlate())).thenReturn(Optional.empty());
+
         Mockito.when(truckMapper.toEntity(truckRequestDto2)).thenReturn(truck2);
-        Mockito.when(truckRepository.save(truck2)).thenReturn(truck2);
+
+        Mockito.when(truckRepository.saveAll(List.of(truck2))).thenReturn(List.of(truck2));
+
         Mockito.when(truckMapper.toDto(truck2)).thenReturn(truckResponseDto2);
 
         List<TruckResponseDto> result = truckServiceImpl.addTrucks(List.of(truckRequestDto1,truckRequestDto2));
