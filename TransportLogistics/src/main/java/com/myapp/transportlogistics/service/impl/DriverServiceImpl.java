@@ -70,12 +70,17 @@ public class DriverServiceImpl implements DriverService {
     @Override
     @Transactional
     public List<DriverResponseDto> addDrivers(List<DriverRequestDto> driverRequestDtos) {
-        return  driverRequestDtos.stream()
+
+        List<Driver> newDrivers = driverRequestDtos.stream()
                 .distinct()
                 .filter(driver -> driverRepository
                         .findByPhoneNumber(driver.getPhoneNumber()).isEmpty())
                 .map(driverMapper::toEntity)
-                .map(driverRepository::save)
+                .toList();
+
+        List<Driver> savedDrivers = driverRepository.saveAll(newDrivers);
+
+        return savedDrivers.stream()
                 .map(driverMapper::toDto)
                 .toList();
     }

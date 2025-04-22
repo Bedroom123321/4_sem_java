@@ -120,8 +120,7 @@ class ClientServiceImplTest {
         Mockito.when(clientMapper.toEntity(clientRequestDto1)).thenReturn(client1);
         Mockito.when(clientMapper.toEntity(clientRequestDto2)).thenReturn(client2);
 
-        Mockito.when(clientRepository.save(client1)).thenReturn(client1);
-        Mockito.when(clientRepository.save(client2)).thenReturn(client2);
+        Mockito.when(clientRepository.saveAll(List.of(client1,client2))).thenReturn(List.of(client1,client2));
 
         Mockito.when(clientMapper.toDto(client1)).thenReturn(clientResponseDto1);
         Mockito.when(clientMapper.toDto(client2)).thenReturn(clientResponseDto2);
@@ -136,8 +135,11 @@ class ClientServiceImplTest {
 
         Mockito.when(clientRepository.findByPhoneNumber(clientRequestDto1.getPhoneNumber())).thenReturn(Optional.of(client1));
         Mockito.when(clientRepository.findByPhoneNumber(clientRequestDto2.getPhoneNumber())).thenReturn(Optional.empty());
+
         Mockito.when(clientMapper.toEntity(clientRequestDto2)).thenReturn(client2);
-        Mockito.when(clientRepository.save(client2)).thenReturn(client2);
+
+        Mockito.when(clientRepository.saveAll(List.of(client2))).thenReturn(List.of(client2));
+
         Mockito.when(clientMapper.toDto(client2)).thenReturn(clientResponseDto2);
 
         List<ClientResponseDto> result = clientServiceImpl.addClients(List.of(clientRequestDto1,clientRequestDto2));

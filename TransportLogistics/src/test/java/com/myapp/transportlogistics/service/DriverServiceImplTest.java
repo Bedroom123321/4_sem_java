@@ -138,8 +138,7 @@ class DriverServiceImplTest {
         Mockito.when(driverMapper.toEntity(driverRequestDto1)).thenReturn(driver1);
         Mockito.when(driverMapper.toEntity(driverRequestDto2)).thenReturn(driver2);
 
-        Mockito.when(driverRepository.save(driver1)).thenReturn(driver1);
-        Mockito.when(driverRepository.save(driver2)).thenReturn(driver2);
+        Mockito.when(driverRepository.saveAll(List.of(driver1,driver2))).thenReturn(List.of(driver1,driver2));
 
         Mockito.when(driverMapper.toDto(driver1)).thenReturn(driverResponseDto1);
         Mockito.when(driverMapper.toDto(driver2)).thenReturn(driverResponseDto2);
@@ -154,8 +153,11 @@ class DriverServiceImplTest {
 
         Mockito.when(driverRepository.findByPhoneNumber(driverRequestDto1.getPhoneNumber())).thenReturn(Optional.of(driver1));
         Mockito.when(driverRepository.findByPhoneNumber(driverRequestDto2.getPhoneNumber())).thenReturn(Optional.empty());
+
         Mockito.when(driverMapper.toEntity(driverRequestDto2)).thenReturn(driver2);
-        Mockito.when(driverRepository.save(driver2)).thenReturn(driver2);
+
+        Mockito.when(driverRepository.saveAll(List.of(driver2))).thenReturn(List.of(driver2));
+
         Mockito.when(driverMapper.toDto(driver2)).thenReturn(driverResponseDto2);
 
         List<DriverResponseDto> result = driverServiceImpl.addDrivers(List.of(driverRequestDto1, driverRequestDto2));
