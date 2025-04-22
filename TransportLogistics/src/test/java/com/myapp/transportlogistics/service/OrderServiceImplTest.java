@@ -1,12 +1,8 @@
 package com.myapp.transportlogistics.service;
 
-import com.myapp.transportlogistics.dto.request.DriverRequestDto;
 import com.myapp.transportlogistics.dto.request.OrderRequestDto;
-import com.myapp.transportlogistics.dto.response.ClientResponseDto;
-import com.myapp.transportlogistics.dto.response.DriverResponseDto;
 import com.myapp.transportlogistics.dto.response.OrderResponseDto;
 import com.myapp.transportlogistics.dto.response.OrderWithRelationsDto;
-import com.myapp.transportlogistics.exception.EntityAlreadyExistsException;
 import com.myapp.transportlogistics.exception.EntityNotFoundException;
 import com.myapp.transportlogistics.mapper.OrderMapper;
 import com.myapp.transportlogistics.model.Client;
@@ -26,12 +22,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class OrderServiceImplTest {
