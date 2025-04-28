@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class LogServiceImpl implements LogService {
 
     @Override
-    public byte[] creatLogsByDate(String date) {
+    public List<String> creatLogsByDate(String date) {
         Path sourceLogPath = Path.of("logback", "transportlogistics.log");
         String dateLogFile = String.format("logback/transportlogistics-%s.log", date);
 
@@ -47,14 +47,12 @@ public class LogServiceImpl implements LogService {
             throw new LogsException("Ошибка при записи отфильтрованного лог-файла");
         }
 
-        byte[] logFileBytes;
-
         try {
-            logFileBytes = Files.readAllBytes(Path.of(dateLogFile));
+            logs = Files.readAllLines(Path.of(dateLogFile));
         } catch (IOException e) {
             throw new LogsException("Ошибка при чтении отфильтрованного лог-файла");
         }
 
-        return logFileBytes;
+        return logs;
     }
 }

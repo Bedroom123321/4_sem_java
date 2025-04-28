@@ -1,6 +1,8 @@
 package com.myapp.transportlogistics.service;
 
+import java.util.List;
+
 public interface LogService {
 
-    byte[] creatLogsByDate(String date);
+    List<String> creatLogsByDate(String date);
 }

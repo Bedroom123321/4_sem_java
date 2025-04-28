@@ -4,6 +4,7 @@ import com.myapp.transportlogistics.service.impl.LogServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Pattern;
+import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +26,7 @@ public class LogController {
                     + "эту дату и возвращает логи из этого файла"
     )
     @GetMapping("get")
-    public byte[] getLogs(@RequestParam @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}",
+    public List<String> getLogs(@RequestParam @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}",
             message = "Дата должна быть в формате yyyy-MM-dd") String date) {
         return logServiceImpl.creatLogsByDate(date);
     }
