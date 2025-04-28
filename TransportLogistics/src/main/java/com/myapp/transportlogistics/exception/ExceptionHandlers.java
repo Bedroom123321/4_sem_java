@@ -1,6 +1,7 @@
 package com.myapp.transportlogistics.exception;
 
 import jakarta.validation.ConstraintViolationException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -13,9 +14,13 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @RestControllerAdvice
 public class ExceptionHandlers {
 
-    @ExceptionHandler({LogsException.class, EntityNotFoundException.class,
-        MethodArgumentNotValidException.class})
+    @ExceptionHandler({LogsException.class, EntityNotFoundException.class})
     public ResponseEntity<String> badRequestHandler(RuntimeException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> badRequestHandler(MethodArgumentNotValidException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

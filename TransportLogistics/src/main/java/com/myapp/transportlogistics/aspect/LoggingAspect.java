@@ -1,6 +1,5 @@
 package com.myapp.transportlogistics.aspect;
 
-import jakarta.validation.ConstraintViolationException;
 import java.util.Arrays;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +22,8 @@ public class LoggingAspect {
             + "!within(com.myapp.transportlogistics.controller.LogController)")
     public void controllerLog() {}
 
-    @Pointcut("execution(public * com.myapp.transportlogistics.service.*.*(..)))")
+    @Pointcut("execution(public * com.myapp.transportlogistics.service.*.*(..)) &&"
+            + "!within(com.myapp.transportlogistics.service.impl.LogServiceImpl)")
     public void serviceLog() {}
 
     @Before("controllerLog()")
@@ -73,7 +73,7 @@ public class LoggingAspect {
         }
     }
 
-    @AfterThrowing(throwing = "exception", pointcut = "serviceLog()()")
+    @AfterThrowing(throwing = "exception", pointcut = "serviceLog()")
     public void trowsExceptionInService(JoinPoint jp, Exception exception) {
         Object[] args = jp.getArgs();
         String argsString = args.length > 0 ? Arrays.toString(args) : METHOD_WITHOUT_ARGUMENTS;
@@ -128,15 +128,4 @@ public class LoggingAspect {
         log.info("Текущий размер кэша: {}", size);
     }
 
-    @AfterThrowing(pointcut = "execution("
-            + "public * com.myapp.transportlogistics.controller.*.*(..))",
-            throwing = "exception")
-    public void logConstraintViolationException(JoinPoint jp,
-                                                ConstraintViolationException exception) {
-        Object[] args = jp.getArgs();
-        String argsString = args.length > 0 ? Arrays.toString(args) : METHOD_WITHOUT_ARGUMENTS;
-        log.error("Исключение валидации в методе: {}. "
-                        + "Аргументы метода: {}. Сообщение исключения: {}",
-                jp.getSignature().toShortString(), argsString, exception.getMessage());
-    }
 }
