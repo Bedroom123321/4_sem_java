@@ -1,7 +1,6 @@
 package com.myapp.transportlogistics.exception;
 
 import jakarta.validation.ConstraintViolationException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;
