@@ -38,6 +38,11 @@ public class ExceptionHandlers {
         return new ResponseEntity<>("Некорректный ввод", HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler()
+    public ResponseEntity<String> interruptedException(InterruptedException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
     @ExceptionHandler
     public ResponseEntity<List<String>> constraintViolationException(
             ConstraintViolationException exception) {
