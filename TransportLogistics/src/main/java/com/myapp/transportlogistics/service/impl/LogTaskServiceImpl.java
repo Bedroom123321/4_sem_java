@@ -4,8 +4,6 @@ import com.myapp.transportlogistics.exception.LogsException;
 import com.myapp.transportlogistics.model.LogTask;
 import com.myapp.transportlogistics.service.LogTaskService;
 import jakarta.transaction.Transactional;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

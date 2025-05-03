@@ -20,6 +20,7 @@ public class LogFileServiceImpl implements LogFileService {
     @Async("taskExecutor")
     public void creatLogFileByDate(String date, LogTask task) throws InterruptedException {
         task.setStatus("Processing");
+        String failedTaskStatus = "Failed";
 
         Thread.sleep(15000);
         Path sourceLogPath = Path.of("logback", "transportlogistics.log");
@@ -28,7 +29,7 @@ public class LogFileServiceImpl implements LogFileService {
         task.setFilePath(dateLogFile);
 
         if (!Files.exists(sourceLogPath)) {
-            task.setStatus("Failed");
+            task.setStatus(failedTaskStatus);
             throw new LogsException("Исходный лог-файл не найден");
         }
 
@@ -40,12 +41,12 @@ public class LogFileServiceImpl implements LogFileService {
                     .toList();
 
         } catch (IOException e) {
-            task.setStatus("Failed");
+            task.setStatus(failedTaskStatus);
             throw new LogsException("Ошибка при чтении общего лог-файла");
         }
 
         if (logs.isEmpty()) {
-            task.setStatus("Failed");
+            task.setStatus(failedTaskStatus);
             throw new LogsException("Нет логов с такой датой: " + date);
         }
 
@@ -55,7 +56,7 @@ public class LogFileServiceImpl implements LogFileService {
             }
 
         } catch (IOException e) {
-            task.setStatus("Failed");
+            task.setStatus(failedTaskStatus);
             throw new LogsException("Ошибка при записи отфильтрованного лог-файла");
         }
 

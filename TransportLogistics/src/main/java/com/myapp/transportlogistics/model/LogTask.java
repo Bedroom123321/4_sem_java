@@ -11,7 +11,4 @@ public class LogTask {
     private String status;
     private String filePath;
 
-    public LogTask() {
-    }
-
 }
