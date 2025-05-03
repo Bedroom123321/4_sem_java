@@ -23,7 +23,7 @@ public class LoggingAspect {
     public void controllerLog() {}
 
     @Pointcut("execution(public * com.myapp.transportlogistics.service.*.*(..)) &&"
-            + "!within(com.myapp.transportlogistics.service.impl.LogServiceImpl)")
+            + "!within(com.myapp.transportlogistics.service.impl.LogTaskServiceImpl)")
     public void serviceLog() {}
 
     @Before("controllerLog()")
