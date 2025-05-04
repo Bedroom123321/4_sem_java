@@ -7,16 +7,16 @@ import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LogTaskServiceImpl implements LogTaskService {
 
-    private final Map<String, LogTask> tasks = new HashMap<>();
+    private final Map<String, LogTask> tasks = new ConcurrentHashMap<>();
     private final LogFileServiceImpl logFileServiceImpl;
 
     public LogTaskServiceImpl(LogFileServiceImpl logFileServiceImpl) {
