@@ -3,6 +3,7 @@ package com.myapp.transportlogistics.controller;
 import com.myapp.transportlogistics.dto.request.TruckRequestDto;
 import com.myapp.transportlogistics.dto.response.TruckResponseDto;
 import com.myapp.transportlogistics.exception.ValidationException;
+import com.myapp.transportlogistics.service.VisitorCounter;
 import com.myapp.transportlogistics.service.impl.TruckServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,9 +27,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("trucks")
 public class TruckController {
 
+    private final VisitorCounter counter;
     private final TruckServiceImpl truckServiceImpl;
 
-    public TruckController(TruckServiceImpl truckServiceImpl) {
+    public TruckController(VisitorCounter counter, TruckServiceImpl truckServiceImpl) {
+        this.counter = counter;
         this.truckServiceImpl = truckServiceImpl;
     }
 
@@ -37,6 +40,8 @@ public class TruckController {
     )
     @GetMapping("all")
     public List<TruckResponseDto> getTrucks() {
+
+        counter.increment();
         return truckServiceImpl.findAllTrucks();
     }
 
