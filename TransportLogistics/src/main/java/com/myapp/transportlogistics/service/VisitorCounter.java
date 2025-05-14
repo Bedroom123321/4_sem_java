@@ -24,7 +24,7 @@ public class VisitorCounter {
     public synchronized CompletableFuture<String> reset() {
         counter.lazySet(0);
         if (counter.get() != 0) {
-            throw new RuntimeException("Ошибка сброса счетчика");
+            throw new IllegalArgumentException("Ошибка сброса счетчика");
         }
         return CompletableFuture
                 .completedFuture("Cчётчик успешно сброшен");
