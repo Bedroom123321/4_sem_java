@@ -40,6 +40,10 @@ public class LogTaskServiceImpl implements LogTaskService {
     @Override
     @Transactional
     public String getStatus(String taskId) {
+        LogTask task = tasks.get(taskId);
+        if (task == null) {
+            throw new LogsException("Задача с ID " + taskId + " не найдена");
+        }
         return tasks.get(taskId).getStatus();
     }
 
@@ -47,17 +51,27 @@ public class LogTaskServiceImpl implements LogTaskService {
     @Transactional
     public List<String> getLogs(String taskId) {
 
-        Path dateLogFile = Path.of(tasks.get(taskId).getFilePath());
+        LogTask task = tasks.get(taskId);
+        if (task == null) {
+            throw new LogsException("Задача с ID " + taskId + " не найдена");
+        }
+
+        String filePath = task.getFilePath();
+        if (filePath == null) {
+            throw new LogsException("Файл не найден");
+        }
+
+        Path dateLogFile = Path.of(filePath);
         if (!Files.exists(dateLogFile)) {
-            throw new LogsException("Лог-файл за такую дату не найден");
+            throw new LogsException("Файл не найден");
         }
 
         List<String> logs;
-
         try {
             logs = Files.readAllLines(dateLogFile);
         } catch (IOException e) {
-            throw new LogsException("Ошибка при чтении лог-файла по дате");
+            throw new LogsException("Ошибка при чтении лог-файла по пути "
+                    + filePath + ": " + e.getMessage());
         }
 
         return logs;
