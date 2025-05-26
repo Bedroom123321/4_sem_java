@@ -27,11 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("trucks")
 public class TruckController {
 
-    private final VisitorCounter counter;
     private final TruckServiceImpl truckServiceImpl;
 
-    public TruckController(VisitorCounter counter, TruckServiceImpl truckServiceImpl) {
-        this.counter = counter;
+    public TruckController(TruckServiceImpl truckServiceImpl) {
         this.truckServiceImpl = truckServiceImpl;
     }
 
@@ -40,8 +38,6 @@ public class TruckController {
     )
     @GetMapping("all")
     public List<TruckResponseDto> getTrucks() {
-
-        counter.increment();
         return truckServiceImpl.findAllTrucks();
     }
 

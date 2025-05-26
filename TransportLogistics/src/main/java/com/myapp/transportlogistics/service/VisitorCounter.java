@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 public class VisitorCounter {
     private final AtomicInteger counter = new AtomicInteger(0);
 
-    @Async("taskExecutor")
     public synchronized void increment() {
         counter.incrementAndGet();
     }

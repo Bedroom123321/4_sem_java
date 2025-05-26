@@ -10,6 +10,7 @@ import com.myapp.transportlogistics.model.Truck;
 import com.myapp.transportlogistics.repository.DriverRepository;
 import com.myapp.transportlogistics.repository.TruckRepository;
 import com.myapp.transportlogistics.service.TruckService;
+import com.myapp.transportlogistics.service.VisitorCounter;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +25,7 @@ public class TruckServiceImpl implements TruckService {
     private final DriverRepository driverRepository;
     private final OrderServiceImpl orderServiceImpl;
     private final TruckMapper truckMapper;
+    private final VisitorCounter counter;
 
     @Override
     @Transactional
@@ -41,6 +43,7 @@ public class TruckServiceImpl implements TruckService {
     @Transactional
     public List<TruckResponseDto> findAllTrucks() {
         List<Truck> trucks = truckRepository.findAll();
+        counter.increment();
         return truckMapper.toDtoList(trucks);
     }
 
