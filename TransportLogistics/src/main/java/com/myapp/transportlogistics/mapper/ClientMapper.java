@@ -14,6 +14,8 @@ public class ClientMapper {
         client.setFirstName(dto.getFirstName());
         client.setLastName(dto.getLastName());
         client.setPhoneNumber(dto.getPhoneNumber());
+        client.setLogin(dto.getLogin());
+        client.setPassword(dto.getPassword());
         return client;
     }
 
@@ -23,6 +25,8 @@ public class ClientMapper {
         dto.setFirstName(client.getFirstName());
         dto.setLastName(client.getLastName());
         dto.setPhoneNumber(client.getPhoneNumber());
+        dto.setLogin(client.getLogin());
+        dto.setPassword(client.getPassword()); // Добавлено маппинг пароля
         return dto;
     }
 

@@ -15,7 +15,7 @@ public interface TruckService {
 
     void delete(Long id);
 
-    void update(Long id, String cargoType, int cargoVolume);
+    TruckResponseDto update(Long id, TruckRequestDto truckRequestDto);
 
     List<TruckResponseDto> getTrucksByDriverId(Long driverId);
 }

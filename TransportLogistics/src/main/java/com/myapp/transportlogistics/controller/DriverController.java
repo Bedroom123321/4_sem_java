@@ -49,18 +49,6 @@ public class DriverController {
         return driverServiceImpl.findById(id);
     }
 
-    @Operation(summary = "Извлекает данные всех водителей, использующих конкретный транспорт",
-            description = "Получате ID транспорта и возвращает список всех водителей в базе, "
-                    + "использующих этот транспорт, в виде DTO ответа"
-    )
-    @GetMapping("by-truck/{truckId}")
-    public List<DriverResponseDto> getDriversByTruckId(@PathVariable
-                                                           @Min(value = 1, message =
-                                                                   "ID должен быть больше 0")
-                                                           Long truckId) {
-        return driverServiceImpl.getDriversByTruckId(truckId);
-    }
-
     @Operation(summary = "Создаёт нового водителя",
             description = "Принимает DTO запроса с данными водителя, сохраняет в базу и "
                     + "возвращает DTO ответа созданного водителя"
@@ -75,7 +63,7 @@ public class DriverController {
                     + "возвращает список DTO ответа добавленных водителей"
     )
     @PostMapping("bulk")
-    public List<DriverResponseDto>  addDrivers(@RequestBody
+    public List<DriverResponseDto> addDrivers(@RequestBody
                                               List<DriverRequestDto> driverRequestDtos) {
         return driverServiceImpl.addDrivers(driverRequestDtos);
     }
@@ -95,23 +83,9 @@ public class DriverController {
                     + "обновляет данные в базе данных"
     )
     @PutMapping("{id}")
-    public void updateDriver(@PathVariable @Min(value = 1, message =
-                                         "ID должен быть больше 0") Long id,
-                             @RequestParam(required = false) String phoneNumber) {
-        phoneNumberException(phoneNumber);
+    public DriverResponseDto updateDriver(@PathVariable Long id, @RequestBody DriverRequestDto driverRequestDto) {
 
-        driverServiceImpl.update(id, phoneNumber);
+        return driverServiceImpl.update(id, driverRequestDto);
     }
-
-    private void phoneNumberException(String phoneNumber)throws ValidationException {
-
-        String pattern = "^\\+375(17|25|29|33|44)\\d{7}$";
-        if (phoneNumber == null || phoneNumber.trim().isEmpty() || !phoneNumber.matches(pattern)) {
-            throw new ValidationException(
-                    "Номер должен быть в формате +375XXXXXXXXX (после кода оператора 7 цифр)");
-        }
-
-    }
-
 
 }

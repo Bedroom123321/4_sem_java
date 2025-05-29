@@ -1,4 +1,4 @@
-package com.myapp.transportlogistics;
+package com.myapp.transportlogistics.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -100,20 +100,17 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     @Transactional
-    public void update(Long id, String phoneNumber) {
+    public DriverResponseDto update(Long id, DriverRequestDto driverRequestDto) {
         Optional<Driver> optionalDriver = driverRepository.findById(id);
         if (optionalDriver.isEmpty()) {
             throw new EntityNotFoundException("Водитель с таким ID не найден");
         }
 
         Driver driver = optionalDriver.get();
+        driverMapper.updateEntityFromDto(driverRequestDto, driver);
+        Driver updatedDriver = driverRepository.save(driver);
 
-        if (phoneNumber != null && !phoneNumber.equals(driver.getPhoneNumber())) {
-            driver.setPhoneNumber(phoneNumber);
-        }
-
-        driverRepository.save(driver);
-        cache.put(driver.getId(), driver);
+        return driverMapper.toDto(updatedDriver);
     }
 
     @Override

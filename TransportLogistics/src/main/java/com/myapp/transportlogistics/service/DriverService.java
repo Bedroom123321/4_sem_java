@@ -15,7 +15,7 @@ public interface DriverService {
 
     void delete(Long id);
 
-    void update(Long id, String phoneNumber);
+    DriverResponseDto update(Long id, DriverRequestDto driverRequestDto);
 
     List<DriverResponseDto> getDriversByTruckId(Long truckId);
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,7 +45,7 @@ public class OrderController {
             description = "Возвращает список всех заказов в базе с данными "
                         + "клиентов, водитлей и транспорта в виде DTO ответа"
     )
-    @GetMapping("all-with_relations")
+    @GetMapping("all_with_relations")
     public List<OrderWithRelationsDto> getAllOrdersWithRelations() {
         return orderServiceImpl.getAllWithRelations();
     }
@@ -95,6 +96,16 @@ public class OrderController {
     public void deleteOrder(@PathVariable @Min(value = 1, message =
             "ID должен быть больше 0") Long id) {
         orderServiceImpl.delete(id);
+    }
+
+
+    @Operation(summary = "Обновляет существующий заказ",
+            description = "Принимает ID заказа и DTO с обновленными данными, обновляет запись в базе и возвращает DTO ответа")
+    @PutMapping("update/{id}")
+    public OrderResponseDto updateOrder(
+            @PathVariable @Min(value = 1, message = "ID должен быть больше 0") Long id,
+            @Valid @RequestBody OrderRequestDto orderRequestDto) {
+        return orderServiceImpl.updateOrder(id, orderRequestDto);
     }
 
     private void phoneNumberException(String phoneNumber)throws ValidationException {

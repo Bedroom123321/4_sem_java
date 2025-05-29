@@ -14,18 +14,16 @@ public class TruckRequestDto {
             message = "Некорректный автомобильный номер (пример AB1245)")
     private String numberPlate;
 
-    @Min(value = 3500, message = "Грузоподъёмнасть должна быть минимум 3500")
-    @Pattern(regexp = "\\d+", message = "Грузоподъёмнасть должна быть числом")
+    @Min(value = 3500, message = "Грузоподъёмность должна быть минимум 3500")
     private int liftingCapacity;
 
-    @Pattern(regexp = "\\d+", message = "Объём груза должен быть числом")
+    @Min(value = 0, message = "Объём груза должен быть неотрицательным")
     private int cargoVolume;
 
     @NotBlank(message = "Тип груза обязателен")
     private String cargoType;
 
     public TruckRequestDto() {
-
     }
 
     public TruckRequestDto(String numberPlate, int liftingCapacity,

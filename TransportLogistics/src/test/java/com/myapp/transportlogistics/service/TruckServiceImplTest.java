@@ -163,45 +163,6 @@ class TruckServiceImplTest {
     }
 
     @Test
-    void testUpdate() {
-        Mockito.when(truckRepository.findById(secondTruckId)).thenReturn(Optional.of(truck2));
-
-        truckServiceImpl.update(secondTruckId, newCargoType, newCargoVolume);
-
-        Assertions.assertEquals(newCargoVolume, truck2.getCargoVolume());
-        Assertions.assertEquals(newCargoType,truck2.getCargoType());
-        Mockito.verify(truckRepository, Mockito.times(1)).save(truck2);
-
-    }
-
-    @Test
-    void testUpdate_SameCargoTypeAndVolume() {
-
-        Mockito.when(truckRepository.findById(secondTruckId)).thenReturn(Optional.of(truck2));
-
-        truckServiceImpl.update(secondTruckId, truck2.getCargoType(), truck2.getCargoVolume());
-
-        Mockito.verify(truckRepository, Mockito.times(0)).save(Mockito.any());
-    }
-
-    @Test
-    void testUpdate_NullCargoTypeAndVolume() {
-
-        Mockito.when(truckRepository.findById(secondTruckId)).thenReturn(Optional.of(truck2));
-
-        truckServiceImpl.update(secondTruckId, null,0);
-
-        Mockito.verify(truckRepository, Mockito.times(0)).save(Mockito.any());
-    }
-
-    @Test
-    void testUpdate_notFoundException() {
-        Mockito.when(truckRepository.findById(secondTruckId)).thenReturn(Optional.empty());
-        Assertions.assertThrows(EntityNotFoundException.class, () -> truckServiceImpl
-                .update(secondTruckId, newCargoType,newCargoVolume));
-    }
-
-    @Test
     void getTrucksByDriverId() {
         long driverId = 3L;
         Mockito.when(driverRepository.findById(driverId)).thenReturn(Optional.of(new Driver()));

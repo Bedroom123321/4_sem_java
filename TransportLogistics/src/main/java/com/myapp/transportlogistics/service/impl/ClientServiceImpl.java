@@ -1,6 +1,7 @@
 package com.myapp.transportlogistics.service.impl;
 
 import com.myapp.transportlogistics.dto.request.ClientRequestDto;
+import com.myapp.transportlogistics.dto.request.LoginDto;
 import com.myapp.transportlogistics.dto.response.ClientResponseDto;
 import com.myapp.transportlogistics.exception.EntityAlreadyExistsException;
 import com.myapp.transportlogistics.exception.EntityNotFoundException;
@@ -28,43 +29,41 @@ public class ClientServiceImpl implements ClientService {
         if (optionalClient.isEmpty()) {
             throw new EntityNotFoundException("Клиент с таким ID не найден");
         }
-        return clientMapper.toDto(optionalClient.get());
+        Client client = optionalClient.get();
+        return clientMapper.toDto(client); // Маппер должен теперь включать пароль
     }
 
     @Override
     @Transactional
     public List<ClientResponseDto> findAllClients() {
         List<Client> clients = clientRepository.findAll();
-        return clientMapper.toDtoList(clients);
+        return clientMapper.toDtoList(clients); // Маппер должен включать пароль
     }
 
     @Override
     @Transactional
     public ClientResponseDto addClient(ClientRequestDto clientRequestDto) {
-        Optional<Client> optionalClient = clientRepository
-            .findByPhoneNumber(clientRequestDto.getPhoneNumber());
+        Optional<Client> optionalClient = clientRepository.findByLogin(clientRequestDto.getLogin());
         if (optionalClient.isPresent()) {
-            throw new EntityAlreadyExistsException("Такой клиент уже существует");
+            throw new EntityAlreadyExistsException("Клиент с таким логином уже существует");
         }
 
         Client client = clientMapper.toEntity(clientRequestDto);
-        Client savedClients = clientRepository.save(client);
-        return clientMapper.toDto(savedClients);
+        client.setPassword(clientRequestDto.getPassword()); // Устанавливаем пароль
+        Client savedClient = clientRepository.save(client);
+        return clientMapper.toDto(savedClient); // Возвращаем с паролем
     }
 
     @Override
     @Transactional
     public List<ClientResponseDto> addClients(List<ClientRequestDto> clientRequestDtos) {
-
         List<Client> newClients = clientRequestDtos.stream()
                 .distinct()
-                .filter(client -> clientRepository
-                        .findByPhoneNumber(client.getPhoneNumber()).isEmpty())
+                .filter(client -> clientRepository.findByLogin(client.getLogin()).isEmpty())
                 .map(clientMapper::toEntity)
                 .toList();
 
         List<Client> savedClients = clientRepository.saveAll(newClients);
-
         return savedClients.stream()
                 .map(clientMapper::toDto)
                 .toList();
@@ -89,12 +88,36 @@ public class ClientServiceImpl implements ClientService {
         }
 
         Client client = optionalClient.get();
-
         if (phoneNumber != null && !phoneNumber.equals(client.getPhoneNumber())) {
             client.setPhoneNumber(phoneNumber);
             clientRepository.save(client);
         }
-
     }
 
+    @Override
+    public ClientResponseDto login(LoginDto loginDto) {
+        Optional<Client> optionalClient = clientRepository.findByLogin(loginDto.getLogin());
+        if (optionalClient.isEmpty()) {
+            throw new EntityNotFoundException("Клиент с таким логином не найден");
+        }
+
+        Client client = optionalClient.get();
+        if (!loginDto.getPassword().equals(client.getPassword())) {
+            throw new EntityNotFoundException("Неверный пароль");
+        }
+
+        return clientMapper.toDto(client); // Возвращаем с паролем
+    }
+
+    public Client updateClient(Long id, Client client) {
+        Client existingClient = clientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Client not found with id: " + id));
+        existingClient.setFirstName(client.getFirstName());
+        existingClient.setLastName(client.getLastName());
+        existingClient.setPhoneNumber(client.getPhoneNumber());
+        // Если нужно обновлять логин и пароль, добавьте:
+        // existingClient.setLogin(client.getLogin());
+        // existingClient.setPassword(client.getPassword());
+        return clientRepository.save(existingClient);
+    }
 }

@@ -80,4 +80,16 @@ public class OrderMapper {
         return orderWithRelationsDtos;
     }
 
+    public void updateEntityFromDto(OrderRequestDto orderRequestDto, Order order) {
+        if (orderRequestDto.getOrderDate() != null) {
+            order.setOrderDate(orderRequestDto.getOrderDate());
+        }
+        if (orderRequestDto.getLoadingPoint() != null) {
+            order.setLoadingPoint(orderRequestDto.getLoadingPoint());
+        }
+        if (orderRequestDto.getDeliveryPoint() != null) {
+            order.setDeliveryPoint(orderRequestDto.getDeliveryPoint());
+        }
+    }
+
 }

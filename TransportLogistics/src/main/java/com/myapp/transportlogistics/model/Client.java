@@ -24,19 +24,22 @@ public class Client {
     private String firstName;
     private String lastName;
     private String phoneNumber;
+    private String login;
+    private String password;
 
-    @OneToMany(mappedBy = "client", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-        CascadeType.REMOVE})
+    @OneToMany(mappedBy = "client", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<Order> orders = new ArrayList<>();
 
     public Client() {
     }
 
-    public Client(Long id, String firstName, String lastName, String phoneNumber) {
+    public Client(Long id, String firstName, String lastName, String phoneNumber, String login, String password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
+        this.login = login;
+        this.password = password; // Пароль хранится как есть
     }
 
     @Override
@@ -46,7 +49,7 @@ public class Client {
                 + ", name='" + firstName + '\''
                 + ", secondName='" + lastName + '\''
                 + ", phoneNumber='" + phoneNumber + '\''
+                + ", login='" + login + '\''
                 + '}';
     }
 }
-

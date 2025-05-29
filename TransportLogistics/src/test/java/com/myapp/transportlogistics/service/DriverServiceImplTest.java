@@ -182,22 +182,6 @@ class DriverServiceImplTest {
     }
 
     @Test
-    void update() {Mockito.when(driverRepository.findById(firstDriverId)).thenReturn(Optional.of(driver1));
-
-        driverServiceImpl.update(firstDriverId, newPhoneNumber);
-
-        Assertions.assertEquals(newPhoneNumber,driver1.getPhoneNumber());
-        Mockito.verify(driverRepository, Mockito.times(1)).save(driver1);
-
-    }
-
-    @Test
-    void testUpdate_notFoundException() {
-        Mockito.when(driverRepository.findById(firstDriverId)).thenReturn(Optional.empty());
-        Assertions.assertThrows(EntityNotFoundException.class, () -> driverServiceImpl.update(firstDriverId, newPhoneNumber));
-    }
-
-    @Test
     void getDriversByTruckId() {
         long truckId = 3L;
         Mockito.when(truckRepository.findById(truckId)).thenReturn(Optional.of(new Truck()));

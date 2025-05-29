@@ -1,6 +1,7 @@
 package com.myapp.transportlogistics.service;
 
 import com.myapp.transportlogistics.dto.request.ClientRequestDto;
+import com.myapp.transportlogistics.dto.request.LoginDto;
 import com.myapp.transportlogistics.dto.response.ClientResponseDto;
 import com.myapp.transportlogistics.exception.EntityAlreadyExistsException;
 import com.myapp.transportlogistics.exception.EntityNotFoundException;
@@ -41,28 +42,19 @@ class ClientServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        client1 = new Client(1L, "Роман"
-                , "Бадестов", "+375291184712");
+        client1 = new Client(1L, "Роман", "Бадестов", "+375291184712", "roman123", "password123");
+        clientRequestDto1 = new ClientRequestDto("Роман", "Бадестов", "+375291184712", "roman123", "password123");
 
-        clientRequestDto1 = new ClientRequestDto("Роман"
-                , "Бадестов", "+375291184712");
+        clientResponseDto1 = new ClientResponseDto(1L, "Роман", "Бадестов", "+375291184712", "roman123", "123456789");
 
-        clientResponseDto1 = new ClientResponseDto(1L, "Роман"
-                , "Бадестов", "+375291184712");
+        client2 = new Client(2L, "Илья", "Ходин", "+375333916665", "ilya456", "password456");
+        clientRequestDto2 = new ClientRequestDto("Илья", "Ходин", "+375333916665", "ilya456", "password456");
 
-        client2 = new Client(2L, "Илья"
-                , "Ходин", "+375333916665");
-
-        clientRequestDto2 = new ClientRequestDto("Илья"
-                , "Ходин", "+375333916665");
-
-        clientResponseDto2 = new ClientResponseDto(2L, "Илья"
-                , "Ходин", "+375333916665");
+        clientResponseDto2 = new ClientResponseDto(2L, "Илья", "Ходин", "+375333916665", "ilya456", "123456789");
     }
 
     @Test
     void testFindById() {
-
         Mockito.when(clientRepository.findById(firstClientId)).thenReturn(Optional.of(client1));
         Mockito.when(clientMapper.toDto(client1)).thenReturn(clientResponseDto1);
 
@@ -73,7 +65,6 @@ class ClientServiceImplTest {
 
     @Test
     void testFindById_notFoundException() {
-
         Mockito.when(clientRepository.findById(firstClientId)).thenReturn(Optional.empty());
 
         Assertions.assertThrows(EntityNotFoundException.class, () -> clientServiceImpl.findById(firstClientId));
@@ -81,21 +72,19 @@ class ClientServiceImplTest {
 
     @Test
     void testFindAll() {
-
         Mockito.when(clientRepository.findAll()).thenReturn(List.of(client1, client2));
         Mockito.when(clientMapper.toDtoList(List.of(client1, client2)))
-                .thenReturn(List.of(clientResponseDto1,clientResponseDto2));
+                .thenReturn(List.of(clientResponseDto1, clientResponseDto2));
 
         List<ClientResponseDto> result = clientServiceImpl.findAllClients();
 
-        Assertions.assertEquals(List.of(clientResponseDto1,clientResponseDto2), result);
-
+        Assertions.assertEquals(List.of(clientResponseDto1, clientResponseDto2), result);
     }
 
     @Test
     void testAddClient() {
-
         Mockito.when(clientMapper.toEntity(clientRequestDto1)).thenReturn(client1);
+        Mockito.when(clientRepository.findByLogin(clientRequestDto1.getLogin())).thenReturn(Optional.empty());
         Mockito.when(clientRepository.save(client1)).thenReturn(client1);
         Mockito.when(clientMapper.toDto(client1)).thenReturn(clientResponseDto1);
 
@@ -106,35 +95,33 @@ class ClientServiceImplTest {
 
     @Test
     void testAddClient_alreadyExistsException() {
-        Mockito.when(clientRepository.findByPhoneNumber(clientRequestDto1.getPhoneNumber())).thenReturn(Optional.of(client1));
+        Mockito.when(clientRepository.findByLogin(clientRequestDto1.getLogin())).thenReturn(Optional.of(client1));
 
         Assertions.assertThrows(EntityAlreadyExistsException.class, () -> clientServiceImpl.addClient(clientRequestDto1));
     }
 
     @Test
     void testAddClients() {
-
-        Mockito.when(clientRepository.findByPhoneNumber(clientRequestDto1.getPhoneNumber())).thenReturn(Optional.empty());
-        Mockito.when(clientRepository.findByPhoneNumber(clientRequestDto2.getPhoneNumber())).thenReturn(Optional.empty());
+        Mockito.when(clientRepository.findByLogin(clientRequestDto1.getLogin())).thenReturn(Optional.empty());
+        Mockito.when(clientRepository.findByLogin(clientRequestDto2.getLogin())).thenReturn(Optional.empty());
 
         Mockito.when(clientMapper.toEntity(clientRequestDto1)).thenReturn(client1);
         Mockito.when(clientMapper.toEntity(clientRequestDto2)).thenReturn(client2);
 
-        Mockito.when(clientRepository.saveAll(List.of(client1,client2))).thenReturn(List.of(client1,client2));
+        Mockito.when(clientRepository.saveAll(List.of(client1, client2))).thenReturn(List.of(client1, client2));
 
         Mockito.when(clientMapper.toDto(client1)).thenReturn(clientResponseDto1);
         Mockito.when(clientMapper.toDto(client2)).thenReturn(clientResponseDto2);
 
-        List<ClientResponseDto> result = clientServiceImpl.addClients(List.of(clientRequestDto1,clientRequestDto2));
+        List<ClientResponseDto> result = clientServiceImpl.addClients(List.of(clientRequestDto1, clientRequestDto2));
 
-        Assertions.assertEquals(List.of(clientResponseDto1,clientResponseDto2), result);
+        Assertions.assertEquals(List.of(clientResponseDto1, clientResponseDto2), result);
     }
 
     @Test
     void testAddClients_clientAlreadyExists() {
-
-        Mockito.when(clientRepository.findByPhoneNumber(clientRequestDto1.getPhoneNumber())).thenReturn(Optional.of(client1));
-        Mockito.when(clientRepository.findByPhoneNumber(clientRequestDto2.getPhoneNumber())).thenReturn(Optional.empty());
+        Mockito.when(clientRepository.findByLogin(clientRequestDto1.getLogin())).thenReturn(Optional.of(client1));
+        Mockito.when(clientRepository.findByLogin(clientRequestDto2.getLogin())).thenReturn(Optional.empty());
 
         Mockito.when(clientMapper.toEntity(clientRequestDto2)).thenReturn(client2);
 
@@ -142,7 +129,7 @@ class ClientServiceImplTest {
 
         Mockito.when(clientMapper.toDto(client2)).thenReturn(clientResponseDto2);
 
-        List<ClientResponseDto> result = clientServiceImpl.addClients(List.of(clientRequestDto1,clientRequestDto2));
+        List<ClientResponseDto> result = clientServiceImpl.addClients(List.of(clientRequestDto1, clientRequestDto2));
 
         Assertions.assertEquals(List.of(clientResponseDto2), result);
     }
@@ -165,12 +152,11 @@ class ClientServiceImplTest {
 
     @Test
     void testUpdate() {
-
         Mockito.when(clientRepository.findById(firstClientId)).thenReturn(Optional.of(client1));
 
         clientServiceImpl.update(firstClientId, newPhoneNumber);
 
-        Assertions.assertEquals(newPhoneNumber,client1.getPhoneNumber());
+        Assertions.assertEquals(newPhoneNumber, client1.getPhoneNumber());
         Mockito.verify(clientRepository, Mockito.times(1)).save(client1);
     }
 

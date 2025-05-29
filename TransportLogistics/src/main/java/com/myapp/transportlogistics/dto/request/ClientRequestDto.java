@@ -22,13 +22,22 @@ public class ClientRequestDto {
             "Номер должен быть в формате +375XXXXXXXXX (после кода оператора 7 цифр)")
     private String phoneNumber;
 
-    public ClientRequestDto() {
+    @NotBlank(message = "Логин обязателен")
+    @Size(min = 4, max = 20, message = "Логин должен содержать от 4 до 20 символов")
+    private String login;
 
+    @NotBlank(message = "Пароль обязателен")
+    @Size(min = 6, message = "Пароль должен содержать минимум 6 символов")
+    private String password;
+
+    public ClientRequestDto() {
     }
 
-    public ClientRequestDto(String firstName, String lastName, String phoneNumber) {
+    public ClientRequestDto(String firstName, String lastName, String phoneNumber, String login, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
+        this.login = login;
+        this.password = password;
     }
 }

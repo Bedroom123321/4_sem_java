@@ -91,28 +91,26 @@ public class TruckServiceImpl implements TruckService {
 
     @Override
     @Transactional
-    public void update(Long id, String cargoType, int cargoVolume) {
+    public TruckResponseDto update(Long id, TruckRequestDto truckRequestDto) {
+        System.out.println("Updating truck ID: " + id + ", data: " + truckRequestDto);
         Optional<Truck> optionalTruck = truckRepository.findById(id);
         if (optionalTruck.isEmpty()) {
             throw new EntityNotFoundException("Транспорт с таким ID не найден");
         }
 
         Truck truck = optionalTruck.get();
-        boolean isUpdated = false;
-
-        if (cargoType != null && !cargoType.equals(truck.getCargoType())) {
-            truck.setCargoType(cargoType);
-            isUpdated = true;
+        Optional<Truck> existingTruck = truckRepository.findByNumberPlate(truckRequestDto.getNumberPlate());
+        if (existingTruck.isPresent() && !existingTruck.get().getId().equals(id)) {
+            throw new EntityAlreadyExistsException("Грузовик с таким номером уже существует");
         }
 
-        if (cargoVolume != 0 && cargoVolume != truck.getCargoVolume()) {
-            truck.setCargoVolume(cargoVolume);
-            isUpdated = true;
-        }
+        truck.setNumberPlate(truckRequestDto.getNumberPlate());
+        truck.setLiftingCapacity(truckRequestDto.getLiftingCapacity());
+        truck.setCargoVolume(truckRequestDto.getCargoVolume());
+        truck.setCargoType(truckRequestDto.getCargoType());
 
-        if (isUpdated) {
-            truckRepository.save(truck);
-        }
+        Truck updatedTruck = truckRepository.save(truck);
+        return truckMapper.toDto(updatedTruck);
     }
 
     @Override
@@ -126,5 +124,4 @@ public class TruckServiceImpl implements TruckService {
         List<Truck> trucks = truckRepository.getTrucksByDriverId(driverId);
         return truckMapper.toDtoList(trucks);
     }
-
 }

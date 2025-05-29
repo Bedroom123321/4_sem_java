@@ -36,4 +36,20 @@ public class DriverMapper {
         }
         return driverResponseDtos;
     }
+
+    public void updateEntityFromDto(DriverRequestDto dto, Driver driver) {
+        // Обновляем только те поля, которые пришли в DTO, сохраняя существующий id
+        if (dto.getFirstName() != null) {
+            driver.setFirstName(dto.getFirstName());
+        }
+        if (dto.getLastName() != null) {
+            driver.setLastName(dto.getLastName());
+        }
+        if (dto.getPhoneNumber() != null) {
+            driver.setPhoneNumber(dto.getPhoneNumber());
+        }
+        if (dto.getWorkExperience() != null) {
+            driver.setWorkExperience(dto.getWorkExperience());
+        }
+    }
 }

@@ -26,4 +26,6 @@ public interface OrderService {
 
     @Transactional
     void setTruckToNull(Long truckId);
+
+    OrderResponseDto updateOrder(Long id, OrderRequestDto orderRequestDto);
 }

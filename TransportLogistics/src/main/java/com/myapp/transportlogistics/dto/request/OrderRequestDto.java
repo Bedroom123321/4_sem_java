@@ -18,13 +18,8 @@ public class OrderRequestDto {
     @NotBlank(message = "Место доставки обязательно")
     private String deliveryPoint;
 
-    @Pattern(regexp = "\\d+", message = "ID клиента должно быть числом больше 0")
     private Long clientId;
-
-    @Pattern(regexp = "\\d+", message = "ID клиента должно быть числом больше 0")
     private Long driverId;
-
-    @Pattern(regexp = "\\d+", message = "ID клиента должно быть числом больше 0")
     private Long truckId;
 
     public OrderRequestDto() {

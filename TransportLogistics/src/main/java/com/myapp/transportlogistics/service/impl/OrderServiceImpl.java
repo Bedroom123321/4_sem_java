@@ -119,6 +119,42 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
+    public OrderResponseDto updateOrder(Long id, OrderRequestDto orderRequestDto) {
+        Optional<Order> optionalOrder = orderRepository.findById(id);
+        if (optionalOrder.isEmpty()) {
+            throw new EntityNotFoundException("Заказ с таким ID не найден");
+        }
+
+        Order order = optionalOrder.get();
+
+        // Проверяем, существуют ли связанные сущности
+        Optional<Client> optionalClient = clientRepository.findById(orderRequestDto.getClientId());
+        if (optionalClient.isEmpty()) {
+            throw new EntityNotFoundException("Клиент с таким ID не найден");
+        }
+
+        Optional<Driver> optionalDriver = driverRepository.findById(orderRequestDto.getDriverId());
+        if (optionalDriver.isEmpty()) {
+            throw new EntityNotFoundException("Водитель с таким ID не найден");
+        }
+
+        Optional<Truck> optionalTruck = truckRepository.findById(orderRequestDto.getTruckId());
+        if (optionalTruck.isEmpty()) {
+            throw new EntityNotFoundException("Транспорт с таким ID не найден");
+        }
+
+        orderMapper.updateEntityFromDto(orderRequestDto, order);
+        order.setClient(optionalClient.get());
+        order.setDriver(optionalDriver.get());
+        order.setTruck(optionalTruck.get());
+
+        // Сохраняем обновленный заказ
+        Order updatedOrder = orderRepository.save(order);
+        return orderMapper.toDto(updatedOrder);
+    }
+
+    @Override
+    @Transactional
     public void setDriverToNull(Long driverId) {
         List<Order> orders = orderRepository.findByDriverId(driverId);
         if (!orders.isEmpty()) {
